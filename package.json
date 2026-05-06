@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:evidence": "node scripts/build_evidence_profiles.mjs",
     "start": "next start",
     "lint": "next lint"
   },

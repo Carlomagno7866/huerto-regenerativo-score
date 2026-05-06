@@ -93,14 +93,41 @@ export type RotationAgent = {
   risk: number;
 };
 
+export type ScoreObjective =
+  | "balanced"
+  | "max-nutrients"
+  | "low-water"
+  | "healthy-rotation"
+  | "family-savings";
+
+export type UserMode = "home-garden" | "small-farmer";
+
+export type NutrientPriority =
+  | "protein"
+  | "fiber"
+  | "vitaminA"
+  | "vitaminC"
+  | "folate"
+  | "calcium"
+  | "iron"
+  | "zinc"
+  | "potassium"
+  | "magnesium"
+  | "energy";
+
 export type OptimizationInput = {
   latitude?: number;
   longitude?: number;
   gardenType: "optimized-bed" | "natural-soil";
+  objective: ScoreObjective;
+  mode: UserMode;
   years: number;
   subplots: number;
   areaM2: number;
   previousFamilies: string[];
+  priorityNutrients: NutrientPriority[];
+  excludedCropIds: string[];
+  excludedCropNames: string[];
 };
 
 export type Assignment = {

@@ -1,4 +1,14 @@
-import type { Assignment, CropCandidate, EvidenceLevel, OptimizationInput, RotationAgent, ScoreBreakdown, ScoreConfidence } from "./types";
+import type {
+  Assignment,
+  CropCandidate,
+  EvidenceLevel,
+  NutrientPriority,
+  OptimizationInput,
+  RotationAgent,
+  ScoreBreakdown,
+  ScoreConfidence,
+  ScoreObjective
+} from "./types";
 
 const DAILY_TARGETS: Record<string, { label: string; amount: number; weight: number }> = {
   protein: { label: "proteina", amount: 50, weight: 0.95 },
@@ -31,13 +41,19 @@ export function scoreCrop(
   const nutrition = normalizeRange(diagnostics.nutritionScore, benchmarks.nutritionScore);
   const waterEfficiency = normalizeRange(diagnostics.nutrientsPerLiter, benchmarks.nutrientsPerLiter);
   const spaceTimeEfficiency = normalizeRange(diagnostics.nutrientsPerM2Day, benchmarks.nutrientsPerM2Day);
+  const waterBurden = clamp01(1 - (crop.waterMmCycle - 250) / 650);
   const cycleEfficiency = clamp01(1 - (crop.cycleDays - 45) / 145);
-  const resources = clamp01(waterEfficiency * 0.48 + spaceTimeEfficiency * 0.42 + cycleEfficiency * 0.1);
+  const resources = clamp01(waterEfficiency * 0.44 + spaceTimeEfficiency * 0.34 + waterBurden * 0.12 + cycleEfficiency * 0.1);
   const rotation = scoreRotationV2(crop, previousCrops, previousFamilies, yearFamilies);
   const soil = crop.soilFit;
-  const cost = 0.55;
+  const cost = scoreCostReadiness(crop, diagnostics, input);
+  const weights = weightsForObjective(input.objective);
   const evidenceScore = clamp01(
-    nutrition * 0.34 + resources * 0.24 + rotation.value * 0.22 + soil * 0.12 + cost * 0.08
+    nutrition * weights.nutrition +
+      resources * weights.resources +
+      rotation.value * weights.rotation +
+      soil * weights.soil +
+      cost * weights.cost
   );
   const confidence = confidenceScore(crop.confidence);
   const total = clamp01(evidenceScore * (0.75 + 0.25 * confidence));
@@ -60,7 +76,7 @@ export function scoreCrop(
     `Rendimiento: ${crop.evidence.yieldKgM2.label}${crop.evidence.yieldKgM2.matchedItem ? ` (${crop.evidence.yieldKgM2.matchedItem})` : ""}.`,
     `Agua/ciclo: ${crop.evidence.waterMmCycle.label}.`,
     `Nutricion: ${crop.evidence.nutrition.matchedFood ?? crop.evidence.nutrition.label}.`,
-    `Confianza resumida: ${Math.round(confidence * 100)}; precio/costo aun no domina el ranking.`
+    `Objetivo aplicado: ${objectiveLabel(input.objective)}; precio/costo aun no domina el ranking sin ODEPA.`
   ];
 
   return {
@@ -93,21 +109,23 @@ export function scoreCrop(
 export function optimize(crops: CropCandidate[], input: OptimizationInput): Assignment[] {
   const assignments: Assignment[] = [];
   const historyByPlot = Array.from({ length: input.subplots }, () => [] as CropCandidate[]);
-  const benchmarks = buildBenchmarks(crops, input);
+  const candidates = crops.filter((crop) => isAllowedCrop(crop, input));
+  const benchmarks = buildBenchmarks(candidates, input);
 
   for (let year = 1; year <= input.years; year += 1) {
     const yearFamilies: string[] = [];
     const yearCropIds: string[] = [];
     for (let subplot = 1; subplot <= input.subplots; subplot += 1) {
       const history = historyByPlot[subplot - 1];
-      const ranked = crops
-        .filter((crop) => !yearCropIds.includes(crop.id) || yearCropIds.length >= Math.min(crops.length, input.subplots))
+      const ranked = candidates
+        .filter((crop) => !yearCropIds.includes(crop.id) || yearCropIds.length >= Math.min(candidates.length, input.subplots))
         .map((crop) => ({
           crop,
           score: scoreCrop(crop, input, history, input.previousFamilies, yearFamilies, benchmarks)
         }))
         .sort((a, b) => b.score.total - a.score.total);
       const selected = ranked[0];
+      if (!selected) break;
       assignments.push({
         year,
         subplot,
@@ -134,14 +152,26 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
   const contributions: Record<string, number> = {};
 
   for (const [key, target] of Object.entries(DAILY_TARGETS)) {
+    const priorityWeight = input.priorityNutrients.includes(key as NutrientPriority) ? 1.35 : 1;
     const amountPer100g = crop.nutrition[key] ?? 0;
     const delivered = (amountPer100g * gramsHarvest) / 100;
     const nutrientDays = delivered / target.amount;
     const adequacy = clamp01(nutrientDays / Math.max(30, crop.cycleDays));
     contributions[key] = adequacy;
-    weighted += adequacy * target.weight;
-    totalWeight += target.weight;
-    usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight;
+    weighted += adequacy * target.weight * priorityWeight;
+    totalWeight += target.weight * priorityWeight;
+    usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight * priorityWeight;
+  }
+
+  if (input.priorityNutrients.includes("energy")) {
+    const energyKcal = crop.nutrition.energy ?? 0;
+    const deliveredEnergy = (energyKcal * gramsHarvest) / 100;
+    const energyDays = deliveredEnergy / 2200;
+    const energyAdequacy = clamp01(energyDays / Math.max(30, crop.cycleDays));
+    contributions.energy = energyAdequacy;
+    weighted += energyAdequacy * 0.55;
+    totalWeight += 0.55;
+    usefulNutrientPoints += Math.min(energyDays, crop.cycleDays) * 0.55;
   }
 
   const nutritionScore = totalWeight ? weighted / totalWeight : 0;
@@ -154,6 +184,47 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     nutrientsPerLiter: usefulNutrientPoints / waterLiters,
     contributions
   };
+}
+
+function isAllowedCrop(crop: CropCandidate, input: OptimizationInput) {
+  if (input.excludedCropIds.includes(crop.id)) return false;
+  if (!input.excludedCropNames.length) return true;
+  const text = `${crop.commonName} ${crop.scientificName} ${crop.family}`.toLowerCase();
+  return !input.excludedCropNames.some((name) => text.includes(name.toLowerCase().trim()));
+}
+
+function scoreCostReadiness(crop: CropCandidate, diagnostics: ReturnType<typeof nutrientDiagnostics>, input: OptimizationInput) {
+  const price = crop.evidence.priceClpKg?.value;
+  if (price && price > 0) {
+    const marketValueM2 = crop.yieldKgM2 * price;
+    const normalizedValue = clamp01(marketValueM2 / 5000);
+    return clamp01(normalizedValue * 0.55 + diagnostics.nutrientsPerM2Day * 0.45);
+  }
+  const householdProxy = clamp01(crop.yieldKgM2 / 6);
+  const farmerProxy = clamp01((crop.yieldKgM2 / 6) * 0.7 + (diagnostics.nutrientsPerLiter / 0.08) * 0.3);
+  return input.mode === "small-farmer" ? farmerProxy * 0.55 : householdProxy * 0.5;
+}
+
+function weightsForObjective(objective: ScoreObjective) {
+  const weights: Record<ScoreObjective, { nutrition: number; resources: number; rotation: number; soil: number; cost: number }> = {
+    balanced: { nutrition: 0.34, resources: 0.24, rotation: 0.22, soil: 0.12, cost: 0.08 },
+    "max-nutrients": { nutrition: 0.5, resources: 0.22, rotation: 0.14, soil: 0.08, cost: 0.06 },
+    "low-water": { nutrition: 0.25, resources: 0.43, rotation: 0.18, soil: 0.09, cost: 0.05 },
+    "healthy-rotation": { nutrition: 0.22, resources: 0.18, rotation: 0.42, soil: 0.12, cost: 0.06 },
+    "family-savings": { nutrition: 0.27, resources: 0.22, rotation: 0.16, soil: 0.08, cost: 0.27 }
+  };
+  return weights[objective];
+}
+
+function objectiveLabel(objective: ScoreObjective) {
+  const labels: Record<ScoreObjective, string> = {
+    balanced: "balance general",
+    "max-nutrients": "maximo nutriente",
+    "low-water": "bajo riego",
+    "healthy-rotation": "rotacion sana",
+    "family-savings": "ahorro familiar"
+  };
+  return labels[objective];
 }
 
 function scoreRotationV2(crop: CropCandidate, previousCrops: CropCandidate[], previousFamilies: string[], yearFamilies: string[]) {

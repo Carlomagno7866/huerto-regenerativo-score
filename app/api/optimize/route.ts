@@ -10,10 +10,33 @@ const schema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   gardenType: z.enum(["optimized-bed", "natural-soil"]).default("natural-soil"),
+  objective: z
+    .enum(["balanced", "max-nutrients", "low-water", "healthy-rotation", "family-savings"])
+    .default("balanced"),
+  mode: z.enum(["home-garden", "small-farmer"]).default("home-garden"),
   years: z.number().int().min(1).max(8).default(4),
   subplots: z.number().int().min(1).max(12).default(4),
   areaM2: z.number().min(0.5).max(500).default(6),
-  previousFamilies: z.array(z.string()).default([])
+  previousFamilies: z.array(z.string()).default([]),
+  priorityNutrients: z
+    .array(
+      z.enum([
+        "protein",
+        "fiber",
+        "vitaminA",
+        "vitaminC",
+        "folate",
+        "calcium",
+        "iron",
+        "zinc",
+        "potassium",
+        "magnesium",
+        "energy"
+      ])
+    )
+    .default([]),
+  excludedCropIds: z.array(z.string()).default([]),
+  excludedCropNames: z.array(z.string()).default([])
 });
 
 export async function POST(request: NextRequest) {
@@ -82,6 +105,7 @@ function summarize(assignments: ReturnType<typeof optimize>) {
     averageScore: average,
     familyDiversity: families.size,
     estimatedWaterMm: water,
+    topConfidenceGaps: confidenceGaps(assignments),
     recommendations: assignments.slice(0, 4).map((item) => ({
       crop: item.crop.commonName,
       score: item.score.total,
@@ -90,4 +114,20 @@ function summarize(assignments: ReturnType<typeof optimize>) {
       evidence: item.score.evidenceNotes[0]
     }))
   };
+}
+
+function confidenceGaps(assignments: ReturnType<typeof optimize>) {
+  const counts = new Map<string, number>();
+  for (const item of assignments) {
+    for (const [domain, descriptor] of Object.entries(item.score.confidenceDetail)) {
+      if (descriptor.level === "missing" || descriptor.level === "family-estimate" || descriptor.level === "generic") {
+        const key = `${domain}: ${descriptor.label}`;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+    }
+  }
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([label]) => label);
 }
