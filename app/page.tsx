@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Layers3, MapPin, Sprout } from "lucide-react";
+import { Droplets, Layers3, MapPin, Microscope, ShieldCheck, Sprout } from "lucide-react";
+import type { ReactNode } from "react";
 import type { Assignment } from "@/lib/types";
 
 type ApiResult = {
@@ -11,6 +12,13 @@ type ApiResult = {
     averageScore: number;
     familyDiversity: number;
     estimatedWaterMm: number;
+    recommendations: Array<{
+      crop: string;
+      score: number;
+      confidence: number;
+      reason: string;
+      evidence: string;
+    }>;
   };
 };
 
@@ -96,7 +104,7 @@ export default function Home() {
           </div>
 
           <div className="grid-controls">
-            <NumberControl label="Anios" value={years} min={1} max={8} onChange={setYears} />
+            <NumberControl label="Anos" value={years} min={1} max={8} onChange={setYears} />
             <NumberControl label="Subparcelas" value={subplots} min={1} max={12} onChange={setSubplots} />
             <NumberControl label="m2/subparcela" value={areaM2} min={1} max={80} onChange={setAreaM2} />
           </div>
@@ -109,8 +117,8 @@ export default function Home() {
         <div className="results">
           <div className="hero-band">
             <div>
-              <p>Base local SQLite + USDA + Best4Soil + SoilGrids Chile</p>
-              <h2>Calendario automatico por rotacion familiar y SCORE nutricional</h2>
+              <p>Base local SQLite + USDA + FAOSTAT + Best4Soil + SoilGrids Chile</p>
+              <h2>SCORE v2 por nutrientes utiles, agua, suelo y sanidad</h2>
             </div>
             {result ? (
               <div className="meters">
@@ -140,31 +148,53 @@ export default function Home() {
                         </div>
                         <h4>{item.crop.commonName}</h4>
                         <p className="technical-name">
-                          {item.crop.family} · {item.crop.scientificName}
+                          {item.crop.family} - {item.crop.scientificName}
                         </p>
+
+                        <div className="score-bars" aria-label="Desglose SCORE v2">
+                          <ScoreBar label="Nut." value={item.score.nutrition} />
+                          <ScoreBar label="Agua" value={item.score.resources} />
+                          <ScoreBar label="San." value={item.score.rotation} />
+                          <ScoreBar label="Suelo" value={item.score.soil} />
+                        </div>
+
                         <dl>
                           <div>
-                            <dt>Familia</dt>
-                            <dd>{item.crop.family}</dd>
+                            <dt>Rendimiento</dt>
+                            <dd>{item.crop.yieldKgM2.toFixed(2)} kg/m2</dd>
                           </div>
                           <div>
                             <dt>Cosecha</dt>
                             <dd>{item.harvestWindow}</dd>
                           </div>
                           <div>
-                            <dt>Nutricion</dt>
-                            <dd>{Math.round(item.score.nutrition * 100)}</dd>
+                            <dt>Agua/ciclo</dt>
+                            <dd>{Math.round(item.crop.waterMmCycle)} mm</dd>
                           </div>
                           <div>
-                            <dt>Recursos</dt>
-                            <dd>{Math.round(item.score.resources * 100)}</dd>
+                            <dt>Confianza</dt>
+                            <dd>{Math.round(item.score.confidence * 100)}</dd>
                           </div>
                           <div>
-                            <dt>Rotacion</dt>
-                            <dd>{Math.round(item.score.resilience * 100)}</dd>
+                            <dt>USDA match</dt>
+                            <dd>{item.crop.matchedFood ?? "Sin match"}</dd>
                           </div>
                         </dl>
-                        <p className="reason">{item.score.explanation[0]}</p>
+
+                        <div className="explanation">
+                          <p className="reason">{item.score.explanation[0]}</p>
+                          <ul>
+                            {item.score.explanation.slice(1).map((line) => (
+                              <li key={line}>{line}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="evidence">
+                          <EvidencePill icon={<Microscope aria-hidden />} label={item.crop.evidence.yieldKgM2.label} />
+                          <EvidencePill icon={<Droplets aria-hidden />} label={item.crop.evidence.waterMmCycle.label} />
+                          <EvidencePill icon={<ShieldCheck aria-hidden />} label={item.score.confidenceDetail.rotation.label} />
+                        </div>
                       </article>
                     ))}
                   </div>
@@ -175,6 +205,26 @@ export default function Home() {
         </div>
       </section>
     </main>
+  );
+}
+
+function ScoreBar(props: { label: string; value: number }) {
+  return (
+    <div className="score-bar">
+      <span>{props.label}</span>
+      <div>
+        <i style={{ width: `${Math.round(props.value * 100)}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function EvidencePill(props: { icon: ReactNode; label: string }) {
+  return (
+    <span className="evidence-pill">
+      {props.icon}
+      {props.label}
+    </span>
   );
 }
 

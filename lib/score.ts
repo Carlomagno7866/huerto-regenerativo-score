@@ -1,9 +1,9 @@
-import type { Assignment, CropCandidate, OptimizationInput, ScoreBreakdown } from "./types";
+import type { Assignment, CropCandidate, EvidenceLevel, OptimizationInput, RotationAgent, ScoreBreakdown, ScoreConfidence } from "./types";
 
 const DAILY_TARGETS: Record<string, { label: string; amount: number; weight: number }> = {
-  protein: { label: "proteina", amount: 50, weight: 0.9 },
+  protein: { label: "proteina", amount: 50, weight: 0.95 },
   fiber: { label: "fibra", amount: 28, weight: 1.1 },
-  vitaminA: { label: "vitamina A", amount: 900, weight: 0.8 },
+  vitaminA: { label: "vitamina A", amount: 900, weight: 0.75 },
   vitaminC: { label: "vitamina C", amount: 90, weight: 1.0 },
   folate: { label: "folato", amount: 400, weight: 0.9 },
   calcium: { label: "calcio", amount: 1000, weight: 0.7 },
@@ -13,67 +13,98 @@ const DAILY_TARGETS: Record<string, { label: string; amount: number; weight: num
   magnesium: { label: "magnesio", amount: 420, weight: 0.7 }
 };
 
+type Benchmarks = {
+  nutrientsPerM2Day: [number, number];
+  nutrientsPerLiter: [number, number];
+  nutritionScore: [number, number];
+};
+
 export function scoreCrop(
   crop: CropCandidate,
   input: OptimizationInput,
-  historyFamilies: string[],
-  yearFamilies: string[]
+  previousCrops: CropCandidate[],
+  previousFamilies: string[],
+  yearFamilies: string[],
+  benchmarks: Benchmarks
 ): ScoreBreakdown {
-  const gramsHarvest = crop.yieldKgM2 * input.areaM2 * 1000;
-  const nutrition = scoreNutrition(crop, gramsHarvest);
-  const resources = clamp01(1 - (0.55 * crop.waterMmCycle) / 520 - (0.45 * crop.cycleDays) / 180);
-  const rotation = scoreRotation(crop.family, historyFamilies);
-  const diversity = yearFamilies.includes(crop.family) ? 0.55 : 0.92;
-  const resilience = clamp01(rotation * 0.75 + diversity * 0.25);
+  const diagnostics = nutrientDiagnostics(crop, input);
+  const nutrition = normalizeRange(diagnostics.nutritionScore, benchmarks.nutritionScore);
+  const waterEfficiency = normalizeRange(diagnostics.nutrientsPerLiter, benchmarks.nutrientsPerLiter);
+  const spaceTimeEfficiency = normalizeRange(diagnostics.nutrientsPerM2Day, benchmarks.nutrientsPerM2Day);
+  const cycleEfficiency = clamp01(1 - (crop.cycleDays - 45) / 145);
+  const resources = clamp01(waterEfficiency * 0.48 + spaceTimeEfficiency * 0.42 + cycleEfficiency * 0.1);
+  const rotation = scoreRotationV2(crop, previousCrops, previousFamilies, yearFamilies);
   const soil = crop.soilFit;
-  const speciesScore = clamp01(nutrition.value * 0.68 + resources * 0.32);
-  const total = clamp01(speciesScore * 0.72 + resilience * 0.2 + soil * 0.08);
+  const cost = 0.55;
+  const evidenceScore = clamp01(
+    nutrition * 0.34 + resources * 0.24 + rotation.value * 0.22 + soil * 0.12 + cost * 0.08
+  );
+  const confidence = confidenceScore(crop.confidence);
+  const total = clamp01(evidenceScore * (0.75 + 0.25 * confidence));
+  const leadingNutrients = topNutrients(diagnostics.contributions);
+  const sharedAgent = rotation.sharedAgents[0];
 
   const explanation = [
-    `SCORE especie ${Math.round(speciesScore * 100)}: balance entre aporte nutricional adulto promedio y consumo de agua/tiempo.`,
-    `Aporta ${Math.round(nutrition.value * 100)}% del subindice nutricional promedio para ${input.areaM2} m2.`,
-    rotation < 0.7
-      ? `Rotacion tensionada por repetir ${crop.family}; se penaliza por riesgo sanitario y malezas.`
-      : `Buena distancia rotacional para ${crop.family}; favorece menor presion potencial de plagas y malezas.`
+    `${crop.commonName} logra SCORE v2 ${Math.round(total * 100)} por rendimiento ${crop.yieldKgM2.toFixed(2)} kg/m2, ciclo de ${crop.cycleDays} dias y ${Math.round(crop.waterMmCycle)} mm de agua.`,
+    leadingNutrients.length
+      ? `Aporta mejor en ${leadingNutrients.join(", ")}; el subindice nutricional queda en ${Math.round(nutrition * 100)}.`
+      : `No hay suficientes nutrientes USDA trazables; el componente nutricional se conserva bajo.`,
+    sharedAgent
+      ? `Advertencia sanitaria: comparte ${sharedAgent.name} con cultivos previos, por eso baja la rotacion.`
+      : rotation.familyPenalty
+        ? `La familia ${crop.family} aparece cerca en la rotacion; conviene espaciarla.`
+        : `La secuencia no repite familia ni agentes sanitarios relevantes en la subparcela.`
+  ];
+
+  const evidenceNotes = [
+    `Rendimiento: ${crop.evidence.yieldKgM2.label}${crop.evidence.yieldKgM2.matchedItem ? ` (${crop.evidence.yieldKgM2.matchedItem})` : ""}.`,
+    `Agua/ciclo: ${crop.evidence.waterMmCycle.label}.`,
+    `Nutricion: ${crop.evidence.nutrition.matchedFood ?? crop.evidence.nutrition.label}.`,
+    `Confianza resumida: ${Math.round(confidence * 100)}; precio/costo aun no domina el ranking.`
   ];
 
   return {
+    version: "SCORE_V2",
     total,
-    nutrition: nutrition.value,
+    nutrition,
     resources,
-    resilience,
+    resilience: rotation.value,
     soil,
-    diversity,
-    confidence: crop.confidence,
+    diversity: rotation.diversity,
+    rotation: rotation.value,
+    agentBreak: rotation.agentBreak,
+    cost,
+    confidence,
+    confidenceDetail: crop.confidence,
     explanation,
-    nutrients: nutrition.contributions
+    evidenceNotes,
+    nutrients: diagnostics.contributions,
+    diagnostics: {
+      kgHarvest: diagnostics.kgHarvest,
+      waterLiters: diagnostics.waterLiters,
+      cycleDays: crop.cycleDays,
+      usefulNutrientPoints: diagnostics.usefulNutrientPoints,
+      nutrientsPerM2Day: diagnostics.nutrientsPerM2Day,
+      nutrientsPerLiter: diagnostics.nutrientsPerLiter
+    }
   };
 }
 
 export function optimize(crops: CropCandidate[], input: OptimizationInput): Assignment[] {
   const assignments: Assignment[] = [];
-  const historyByPlot = Array.from({ length: input.subplots }, () => [...input.previousFamilies]);
-  const familyGroups = groupByFamily(crops);
+  const historyByPlot = Array.from({ length: input.subplots }, () => [] as CropCandidate[]);
+  const benchmarks = buildBenchmarks(crops, input);
 
   for (let year = 1; year <= input.years; year += 1) {
     const yearFamilies: string[] = [];
     const yearCropIds: string[] = [];
     for (let subplot = 1; subplot <= input.subplots; subplot += 1) {
       const history = historyByPlot[subplot - 1];
-      const familyRank = Array.from(familyGroups.keys())
-        .map((family) => ({
-          family,
-          score: scoreFamilyRotation(family, history, yearFamilies)
-        }))
-        .sort((a, b) => b.score - a.score);
-      const candidateFamilies = familyRank.length ? familyRank : [{ family: "", score: 0 }];
-      const preferredFamily = candidateFamilies[0].family;
-      const familyPool = familyGroups.get(preferredFamily) ?? crops;
-      const ranked = familyPool
-        .filter((crop) => !yearCropIds.includes(crop.id) || yearCropIds.length >= familyPool.length)
+      const ranked = crops
+        .filter((crop) => !yearCropIds.includes(crop.id) || yearCropIds.length >= Math.min(crops.length, input.subplots))
         .map((crop) => ({
           crop,
-          score: scoreCrop(crop, input, history, yearFamilies)
+          score: scoreCrop(crop, input, history, input.previousFamilies, yearFamilies, benchmarks)
         }))
         .sort((a, b) => b.score.total - a.score.total);
       const selected = ranked[0];
@@ -84,7 +115,7 @@ export function optimize(crops: CropCandidate[], input: OptimizationInput): Assi
         score: selected.score,
         ...windowsForYear(year, selected.crop.cycleDays)
       });
-      history.push(selected.crop.family);
+      history.push(selected.crop);
       yearFamilies.push(selected.crop.family);
       yearCropIds.push(selected.crop.id);
     }
@@ -93,36 +124,140 @@ export function optimize(crops: CropCandidate[], input: OptimizationInput): Assi
   return assignments;
 }
 
-function scoreNutrition(crop: CropCandidate, gramsHarvest: number) {
+function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
+  const kgHarvest = crop.yieldKgM2 * input.areaM2;
+  const gramsHarvest = kgHarvest * 1000;
+  const waterLiters = Math.max(1, crop.waterMmCycle * input.areaM2);
   let weighted = 0;
   let totalWeight = 0;
+  let usefulNutrientPoints = 0;
   const contributions: Record<string, number> = {};
 
   for (const [key, target] of Object.entries(DAILY_TARGETS)) {
     const amountPer100g = crop.nutrition[key] ?? 0;
     const delivered = (amountPer100g * gramsHarvest) / 100;
-    const weight = target.weight;
-    const adequacy = clamp01(delivered / (target.amount * 30));
+    const nutrientDays = delivered / target.amount;
+    const adequacy = clamp01(nutrientDays / Math.max(30, crop.cycleDays));
     contributions[key] = adequacy;
-    weighted += adequacy * weight;
-    totalWeight += weight;
+    weighted += adequacy * target.weight;
+    totalWeight += target.weight;
+    usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight;
   }
 
-  return { value: totalWeight ? weighted / totalWeight : 0.25, contributions };
+  const nutritionScore = totalWeight ? weighted / totalWeight : 0;
+  return {
+    kgHarvest,
+    waterLiters,
+    nutritionScore,
+    usefulNutrientPoints,
+    nutrientsPerM2Day: usefulNutrientPoints / Math.max(1, input.areaM2 * crop.cycleDays),
+    nutrientsPerLiter: usefulNutrientPoints / waterLiters,
+    contributions
+  };
 }
 
-function scoreRotation(family: string, historyFamilies: string[]) {
+function scoreRotationV2(crop: CropCandidate, previousCrops: CropCandidate[], previousFamilies: string[], yearFamilies: string[]) {
+  const historyFamilies = [...previousFamilies, ...previousCrops.map((item) => item.family)];
+  const familyInterval = scoreFamilyInterval(crop.family, historyFamilies);
+  const sharedAgents = sharedHostAgents(previousCrops.flatMap((item) => item.riskAgents), crop.riskAgents);
+  const sharedRisk = sharedAgents.reduce((sum, agent) => sum + agent.risk, 0);
+  const agentBreak = clamp01(1 - sharedRisk / 2);
+  const serviceBonus = serviceCropBonus(crop);
+  const diversity = yearFamilies.includes(crop.family) ? 0.45 : 0.95;
+  const sameCropPenalty = previousCrops.some((item) => item.id === crop.id) ? 0.72 : 1;
+  const value = clamp01((familyInterval * 0.42 + agentBreak * 0.3 + diversity * 0.16 + serviceBonus * 0.12) * sameCropPenalty);
+  return {
+    value,
+    diversity,
+    agentBreak,
+    sharedAgents,
+    familyPenalty: familyInterval < 0.75
+  };
+}
+
+function scoreFamilyInterval(family: string, historyFamilies: string[]) {
   const lastIndex = [...historyFamilies].reverse().findIndex((item) => item === family);
-  if (lastIndex === -1) return 0.95;
+  if (lastIndex === -1) return 1;
   const yearsSince = lastIndex + 1;
   const ideal = familyInterval(family);
-  return clamp01(0.25 + (yearsSince / ideal) * 0.7);
+  return clamp01(0.1 + ((yearsSince - 1) / Math.max(1, ideal - 1)) * 0.85);
 }
 
-function scoreFamilyRotation(family: string, historyFamilies: string[], yearFamilies: string[]) {
-  const rotation = scoreRotation(family, historyFamilies);
-  const annualDiversity = yearFamilies.includes(family) ? 0.35 : 1;
-  return clamp01(rotation * 0.8 + annualDiversity * 0.2);
+function sharedHostAgents(previous: RotationAgent[], current: RotationAgent[]) {
+  const previousByName = new Map(previous.filter((agent) => agent.risk > 0.3).map((agent) => [agent.name, agent]));
+  return current
+    .filter((agent) => agent.risk > 0.3 && previousByName.has(agent.name))
+    .map((agent) => ({ ...agent, risk: Math.max(agent.risk, previousByName.get(agent.name)?.risk ?? 0) }))
+    .sort((a, b) => b.risk - a.risk)
+    .slice(0, 4);
+}
+
+function serviceCropBonus(crop: CropCandidate) {
+  const text = `${crop.family} ${crop.scientificName} ${crop.commonName}`.toLowerCase();
+  let bonus = 0.25;
+  if (text.includes("fabaceae") || text.includes("trifolium") || text.includes("vicia") || text.includes("lupinus")) bonus += 0.35;
+  if (crop.riskAgents.some((agent) => agent.diseaseReduction.toLowerCase().includes("effective"))) bonus += 0.25;
+  if (text.includes("avena") || text.includes("secale") || text.includes("phacelia")) bonus += 0.15;
+  return clamp01(bonus);
+}
+
+function buildBenchmarks(crops: CropCandidate[], input: OptimizationInput): Benchmarks {
+  const diagnostics = crops.map((crop) => nutrientDiagnostics(crop, input));
+  return {
+    nutrientsPerM2Day: percentileRange(diagnostics.map((item) => item.nutrientsPerM2Day)),
+    nutrientsPerLiter: percentileRange(diagnostics.map((item) => item.nutrientsPerLiter)),
+    nutritionScore: percentileRange(diagnostics.map((item) => item.nutritionScore))
+  };
+}
+
+function percentileRange(values: number[]): [number, number] {
+  const sorted = values.filter(Number.isFinite).sort((a, b) => a - b);
+  if (!sorted.length) return [0, 1];
+  const low = sorted[Math.floor((sorted.length - 1) * 0.1)] ?? sorted[0];
+  const high = sorted[Math.floor((sorted.length - 1) * 0.9)] ?? sorted[sorted.length - 1];
+  return high > low ? [low, high] : [0, high || 1];
+}
+
+function normalizeRange(value: number, range: [number, number]) {
+  return clamp01((value - range[0]) / Math.max(0.000001, range[1] - range[0]));
+}
+
+function confidenceScore(confidence: ScoreConfidence) {
+  const weights: Record<keyof ScoreConfidence, number> = {
+    nutrition: 1,
+    yield: 1,
+    water: 0.85,
+    cycle: 0.75,
+    rotation: 0.9,
+    soil: 0.6,
+    price: 0.25
+  };
+  let score = 0;
+  let weight = 0;
+  for (const key of Object.keys(weights) as Array<keyof ScoreConfidence>) {
+    score += levelValue(confidence[key].level) * weights[key];
+    weight += weights[key];
+  }
+  return score / weight;
+}
+
+function levelValue(level: EvidenceLevel) {
+  const values: Record<EvidenceLevel, number> = {
+    observed: 1,
+    proxy: 0.74,
+    "family-estimate": 0.48,
+    generic: 0.52,
+    missing: 0.15
+  };
+  return values[level];
+}
+
+function topNutrients(contributions: Record<string, number>) {
+  return Object.entries(contributions)
+    .filter(([, value]) => value > 0.08)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([key]) => DAILY_TARGETS[key]?.label ?? key);
 }
 
 function familyInterval(family: string) {
@@ -136,7 +271,7 @@ function familyInterval(family: string) {
 }
 
 function windowsForYear(year: number, cycleDays: number) {
-  const harvestMonth = cycleDays > 105 ? "marzo-abril" : cycleDays > 80 ? "febrero-marzo" : "enero-febrero";
+  const harvestMonth = cycleDays > 120 ? "marzo-abril" : cycleDays > 80 ? "febrero-marzo" : "enero-febrero";
   return {
     sowingWindow: `Ano ${year}: septiembre-octubre`,
     harvestWindow: `Ano ${year}: ${harvestMonth}`
@@ -145,12 +280,4 @@ function windowsForYear(year: number, cycleDays: number) {
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
-}
-
-function groupByFamily(crops: CropCandidate[]) {
-  const map = new Map<string, CropCandidate[]>();
-  for (const crop of crops) {
-    map.set(crop.family, [...(map.get(crop.family) ?? []), crop]);
-  }
-  return map;
 }

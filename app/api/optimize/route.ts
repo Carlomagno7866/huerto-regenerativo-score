@@ -39,14 +39,38 @@ export async function POST(request: NextRequest) {
 
 function applySoilFit(crop: CropCandidate, soil: unknown, gardenType: "optimized-bed" | "natural-soil"): CropCandidate {
   if (gardenType === "optimized-bed") {
-    return { ...crop, soilFit: 0.96 };
+    return {
+      ...crop,
+      soilFit: 0.92,
+      confidence: {
+        ...crop.confidence,
+        soil: {
+          level: "generic",
+          label: "Bancal optimizado: suelo ajustable, no lectura local directa",
+          source: "Supuesto de manejo del usuario"
+        }
+      }
+    };
   }
   if (!soil || typeof soil !== "object") return crop;
   const ph = Number((soil as Record<string, unknown>).ph_h2o_0_5cm);
   const clay = Number((soil as Record<string, unknown>).clay_pct_0_5cm);
+  const soc = Number((soil as Record<string, unknown>).soc_g_kg_0_5cm);
   const phFit = Number.isFinite(ph) ? 1 - Math.min(Math.abs(ph - 6.4) / 2.8, 0.45) : 0.72;
   const clayFit = Number.isFinite(clay) ? 1 - Math.min(Math.abs(clay - 28) / 80, 0.25) : 0.72;
-  return { ...crop, soilFit: Math.max(0.35, Math.min(0.98, phFit * 0.7 + clayFit * 0.3)) };
+  const organicFit = Number.isFinite(soc) ? Math.max(0.45, Math.min(1, soc / 35)) : 0.72;
+  return {
+    ...crop,
+    soilFit: Math.max(0.35, Math.min(0.98, phFit * 0.55 + clayFit * 0.25 + organicFit * 0.2)),
+    confidence: {
+      ...crop.confidence,
+      soil: {
+        level: "generic",
+        label: "SoilGrids cercano: pH, textura y carbono organico superficial",
+        source: "SoilGrids Chile local"
+      }
+    }
+  };
 }
 
 function summarize(assignments: ReturnType<typeof optimize>) {
@@ -60,7 +84,10 @@ function summarize(assignments: ReturnType<typeof optimize>) {
     estimatedWaterMm: water,
     recommendations: assignments.slice(0, 4).map((item) => ({
       crop: item.crop.commonName,
-      reason: item.score.explanation[0]
+      score: item.score.total,
+      confidence: item.score.confidence,
+      reason: item.score.explanation[0],
+      evidence: item.score.evidenceNotes[0]
     }))
   };
 }

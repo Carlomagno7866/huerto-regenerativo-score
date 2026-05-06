@@ -253,7 +253,8 @@ input {
 .crop-card {
   display: grid;
   gap: 12px;
-  min-height: 310px;
+  align-content: start;
+  min-height: 470px;
   padding: 18px;
 }
 
@@ -325,6 +326,80 @@ dd {
 .reason {
   border-left: 3px solid var(--water);
   padding-left: 10px;
+}
+
+.score-bars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+.score-bar {
+  display: grid;
+  gap: 5px;
+}
+
+.score-bar span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.score-bar div {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e7ded0;
+}
+
+.score-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--leaf), var(--water));
+}
+
+.explanation {
+  display: grid;
+  gap: 8px;
+}
+
+.explanation ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.evidence-pill {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffaf0;
+  color: #4d4034;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.evidence-pill svg {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  color: var(--leaf);
 }
 
 @media (max-width: 900px) {
