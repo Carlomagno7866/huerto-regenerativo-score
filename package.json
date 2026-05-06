@@ -1,0 +1,33 @@
+{
+  "name": "proyecto-semestral",
+  "version": "1.0.0",
+  "description": "Optimizador regenerativo de cultivos agricolas con SCORE nutricional, recursos y resiliencia.",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "lucide-react": "^1.14.0",
+    "next": "^16.2.5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^10.3.0",
+    "playwright": "^1.59.1",
+    "typescript": "^6.0.3"
+  }
+}
