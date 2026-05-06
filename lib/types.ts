@@ -29,17 +29,11 @@ export type ScoreBreakdown = {
 export type OptimizationInput = {
   latitude?: number;
   longitude?: number;
+  gardenType: "optimized-bed" | "natural-soil";
   years: number;
   subplots: number;
   areaM2: number;
   previousFamilies: string[];
-  priorities: {
-    nutrition: number;
-    resources: number;
-    resilience: number;
-  };
-  focusNutrients: string[];
-  search?: string;
 };
 
 export type Assignment = {

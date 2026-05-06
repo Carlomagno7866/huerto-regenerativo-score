@@ -78,7 +78,7 @@ function hydrateCrop(row: CatalogRow): CropCandidate {
   return {
     id: slug(row.scientificName),
     scientificName: row.scientificName,
-    commonName: title(row.commonName ?? row.scientificName),
+    commonName: localChileanName(row.commonName, row.scientificName),
     family: inferFamily(row.family, row.scientificName),
     genus: row.genus,
     species: row.species,
@@ -168,19 +168,123 @@ function inferFamily(family: string | null, scientificName: string) {
   if (family && family !== "Familia no clasificada") return family;
   const genus = scientificName.toLowerCase().split(/\s+/)[0];
   const map: Record<string, string> = {
+    anethum: "Apiaceae",
+    apium: "Apiaceae",
     lupinus: "Fabaceae",
     asparagus: "Asparagaceae",
+    beta: "Amaranthaceae",
+    capsicum: "Solanaceae",
+    cichorium: "Asteraceae",
+    coriandrum: "Apiaceae",
     ocimum: "Lamiaceae",
     petroselinum: "Apiaceae",
     daucus: "Apiaceae",
+    eruca: "Brassicaceae",
+    helianthus: "Asteraceae",
     lactuca: "Asteraceae",
     allium: "Amaryllidaceae",
     cucumis: "Cucurbitaceae",
     cucurbita: "Cucurbitaceae",
+    citrullus: "Cucurbitaceae",
+    fragaria: "Rosaceae",
+    lathyrus: "Fabaceae",
+    lycopersicon: "Solanaceae",
+    medicago: "Fabaceae",
+    medigaco: "Fabaceae",
+    phaseolus: "Fabaceae",
+    pisum: "Fabaceae",
+    raphanus: "Brassicaceae",
+    rheum: "Polygonaceae",
+    scorzonera: "Asteraceae",
     solanum: "Solanaceae",
+    spinacia: "Amaranthaceae",
+    tagetes: "Asteraceae",
+    valerianella: "Caprifoliaceae",
+    vicia: "Fabaceae",
     brassica: "Brassicaceae"
   };
   return map[genus] ?? family ?? "Familia no clasificada";
+}
+
+function localChileanName(commonName: string | null, scientificName: string) {
+  const scientific = scientificName.toLowerCase().replace(/^v-|^f-/, "").trim();
+  const common = (commonName ?? "").toLowerCase().trim();
+  const text = `${common} ${scientific}`;
+
+  const scientificMap: Record<string, string> = {
+    "allium ampeloprasum": "Puerro",
+    "allium sativum": "Ajo",
+    "allium spp.": "Cebolla",
+    "anethum graveolens": "Eneldo",
+    "apium graveolens": "Apio",
+    "asparagus offininalis": "Espárrago",
+    "avena sativa": "Avena",
+    "avena strigosa": "Avena negra",
+    "beta vulgaris": "Betarraga",
+    "brassica napus": "Raps",
+    "brassica oleracea": "Repollo, brócoli o coliflor",
+    "brassica rapa": "Nabo",
+    "brassica spp.": "Mostaza",
+    "capsicum annum": "Pimentón",
+    "cichorium intybus": "Achicoria",
+    "citrullus lanatus": "Sandía",
+    "coriandrum sativum": "Cilantro",
+    "cucumis melo": "Melón",
+    "cucumis sativus": "Pepino",
+    "cucurbita spp.": "Zapallo",
+    "daucus carota": "Zanahoria",
+    "eruca vesicaria subsp. sativa": "Rúcula",
+    "fagopyrum esculentum": "Trigo sarraceno",
+    "fragaria x ananassa": "Frutilla",
+    "glycine max": "Soya",
+    "helianthus spp.": "Maravilla",
+    "hordeum vulgare": "Cebada",
+    "lactuca sativa": "Lechuga",
+    "lathyrus sativus": "Arveja almorta",
+    "linum usitatissiumum": "Linaza",
+    "lolium multiflorum": "Ballica italiana",
+    "lolium perenne": "Ballica perenne",
+    "lupinus spp.": "Lupino",
+    "lycopersicon esculentum": "Tomate",
+    "medigaco sativa": "Alfalfa",
+    "nicotiana tabacum": "Tabaco",
+    "ocimum basilicum": "Albahaca",
+    "oryza sativa": "Arroz",
+    "pastinaca sativa": "Chirivía",
+    "petroselinum crispum": "Perejil",
+    "phaseolus spp.": "Poroto",
+    "phacelia sp.": "Facelia",
+    "pisum spp.": "Arveja",
+    "raphanus sativus": "Rábano",
+    "rheum rhabarbarum": "Ruibarbo",
+    "secale cereale": "Centeno",
+    "sinapis alba": "Mostaza blanca",
+    "solanum melongena": "Berenjena",
+    "solanum tuberosum": "Papa",
+    "sorghum spp.": "Sorgo",
+    "spinacia oleracea": "Espinaca",
+    "tagetes sp.": "Clavelón",
+    "trifolium alexandrinum": "Trébol alejandrino",
+    "trifolium incarnatum": "Trébol encarnado",
+    "trifolium pratense": "Trébol rosado",
+    "trifolium repens": "Trébol blanco",
+    "trifolium resupinatum": "Trébol persa",
+    "trifolium spp.": "Trébol",
+    "triticum aestivum": "Trigo",
+    "valerianella sp.": "Canónigo",
+    "vicia faba": "Haba",
+    "vicia sp.": "Vicia",
+    "zea mais": "Maíz"
+  };
+
+  if (scientificMap[scientific]) return scientificMap[scientific];
+  if (text.includes("beans")) return "Poroto";
+  if (text.includes("beet")) return "Betarraga";
+  if (text.includes("cabbage") || text.includes("broccoli") || text.includes("cauliflower")) return "Repollo, brócoli o coliflor";
+  if (text.includes("sweet pepper")) return "Pimentón";
+  if (text.includes("watermel")) return "Sandía";
+  if (text.includes("maize") || text.includes("corn")) return "Maíz";
+  return title(commonName ?? scientificName);
 }
 
 function nutrientKey(name: string) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BarChart3, Droplets, Leaf, MapPin, RotateCcw, Search, Sprout } from "lucide-react";
+import { Layers3, MapPin, Sprout } from "lucide-react";
 import type { Assignment } from "@/lib/types";
 
 type ApiResult = {
@@ -14,24 +14,13 @@ type ApiResult = {
   };
 };
 
-const nutrients = [
-  ["fiber", "Fibra"],
-  ["iron", "Hierro"],
-  ["vitaminC", "Vit. C"],
-  ["vitaminA", "Vit. A"],
-  ["folate", "Folato"],
-  ["protein", "Proteina"]
-] as const;
-
 export default function Home() {
   const [years, setYears] = useState(4);
   const [subplots, setSubplots] = useState(4);
   const [areaM2, setAreaM2] = useState(6);
   const [latitude, setLatitude] = useState(-33.45);
   const [longitude, setLongitude] = useState(-70.66);
-  const [search, setSearch] = useState("");
-  const [focusNutrients, setFocusNutrients] = useState<string[]>(["fiber", "iron", "vitaminC"]);
-  const [priorities, setPriorities] = useState({ nutrition: 45, resources: 25, resilience: 30 });
+  const [gardenType, setGardenType] = useState<"optimized-bed" | "natural-soil">("natural-soil");
   const [result, setResult] = useState<ApiResult | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -54,20 +43,12 @@ export default function Home() {
         areaM2,
         latitude,
         longitude,
-        search,
-        focusNutrients,
-        previousFamilies: [],
-        priorities
+        gardenType,
+        previousFamilies: []
       })
     });
     setResult(await response.json());
     setLoading(false);
-  }
-
-  function toggleNutrient(value: string) {
-    setFocusNutrients((current) =>
-      current.includes(value) ? current.filter((item) => item !== value) : [...current, value]
-    );
   }
 
   return (
@@ -92,12 +73,27 @@ export default function Home() {
             </div>
           </label>
 
-          <label className="field">
+          <div className="field">
             <span>
-              <Search aria-hidden /> Filtro de cultivos
+              <Layers3 aria-hidden /> Tipo de huerta
             </span>
-            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="tomato, brassica, fabaceae" />
-          </label>
+            <div className="segmented" role="group" aria-label="Tipo de huerta">
+              <button
+                className={gardenType === "natural-soil" ? "active" : ""}
+                onClick={() => setGardenType("natural-soil")}
+                type="button"
+              >
+                Suelo natural
+              </button>
+              <button
+                className={gardenType === "optimized-bed" ? "active" : ""}
+                onClick={() => setGardenType("optimized-bed")}
+                type="button"
+              >
+                Bancal optimizado
+              </button>
+            </div>
+          </div>
 
           <div className="grid-controls">
             <NumberControl label="Anios" value={years} min={1} max={8} onChange={setYears} />
@@ -105,30 +101,8 @@ export default function Home() {
             <NumberControl label="m2/subparcela" value={areaM2} min={1} max={80} onChange={setAreaM2} />
           </div>
 
-          <div className="field">
-            <span>
-              <Leaf aria-hidden /> Nutrientes foco
-            </span>
-            <div className="chips">
-              {nutrients.map(([value, label]) => (
-                <button
-                  key={value}
-                  className={focusNutrients.includes(value) ? "chip active" : "chip"}
-                  onClick={() => toggleNutrient(value)}
-                  type="button"
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <Slider label="Nutricion" icon={<BarChart3 aria-hidden />} value={priorities.nutrition} onChange={(nutrition) => setPriorities({ ...priorities, nutrition })} />
-          <Slider label="Recursos" icon={<Droplets aria-hidden />} value={priorities.resources} onChange={(resources) => setPriorities({ ...priorities, resources })} />
-          <Slider label="Resiliencia" icon={<RotateCcw aria-hidden />} value={priorities.resilience} onChange={(resilience) => setPriorities({ ...priorities, resilience })} />
-
           <button className="primary" onClick={runOptimization} disabled={loading} type="button">
-            {loading ? "Calculando..." : "Optimizar seleccion"}
+            {loading ? "Calculando..." : "Generar calendario"}
           </button>
         </div>
 
@@ -136,7 +110,7 @@ export default function Home() {
           <div className="hero-band">
             <div>
               <p>Base local SQLite + USDA + Best4Soil + SoilGrids Chile</p>
-              <h2>Eleccion de cultivos por SCORE, rotacion y suelo</h2>
+              <h2>Calendario automatico por rotacion familiar y SCORE nutricional</h2>
             </div>
             {result ? (
               <div className="meters">
@@ -165,12 +139,9 @@ export default function Home() {
                           <strong>{Math.round(item.score.total * 100)}</strong>
                         </div>
                         <h4>{item.crop.commonName}</h4>
-                        <p>{item.crop.scientificName}</p>
-                        <div className="bars">
-                          <Bar label="Nut." value={item.score.nutrition} />
-                          <Bar label="Rec." value={item.score.resources} />
-                          <Bar label="Rot." value={item.score.resilience} />
-                        </div>
+                        <p className="technical-name">
+                          {item.crop.family} · {item.crop.scientificName}
+                        </p>
                         <dl>
                           <div>
                             <dt>Familia</dt>
@@ -180,8 +151,20 @@ export default function Home() {
                             <dt>Cosecha</dt>
                             <dd>{item.harvestWindow}</dd>
                           </div>
+                          <div>
+                            <dt>Nutricion</dt>
+                            <dd>{Math.round(item.score.nutrition * 100)}</dd>
+                          </div>
+                          <div>
+                            <dt>Recursos</dt>
+                            <dd>{Math.round(item.score.resources * 100)}</dd>
+                          </div>
+                          <div>
+                            <dt>Rotacion</dt>
+                            <dd>{Math.round(item.score.resilience * 100)}</dd>
+                          </div>
                         </dl>
-                        <p className="reason">{item.score.explanation[2]}</p>
+                        <p className="reason">{item.score.explanation[0]}</p>
                       </article>
                     ))}
                   </div>
@@ -204,32 +187,11 @@ function NumberControl(props: { label: string; value: number; min: number; max: 
   );
 }
 
-function Slider(props: { label: string; icon: React.ReactNode; value: number; onChange: (value: number) => void }) {
-  return (
-    <label className="slider">
-      <span>
-        {props.icon} {props.label}
-      </span>
-      <input type="range" min={0} max={100} value={props.value} onChange={(event) => props.onChange(Number(event.target.value))} />
-      <b>{props.value}</b>
-    </label>
-  );
-}
-
 function Metric(props: { label: string; value: string }) {
   return (
     <div className="metric">
       <span>{props.label}</span>
       <strong>{props.value}</strong>
-    </div>
-  );
-}
-
-function Bar(props: { label: string; value: number }) {
-  return (
-    <div className="bar">
-      <span>{props.label}</span>
-      <i style={{ width: `${Math.round(props.value * 100)}%` }} />
     </div>
   );
 }

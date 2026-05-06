@@ -1,0 +1,4 @@
+interface:
+  display_name: "Huerto regenerativo release"
+  short_description: "Publicar cambios del proyecto en GitHub y Vercel"
+  default_prompt: "Antes de cerrar cambios en este proyecto, valida, commitea, pushea a GitHub y despliega a Vercel producción."

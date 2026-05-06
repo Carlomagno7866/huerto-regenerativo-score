@@ -9,17 +9,11 @@ export const runtime = "nodejs";
 const schema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
+  gardenType: z.enum(["optimized-bed", "natural-soil"]).default("natural-soil"),
   years: z.number().int().min(1).max(8).default(4),
   subplots: z.number().int().min(1).max(12).default(4),
   areaM2: z.number().min(0.5).max(500).default(6),
-  previousFamilies: z.array(z.string()).default([]),
-  priorities: z.object({
-    nutrition: z.number().min(0).default(45),
-    resources: z.number().min(0).default(25),
-    resilience: z.number().min(0).default(30)
-  }),
-  focusNutrients: z.array(z.string()).default(["fiber", "iron", "vitaminC"]),
-  search: z.string().optional()
+  previousFamilies: z.array(z.string()).default([])
 });
 
 export async function POST(request: NextRequest) {
@@ -33,7 +27,7 @@ export async function POST(request: NextRequest) {
     Number.isFinite(input.latitude) && Number.isFinite(input.longitude)
       ? getNearestSoil(input.latitude!, input.longitude!)
       : null;
-  const crops = getCatalog(input.search ?? "", 90).map((crop) => applySoilFit(crop, soil));
+  const crops = getCatalog("", 120).map((crop) => applySoilFit(crop, soil, input.gardenType));
   const assignments = optimize(crops, input);
 
   return NextResponse.json({
@@ -43,7 +37,10 @@ export async function POST(request: NextRequest) {
   });
 }
 
-function applySoilFit(crop: CropCandidate, soil: unknown): CropCandidate {
+function applySoilFit(crop: CropCandidate, soil: unknown, gardenType: "optimized-bed" | "natural-soil"): CropCandidate {
+  if (gardenType === "optimized-bed") {
+    return { ...crop, soilFit: 0.96 };
+  }
   if (!soil || typeof soil !== "object") return crop;
   const ph = Number((soil as Record<string, unknown>).ph_h2o_0_5cm);
   const clay = Number((soil as Record<string, unknown>).clay_pct_0_5cm);
