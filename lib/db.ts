@@ -1,5 +1,7 @@
 import Database from "better-sqlite3";
+import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type {
   ChileCommuneSoil,
   ChileRegion,
@@ -10,7 +12,8 @@ import type {
   ScoreConfidence
 } from "./types";
 
-const DB_PATH = process.env.HUERTO_DB_PATH ?? path.join(process.cwd(), "data", "huerto_regenerativo.sqlite");
+const MODULE_DIR = path.dirname(fileURLToPath(import.meta.url));
+const DB_PATH = resolveDbPath();
 
 let db: Database.Database | null = null;
 let fullCatalogCache: CropCandidate[] | null = null;
@@ -21,6 +24,18 @@ export function getDb() {
     db.pragma("query_only = ON");
   }
   return db;
+}
+
+function resolveDbPath() {
+  if (process.env.HUERTO_DB_PATH) return process.env.HUERTO_DB_PATH;
+  const candidates = [
+    path.join(process.cwd(), "data", "huerto_regenerativo.sqlite"),
+    path.join(process.cwd(), "..", "data", "huerto_regenerativo.sqlite"),
+    path.join(process.cwd(), "..", "..", "data", "huerto_regenerativo.sqlite"),
+    path.join(process.env.LAMBDA_TASK_ROOT ?? "", "data", "huerto_regenerativo.sqlite"),
+    path.join(MODULE_DIR, "..", "..", "..", "..", "..", "data", "huerto_regenerativo.sqlite")
+  ];
+  return candidates.find((candidate) => candidate && fs.existsSync(candidate)) ?? candidates[0];
 }
 
 type CatalogRow = {
