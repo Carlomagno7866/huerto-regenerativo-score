@@ -5,6 +5,7 @@ import type { CropCandidate, CropEvidence, EvidenceDescriptor, RotationAgent, Sc
 const DB_PATH = process.env.HUERTO_DB_PATH ?? path.join(process.cwd(), "data", "huerto_regenerativo.sqlite");
 
 let db: Database.Database | null = null;
+let fullCatalogCache: CropCandidate[] | null = null;
 
 export function getDb() {
   if (!db) {
@@ -69,6 +70,13 @@ export function getCatalog(search = "", limit = 80): CropCandidate[] {
     .all(term, term, term, term, limit) as CatalogRow[];
 
   return rows.map(hydrateCrop);
+}
+
+export function getFullCatalog() {
+  if (!fullCatalogCache) {
+    fullCatalogCache = getCatalog("", 120);
+  }
+  return fullCatalogCache;
 }
 
 export function getNearestSoil(latitude: number, longitude: number) {

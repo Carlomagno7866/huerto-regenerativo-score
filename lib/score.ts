@@ -142,6 +142,11 @@ export function optimize(crops: CropCandidate[], input: OptimizationInput): Assi
   return assignments;
 }
 
+export function scoreSingleCrop(crop: CropCandidate, crops: CropCandidate[], input: OptimizationInput): ScoreBreakdown {
+  const benchmarks = buildBenchmarks(crops, input);
+  return scoreCrop(crop, input, [], input.previousFamilies, [], benchmarks);
+}
+
 function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
   const kgHarvest = crop.yieldKgM2 * input.areaM2;
   const gramsHarvest = kgHarvest * 1000;
