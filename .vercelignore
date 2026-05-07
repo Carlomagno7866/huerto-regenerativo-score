@@ -1,0 +1,16 @@
+.git
+.next
+node_modules
+out
+dist
+*.log
+.env*
+bibliografia
+docs
+scripts/__pycache__
+__pycache__
+*.pyc
+*.sqlite-wal
+*.sqlite-shm
+data/geoBoundaries_CHL_ADM1.geojson
+data/geoBoundaries_CHL_ADM3.geojson
