@@ -118,6 +118,8 @@ export type NutrientPriority =
 export type OptimizationInput = {
   latitude?: number;
   longitude?: number;
+  regionSlug?: string;
+  communeSlug?: string;
   gardenType: "optimized-bed" | "natural-soil";
   objective: ScoreObjective;
   mode: UserMode;
@@ -128,6 +130,35 @@ export type OptimizationInput = {
   priorityNutrients: NutrientPriority[];
   excludedCropIds: string[];
   excludedCropNames: string[];
+};
+
+export type ChileRegion = {
+  slug: string;
+  name: string;
+  centroidLon: number;
+  centroidLat: number;
+  communeCount: number;
+};
+
+export type ChileCommuneSoil = {
+  slug: string;
+  name: string;
+  regionSlug: string;
+  regionName: string;
+  representativeLon: number;
+  representativeLat: number;
+  soilSource: string;
+  queryStatus: string;
+  queriedAt: string;
+  phH2o0_5cm: number | null;
+  clayPct0_5cm: number | null;
+  sandPct0_5cm: number | null;
+  siltPct0_5cm: number | null;
+  socGKg0_5cm: number | null;
+  nitrogenGKg0_5cm: number | null;
+  bulkDensityKgDm3_0_5cm: number | null;
+  cecCmolKg0_5cm: number | null;
+  soilLocalityScore: number;
 };
 
 export type Assignment = {

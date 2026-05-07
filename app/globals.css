@@ -27,7 +27,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -149,7 +150,8 @@ h2 {
   height: 17px;
 }
 
-input {
+input,
+select {
   width: 100%;
   min-width: 0;
   border: 1px solid var(--line);
@@ -157,6 +159,17 @@ input {
   background: #fff;
   color: var(--ink);
   padding: 11px 12px;
+}
+
+select {
+  cursor: pointer;
+}
+
+small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .split,

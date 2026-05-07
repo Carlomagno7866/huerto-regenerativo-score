@@ -12,5 +12,8 @@ scripts/__pycache__/
 *.pyc
 *.sqlite-wal
 *.sqlite-shm
+data/geoBoundaries_CHL_ADM1.geojson
+data/geoBoundaries_CHL_ADM3.geojson
+docs/*.png
 
 .vercel

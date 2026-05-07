@@ -1,6 +1,14 @@
 import Database from "better-sqlite3";
 import path from "node:path";
-import type { CropCandidate, CropEvidence, EvidenceDescriptor, RotationAgent, ScoreConfidence } from "./types";
+import type {
+  ChileCommuneSoil,
+  ChileRegion,
+  CropCandidate,
+  CropEvidence,
+  EvidenceDescriptor,
+  RotationAgent,
+  ScoreConfidence
+} from "./types";
 
 const DB_PATH = process.env.HUERTO_DB_PATH ?? path.join(process.cwd(), "data", "huerto_regenerativo.sqlite");
 
@@ -93,6 +101,113 @@ export function getNearestSoil(latitude: number, longitude: number) {
     `
     )
     .get(latitude, latitude, longitude, longitude);
+}
+
+type RegionRow = {
+  region_slug: string;
+  region_name: string;
+  centroid_lon: number;
+  centroid_lat: number;
+  commune_count: number;
+};
+
+type CommuneRow = {
+  commune_slug: string;
+  commune_name: string;
+  region_slug: string;
+  region_name: string;
+  representative_lon: number;
+  representative_lat: number;
+  soil_source: string;
+  query_status: string;
+  queried_at: string;
+  ph_h2o_0_5cm: number | null;
+  clay_pct_0_5cm: number | null;
+  sand_pct_0_5cm: number | null;
+  silt_pct_0_5cm: number | null;
+  soc_g_kg_0_5cm: number | null;
+  nitrogen_g_kg_0_5cm: number | null;
+  bulk_density_kg_dm3_0_5cm: number | null;
+  cec_cmol_kg_0_5cm: number | null;
+  soil_locality_score: number;
+};
+
+export function getChileRegions(): ChileRegion[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT
+        r.region_slug,
+        r.region_name,
+        r.centroid_lon,
+        r.centroid_lat,
+        COUNT(c.commune_slug) AS commune_count
+      FROM chile_admin_regions r
+      LEFT JOIN chile_commune_soil_static c ON c.region_slug = r.region_slug
+      GROUP BY r.region_slug, r.region_name, r.centroid_lon, r.centroid_lat
+      ORDER BY r.centroid_lat DESC, r.region_name
+      `
+    )
+    .all() as RegionRow[];
+  return rows.map((row) => ({
+    slug: row.region_slug,
+    name: row.region_name,
+    centroidLon: row.centroid_lon,
+    centroidLat: row.centroid_lat,
+    communeCount: row.commune_count
+  }));
+}
+
+export function getChileCommunes(regionSlug?: string): ChileCommuneSoil[] {
+  const where = regionSlug ? "WHERE region_slug = ?" : "";
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT *
+      FROM chile_commune_soil_static
+      ${where}
+      ORDER BY region_name, commune_name
+      `
+    )
+    .all(...(regionSlug ? [regionSlug] : [])) as CommuneRow[];
+  return rows.map(mapCommuneRow);
+}
+
+export function getCommuneSoil(communeSlug: string): ChileCommuneSoil | null {
+  const row = getDb()
+    .prepare(
+      `
+      SELECT *
+      FROM chile_commune_soil_static
+      WHERE commune_slug = ?
+      LIMIT 1
+      `
+    )
+    .get(communeSlug) as CommuneRow | undefined;
+  return row ? mapCommuneRow(row) : null;
+}
+
+function mapCommuneRow(row: CommuneRow): ChileCommuneSoil {
+  return {
+    slug: row.commune_slug,
+    name: row.commune_name,
+    regionSlug: row.region_slug,
+    regionName: row.region_name,
+    representativeLon: row.representative_lon,
+    representativeLat: row.representative_lat,
+    soilSource: row.soil_source,
+    queryStatus: row.query_status,
+    queriedAt: row.queried_at,
+    phH2o0_5cm: row.ph_h2o_0_5cm,
+    clayPct0_5cm: row.clay_pct_0_5cm,
+    sandPct0_5cm: row.sand_pct_0_5cm,
+    siltPct0_5cm: row.silt_pct_0_5cm,
+    socGKg0_5cm: row.soc_g_kg_0_5cm,
+    nitrogenGKg0_5cm: row.nitrogen_g_kg_0_5cm,
+    bulkDensityKgDm3_0_5cm: row.bulk_density_kg_dm3_0_5cm,
+    cecCmolKg0_5cm: row.cec_cmol_kg_0_5cm,
+    soilLocalityScore: row.soil_locality_score
+  };
 }
 
 function hydrateCrop(row: CatalogRow): CropCandidate {

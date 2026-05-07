@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Droplets, Layers3, MapPin, Microscope, ShieldCheck, Sprout, Target, WalletCards } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Assignment, NutrientPriority, ScoreObjective, UserMode } from "@/lib/types";
@@ -21,6 +21,20 @@ type ApiResult = {
       evidence: string;
     }>;
   };
+};
+
+type LocationCatalog = {
+  regions: Array<{ slug: string; name: string; communeCount: number }>;
+  communes: Array<{
+    slug: string;
+    name: string;
+    regionSlug: string;
+    regionName: string;
+    phH2o0_5cm: number | null;
+    clayPct0_5cm: number | null;
+    socGKg0_5cm: number | null;
+    soilLocalityScore: number;
+  }>;
 };
 
 const OBJECTIVES: Array<{ value: ScoreObjective; label: string }> = [
@@ -44,8 +58,9 @@ export default function Home() {
   const [years, setYears] = useState(4);
   const [subplots, setSubplots] = useState(4);
   const [areaM2, setAreaM2] = useState(6);
-  const [latitude, setLatitude] = useState(-33.45);
-  const [longitude, setLongitude] = useState(-70.66);
+  const [locations, setLocations] = useState<LocationCatalog>({ regions: [], communes: [] });
+  const [regionSlug, setRegionSlug] = useState("region-metropolitana-de-santiago");
+  const [communeSlug, setCommuneSlug] = useState("region-metropolitana-de-santiago-santiago");
   const [gardenType, setGardenType] = useState<"optimized-bed" | "natural-soil">("natural-soil");
   const [objective, setObjective] = useState<ScoreObjective>("balanced");
   const [mode, setMode] = useState<UserMode>("home-garden");
@@ -54,6 +69,30 @@ export default function Home() {
   const [previousFamilyText, setPreviousFamilyText] = useState("");
   const [result, setResult] = useState<ApiResult | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/locations")
+      .then((response) => response.json())
+      .then((data: LocationCatalog) => {
+        setLocations(data);
+        const hasRegion = data.regions.some((region) => region.slug === regionSlug);
+        const nextRegion = hasRegion ? regionSlug : data.regions[0]?.slug;
+        if (nextRegion && nextRegion !== regionSlug) setRegionSlug(nextRegion);
+        const firstCommune = data.communes.find((commune) => commune.regionSlug === nextRegion)?.slug;
+        if (firstCommune && !data.communes.some((commune) => commune.slug === communeSlug)) {
+          setCommuneSlug(firstCommune);
+        }
+      });
+  }, []);
+
+  const communesForRegion = useMemo(
+    () => locations.communes.filter((commune) => commune.regionSlug === regionSlug),
+    [locations.communes, regionSlug]
+  );
+  const selectedCommune = useMemo(
+    () => locations.communes.find((commune) => commune.slug === communeSlug) ?? null,
+    [locations.communes, communeSlug]
+  );
 
   const grouped = useMemo(() => {
     const map = new Map<number, Assignment[]>();
@@ -72,8 +111,8 @@ export default function Home() {
         years,
         subplots,
         areaM2,
-        latitude,
-        longitude,
+        regionSlug,
+        communeSlug,
         gardenType,
         objective,
         mode,
@@ -101,12 +140,40 @@ export default function Home() {
 
           <label className="field">
             <span>
-              <MapPin aria-hidden /> Coordenadas
+              <MapPin aria-hidden /> Region
             </span>
-            <div className="split">
-              <input value={latitude} onChange={(event) => setLatitude(Number(event.target.value))} type="number" step="0.01" />
-              <input value={longitude} onChange={(event) => setLongitude(Number(event.target.value))} type="number" step="0.01" />
-            </div>
+            <select
+              value={regionSlug}
+              onChange={(event) => {
+                const nextRegion = event.target.value;
+                setRegionSlug(nextRegion);
+                const nextCommune = locations.communes.find((commune) => commune.regionSlug === nextRegion);
+                if (nextCommune) setCommuneSlug(nextCommune.slug);
+              }}
+            >
+              {locations.regions.map((region) => (
+                <option key={region.slug} value={region.slug}>
+                  {region.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="field">
+            <span>Comuna</span>
+            <select value={communeSlug} onChange={(event) => setCommuneSlug(event.target.value)}>
+              {communesForRegion.map((commune) => (
+                <option key={commune.slug} value={commune.slug}>
+                  {commune.name}
+                </option>
+              ))}
+            </select>
+            {selectedCommune ? (
+              <small>
+                pH {formatSoilValue(selectedCommune.phH2o0_5cm)} - arcilla {formatSoilValue(selectedCommune.clayPct0_5cm)}% - suelo{" "}
+                {Math.round(selectedCommune.soilLocalityScore * 100)}
+              </small>
+            ) : null}
           </label>
 
           <div className="field">
@@ -329,6 +396,10 @@ function parseList(value: string) {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function formatSoilValue(value: number | null) {
+  return typeof value === "number" && Number.isFinite(value) ? value.toFixed(1) : "s/d";
 }
 
 function toggleNutrient(

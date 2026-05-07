@@ -10,7 +10,7 @@ Constructor reproducible: `scripts/build_database.py`
 - Best4Soil: matriz cultivo-hospedante para nematodos y hongos, con estado hospedante y efectos de abonos verdes.
 - FAOSTAT: produccion agricola/ganadera normalizada filtrada para Chile.
 - SoilGrids: metadatos de propiedades edaficas consultables por coordenadas.
-- SoilGrids Chile estatico: grilla nacional de 0.5 grados consultada una vez y guardada en SQLite.
+- SoilGrids Chile estatico: grilla nacional de 0.5 grados y capa por comuna guardadas en SQLite.
 - GBIF: normalizacion taxonomica de cultivos detectados en Best4Soil.
 
 ## Tablas principales
@@ -26,6 +26,8 @@ Constructor reproducible: `scripts/build_database.py`
 - `chile_soilgrids_static_points`: puntos de la grilla estatica de Chile.
 - `chile_soilgrids_static_values`: propiedades SoilGrids por punto, profundidad y tipo de valor.
 - `chile_soilgrids_static_topsoil`: vista simple de capa superficial 0-5 cm para busqueda rapida por punto cercano.
+- `chile_admin_regions`: regiones de Chile desde geoBoundaries ADM1.
+- `chile_commune_soil_static`: comunas de Chile desde geoBoundaries ADM3 con suelo superficial representativo.
 - `api_portal_endpoints`: endpoints usados o preparados para la futura aplicacion.
 - `ingestion_log`: bitacora de cada paso de construccion.
 
@@ -46,6 +48,14 @@ python .\scripts\build_chile_soil_static.py
 ```
 
 Esta capa no consulta SoilGrids durante el uso normal de la web. La consulta a SoilGrids ocurre solo al construir o actualizar la base. La web puede buscar el punto mas cercano en `chile_soilgrids_static_topsoil`.
+
+Para reconstruir la capa por Region/Comuna:
+
+```powershell
+python .\scripts\build_chile_commune_soil_static.py
+```
+
+El script descarga limites ADM1/ADM3 de geoBoundaries, asigna cada comuna a una region y consulta SoilGrids por punto representativo comunal. Si se requiere una corrida rapida sin nuevas llamadas a la API, se puede importar `build_commune_soil_layer(query_api=False)` para interpolar desde la grilla SoilGrids local.
 
 ## Consulta rapida
 
