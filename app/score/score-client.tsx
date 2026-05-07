@@ -2,15 +2,31 @@
 
 import { Droplets, Leaf, Microscope, ShieldCheck, Sprout, Timer } from "lucide-react";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SpeciesSearch, type SpeciesOption } from "@/app/components/species-search";
 import type { PublicSpecies } from "@/lib/public-species";
 
-export function ScoreClient({ species: allSpecies }: { species: PublicSpecies[] }) {
+export function ScoreClient({ initialSpeciesId, species: allSpecies }: { initialSpeciesId?: string | null; species: PublicSpecies[] }) {
   const [selected, setSelected] = useState<SpeciesOption | null>(null);
   const [species, setSpecies] = useState<PublicSpecies | null>(null);
   const [loading, setLoading] = useState(false);
-  const options = allSpecies.map(({ id, commonName, scientificName, family }) => ({ id, commonName, scientificName, family }));
+  const options = useMemo(
+    () => allSpecies.map(({ id, commonName, scientificName, family }) => ({ id, commonName, scientificName, family })),
+    [allSpecies]
+  );
+
+  useEffect(() => {
+    if (!initialSpeciesId) return;
+    const targetSpecies = allSpecies.find((item) => item.id === initialSpeciesId);
+    if (!targetSpecies) return;
+    setSelected({
+      id: targetSpecies.id,
+      commonName: targetSpecies.commonName,
+      scientificName: targetSpecies.scientificName,
+      family: targetSpecies.family
+    });
+    setSpecies(targetSpecies);
+  }, [allSpecies, initialSpeciesId]);
 
   async function loadSpecies(target = selected) {
     if (!target) return;

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Droplets, Layers3, MapPin, Microscope, ShieldCheck, Sprout, Target, WalletCards } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Assignment, NutrientPriority, ScoreObjective, UserMode } from "@/lib/types";
 
@@ -311,7 +312,13 @@ export default function Home() {
                   <h3>Ano {year}</h3>
                   <div className="crop-grid">
                     {items.map((item) => (
-                      <article className="crop-card" key={`${item.year}-${item.subplot}`} style={{ borderTopColor: familyColor(item.crop.family) }}>
+                      <Link
+                        className="crop-card"
+                        href={`/score?species=${encodeURIComponent(item.crop.id)}`}
+                        key={`${item.year}-${item.subplot}`}
+                        style={{ borderTopColor: familyColor(item.crop.family) }}
+                        title={`Ver SCORE de ${item.crop.commonName}`}
+                      >
                         <div className="crop-top">
                           <span>Subparcela {item.subplot}</span>
                           <strong>{Math.round(item.score.total * 100)}</strong>
@@ -378,7 +385,7 @@ export default function Home() {
                             </span>
                           ))}
                         </div>
-                      </article>
+                      </Link>
                     ))}
                   </div>
                 </section>

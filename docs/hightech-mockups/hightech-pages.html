@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Huerto Regenerativo SCORE - Mockups high-tech</title>
+  <style>
+    :root {
+      --bg: #08110f;
+      --panel: rgba(13, 28, 25, 0.88);
+      --panel-2: rgba(18, 39, 35, 0.82);
+      --line: rgba(135, 255, 210, 0.24);
+      --ink: #eefcf6;
+      --muted: #9ec2b6;
+      --green: #49f0a0;
+      --cyan: #59d9ff;
+      --amber: #ffd166;
+      --rose: #ff7a90;
+      --soil: #bc8a5f;
+      --shadow: 0 22px 90px rgba(0, 0, 0, 0.42);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #020606;
+      color: var(--ink);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1600px;
+      min-height: 2000px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(73, 240, 160, 0.22), transparent 28%),
+        radial-gradient(circle at 86% 14%, rgba(89, 217, 255, 0.18), transparent 30%),
+        linear-gradient(135deg, #06110f 0%, #0d1716 46%, #11110c 100%);
+      padding: 46px;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.28;
+      background-image:
+        linear-gradient(rgba(135, 255, 210, 0.13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(135, 255, 210, 0.13) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
+      pointer-events: none;
+    }
+
+    .topbar, .panel, .card, .metric, .suggestions, .hero, .score-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(16, 36, 32, 0.88), rgba(8, 18, 17, 0.82));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #03100c;
+      font-weight: 1000;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav span, .pill, .chip {
+      border: 1px solid rgba(135, 255, 210, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+      padding: 9px 13px;
+    }
+
+    .nav .active, .chip.active {
+      background: rgba(73, 240, 160, 0.16);
+      color: var(--green);
+    }
+
+    .grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 26px;
+    }
+
+    .stack { display: grid; gap: 18px; }
+    .panel {
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 6px;
+      font-size: 58px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin-bottom: 12px;
+      font-size: 42px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+    h3 { margin-bottom: 14px; font-size: 24px; }
+    h4 { margin-bottom: 6px; font-size: 25px; }
+    .eyebrow {
+      margin-bottom: 8px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .muted { color: var(--muted); line-height: 1.45; }
+
+    .field { display: grid; gap: 8px; margin-bottom: 16px; }
+    .label {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 850;
+    }
+    .input, .select {
+      min-height: 46px;
+      border: 1px solid rgba(135, 255, 210, 0.22);
+      border-radius: 8px;
+      background: rgba(1, 8, 7, 0.68);
+      color: var(--ink);
+      padding: 12px 14px;
+      font-weight: 750;
+    }
+    .hint { color: #b4d5c9; font-size: 13px; font-weight: 700; }
+    .segmented, .chips, .metrics, .info-grid, .bars { display: grid; gap: 10px; }
+    .segmented { grid-template-columns: repeat(2, 1fr); }
+    .objective { grid-template-columns: repeat(3, 1fr); }
+    .chips { display: flex; flex-wrap: wrap; }
+    .chip { padding: 8px 10px; }
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      min-height: 52px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #03100c;
+      font-weight: 1000;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      align-items: end;
+      border-radius: 12px;
+      padding: 34px;
+    }
+    .hero h1 { max-width: 770px; }
+    .data-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      min-width: 420px;
+    }
+    .metric {
+      border-radius: 10px;
+      padding: 17px;
+    }
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 6px;
+      color: white;
+      font-size: 34px;
+    }
+
+    .confidence-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .confidence-strip span {
+      border: 1px solid rgba(255, 122, 144, 0.36);
+      border-radius: 8px;
+      background: rgba(255, 122, 144, 0.1);
+      color: #ffc2ca;
+      padding: 9px 12px;
+      font-weight: 850;
+    }
+
+    .year { margin-top: 20px; }
+    .crop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .card {
+      border-radius: 12px;
+      border-top: 4px solid var(--green);
+      padding: 20px;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-weight: 850;
+      margin-bottom: 10px;
+    }
+    .score-dot {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(73, 240, 160, 0.18);
+      color: var(--green);
+      font-size: 22px;
+      font-weight: 1000;
+    }
+    .technical { color: var(--muted); font-style: italic; min-height: 35px; }
+    .bars { grid-template-columns: repeat(2, 1fr); margin: 15px 0; }
+    .bar span { color: var(--muted); font-size: 13px; font-weight: 900; }
+    .track {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-top: 5px;
+    }
+    .track i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+    }
+    dl { display: grid; gap: 8px; margin: 0 0 13px; }
+    dl div {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(135, 255, 210, 0.16);
+      padding-top: 7px;
+      gap: 12px;
+    }
+    dt { color: var(--muted); font-weight: 850; }
+    dd { margin: 0; text-align: right; font-weight: 800; }
+    .reason {
+      border-left: 3px solid var(--cyan);
+      color: #d8fff2;
+      padding-left: 10px;
+      line-height: 1.35;
+    }
+    .mini-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .evidence { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill { font-size: 13px; padding: 7px 9px; }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+      width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+    .intro {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 30px;
+      align-items: end;
+      margin-top: 24px;
+    }
+    .intro h1 { font-size: 72px; }
+    .tool { position: relative; }
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr 170px;
+      gap: 12px;
+    }
+    .suggestions {
+      position: absolute;
+      z-index: 5;
+      left: 24px;
+      right: 24px;
+      top: 104px;
+      display: grid;
+      gap: 3px;
+      border-radius: 10px;
+      padding: 8px;
+    }
+    .suggestions .item {
+      display: grid;
+      gap: 3px;
+      border-radius: 8px;
+      padding: 11px 12px;
+    }
+    .suggestions .selected {
+      background: rgba(73, 240, 160, 0.15);
+      color: var(--green);
+    }
+    .suggestions small { color: var(--muted); font-weight: 750; }
+
+    .species-detail { display: grid; gap: 16px; margin-top: 168px; }
+    .score-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .score-card h2 { font-size: 58px; margin-bottom: 3px; }
+    .score-card strong {
+      display: grid;
+      width: 136px;
+      aspect-ratio: 1;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #03100c;
+      font-size: 62px;
+    }
+    .info-grid { grid-template-columns: repeat(4, 1fr); }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .public-bars { grid-template-columns: repeat(4, 1fr); }
+    .plain-list { margin: 0; padding-left: 22px; color: #d1efe5; line-height: 1.5; }
+
+    .barter-board {
+      display: grid;
+      grid-template-columns: 1fr 150px 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .swap {
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+    .swap-icon {
+      display: grid;
+      width: 70px;
+      height: 70px;
+      place-items: center;
+      justify-self: center;
+      border: 1px solid rgba(89, 217, 255, 0.35);
+      border-radius: 50%;
+      color: var(--cyan);
+      background: rgba(89, 217, 255, 0.11);
+      font-size: 32px;
+    }
+    .result { margin-top: 150px; display: grid; gap: 16px; }
+    .wide-metrics { grid-template-columns: repeat(4, 1fr); }
+    .two-suggestions .suggestions.left { left: 24px; right: calc(50% + 99px); top: 357px; }
+    .two-suggestions .suggestions.right { left: calc(50% + 99px); right: 24px; top: 357px; }
+    #trueque .score-card strong {
+      width: 168px;
+      font-size: 52px;
+    }
+  </style>
+</head>
+<body>
+  <section class="page" id="planner">
+    <header class="topbar">
+      <div class="brand"><div class="mark">S</div><span>Huerto Regenerativo SCORE</span></div>
+      <nav class="nav"><span class="active">Planificador</span><span>SCORE</span><span>Trueque</span></nav>
+    </header>
+    <div class="grid">
+      <aside class="panel stack">
+        <div>
+          <p class="eyebrow">SCORE regenerativo</p>
+          <h2>Planificador agricola</h2>
+          <p class="muted">Motor local para priorizar cultivos plurianuales por nutrientes, agua, suelo y sanidad.</p>
+        </div>
+        <div class="field"><span class="label">Region</span><div class="select">Region Metropolitana de Santiago</div></div>
+        <div class="field"><span class="label">Comuna</span><div class="select">Santiago</div><div class="hint">pH 7.5 - arcilla 18.6% - suelo 84</div></div>
+        <div class="field"><span class="label">Tipo de huerta</span><div class="segmented"><span class="chip active">Suelo natural</span><span class="chip">Bancal optimizado</span></div></div>
+        <div class="field"><span class="label">Objetivo</span><div class="segmented objective"><span class="chip active">Balance</span><span class="chip">Nutrientes</span><span class="chip">Bajo riego</span><span class="chip">Rotacion</span><span class="chip">Ahorro</span></div></div>
+        <div class="field"><span class="label">Modo</span><div class="segmented"><span class="chip active">Huerto familiar</span><span class="chip">Agricultor</span></div></div>
+        <div class="segmented objective"><div class="field"><span class="label">Anos</span><div class="input">4</div></div><div class="field"><span class="label">Subparcelas</span><div class="input">4</div></div><div class="field"><span class="label">m2/subparcela</span><div class="input">6</div></div></div>
+        <div class="field"><span class="label">Nutrientes prioritarios</span><div class="chips"><span class="chip active">Proteina</span><span class="chip active">Hierro</span><span class="chip active">Vit. C</span><span class="chip">Folato</span><span class="chip">Fibra</span><span class="chip">Energia</span></div></div>
+        <div class="field"><span class="label">Cultivos bloqueados</span><div class="input">tomate, papa</div></div>
+        <div class="field"><span class="label">Familias ya usadas</span><div class="input">Solanaceae</div></div>
+        <div class="button">Generar calendario</div>
+      </aside>
+      <main class="stack">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Base local SQLite + USDA + FAOSTAT + Best4Soil + SoilGrids Chile</p>
+            <h1>SCORE v2 por nutrientes utiles, agua, suelo y sanidad</h1>
+            <div class="data-strip"><span class="pill">USDA FoodData Central</span><span class="pill">FAOSTAT Chile</span><span class="pill">Best4Soil</span><span class="pill">SoilGrids Chile</span></div>
+          </div>
+          <div class="metrics"><div class="metric"><span>SCORE</span><strong>82</strong></div><div class="metric"><span>Familias</span><strong>7</strong></div><div class="metric"><span>Agua mm</span><strong>446</strong></div></div>
+        </section>
+        <div class="confidence-strip"><span>Sin match USDA exacto para oregano</span><span>Dato hidrico inferido para poroto</span><span>Sanidad Best4Soil parcial en acelga</span></div>
+        <section class="year"><h3>Ano 1</h3><div class="crop-grid">
+          <article class="card"><div class="card-top"><span>Subparcela 1</span><strong class="score-dot">88</strong></div><h4>Albahaca</h4><p class="technical">Lamiaceae - Ocimum basilicum</p><div class="bars"><div class="bar"><span>Nut.</span><div class="track"><i style="width:86%"></i></div></div><div class="bar"><span>Agua</span><div class="track"><i style="width:72%"></i></div></div><div class="bar"><span>San.</span><div class="track"><i style="width:91%"></i></div></div><div class="bar"><span>Suelo</span><div class="track"><i style="width:80%"></i></div></div></div><dl><div><dt>Rendimiento</dt><dd>1.20 kg/m2</dd></div><div><dt>Cosecha</dt><dd>70-95 dias</dd></div><div><dt>Agua/ciclo</dt><dd>300 mm</dd></div><div><dt>USDA match</dt><dd>Basil, fresh</dd></div></dl><p class="reason">Alta diversidad sanitaria y buena salida nutricional por metro cuadrado.</p><ul class="mini-list"><li>No repite familia sensible.</li><li>Compatible con suelo de Santiago.</li></ul><div class="evidence"><span class="pill">Rendimiento medio</span><span class="pill">Agua estimada</span><span class="pill">Rotacion alta</span></div></article>
+          <article class="card"><div class="card-top"><span>Subparcela 2</span><strong class="score-dot">83</strong></div><h4>Acelga</h4><p class="technical">Amaranthaceae - Beta vulgaris var. cicla</p><div class="bars"><div class="bar"><span>Nut.</span><div class="track"><i style="width:90%"></i></div></div><div class="bar"><span>Agua</span><div class="track"><i style="width:68%"></i></div></div><div class="bar"><span>San.</span><div class="track"><i style="width:80%"></i></div></div><div class="bar"><span>Suelo</span><div class="track"><i style="width:86%"></i></div></div></div><dl><div><dt>Rendimiento</dt><dd>2.10 kg/m2</dd></div><div><dt>Cosecha</dt><dd>55-80 dias</dd></div><div><dt>Agua/ciclo</dt><dd>420 mm</dd></div><div><dt>Confianza</dt><dd>79</dd></div></dl><p class="reason">Buen balance por hierro, folato y continuidad de cosecha.</p><ul class="mini-list"><li>Uso de area-tiempo eficiente.</li><li>Riesgo sanitario moderado.</li></ul><div class="evidence"><span class="pill">USDA match</span><span class="pill">FAOSTAT proxy</span><span class="pill">Best4Soil parcial</span></div></article>
+          <article class="card"><div class="card-top"><span>Subparcela 3</span><strong class="score-dot">79</strong></div><h4>Poroto verde</h4><p class="technical">Fabaceae - Phaseolus vulgaris</p><div class="bars"><div class="bar"><span>Nut.</span><div class="track"><i style="width:78%"></i></div></div><div class="bar"><span>Agua</span><div class="track"><i style="width:74%"></i></div></div><div class="bar"><span>San.</span><div class="track"><i style="width:84%"></i></div></div><div class="bar"><span>Suelo</span><div class="track"><i style="width:77%"></i></div></div></div><dl><div><dt>Rendimiento</dt><dd>1.35 kg/m2</dd></div><div><dt>Cosecha</dt><dd>60-90 dias</dd></div><div><dt>Agua/ciclo</dt><dd>360 mm</dd></div><div><dt>m2-dia</dt><dd>0.42</dd></div></dl><p class="reason">Aporta rotacion funcional y proteina vegetal.</p><ul class="mini-list"><li>Mejora diversidad de familias.</li><li>No entra en lista bloqueada.</li></ul><div class="evidence"><span class="pill">Rendimiento local</span><span class="pill">Agua/ciclo</span><span class="pill">Rotacion alta</span></div></article>
+          <article class="card"><div class="card-top"><span>Subparcela 4</span><strong class="score-dot">76</strong></div><h4>Zanahoria</h4><p class="technical">Apiaceae - Daucus carota</p><div class="bars"><div class="bar"><span>Nut.</span><div class="track"><i style="width:82%"></i></div></div><div class="bar"><span>Agua</span><div class="track"><i style="width:79%"></i></div></div><div class="bar"><span>San.</span><div class="track"><i style="width:75%"></i></div></div><div class="bar"><span>Suelo</span><div class="track"><i style="width:71%"></i></div></div></div><dl><div><dt>Rendimiento</dt><dd>3.00 kg/m2</dd></div><div><dt>Cosecha</dt><dd>85-120 dias</dd></div><div><dt>Agua/ciclo</dt><dd>330 mm</dd></div><div><dt>Confianza</dt><dd>82</dd></div></dl><p class="reason">Buen aporte energetico y uso eficiente de agua.</p><ul class="mini-list"><li>Separa familias de alto riesgo.</li><li>Exige suelo suelto.</li></ul><div class="evidence"><span class="pill">USDA exacto</span><span class="pill">FAOSTAT Chile</span><span class="pill">Suelo medio</span></div></article>
+        </div></section>
+      </main>
+    </div>
+  </section>
+
+  <section class="page" id="score">
+    <header class="topbar"><div class="brand"><div class="mark">S</div><span>Huerto Regenerativo SCORE</span></div><nav class="nav"><span>Planificador</span><span class="active">SCORE</span><span>Trueque</span></nav></header>
+    <main class="page-shell">
+      <section class="intro"><div><p class="eyebrow">SCORE regenerativo</p><h1>Una lectura simple del valor agricola de cada especie</h1></div><p class="muted">El SCORE resume en una escala de 0 a 100 que tan conveniente es una especie para un huerto regenerativo, combinando nutrientes, uso de agua, rendimiento, rotacion sanitaria, suelo y confianza de datos.</p></section>
+      <section class="panel tool"><div class="field"><span class="label">Buscar especie</span><div class="search-row"><div class="input">Tomate (Solanum lycopersicum)</div><div class="button">Buscar</div></div></div><div class="suggestions"><div class="item selected"><strong>Tomate</strong><small>Solanum lycopersicum - Solanaceae</small></div><div class="item"><strong>Tomatillo</strong><small>Physalis philadelphica - Solanaceae</small></div><div class="item"><strong>Albahaca</strong><small>Ocimum basilicum - Lamiaceae</small></div><div class="item"><strong>Papa</strong><small>Solanum tuberosum - Solanaceae</small></div><div class="item"><strong>Pimenton</strong><small>Capsicum annuum - Solanaceae</small></div></div></section>
+      <section class="species-detail">
+        <article class="score-card"><div><p class="eyebrow">Solanaceae</p><h2>Tomate</h2><span class="muted">Solanum lycopersicum</span></div><strong>74</strong></article>
+        <div class="info-grid"><div class="metric"><span>Rendimiento estimado</span><strong>4.80 kg/m2</strong></div><div class="metric"><span>Ciclo de cultivo</span><strong>120 dias</strong></div><div class="metric"><span>Agua por ciclo</span><strong>520 mm</strong></div><div class="metric"><span>Confianza SCORE</span><strong>83/100</strong></div></div>
+        <section class="panel"><h3>Lectura para publico general</h3><div class="bars public-bars"><div class="bar"><span>Nutrientes</span><div class="track"><i style="width:73%"></i></div></div><div class="bar"><span>Agua y espacio</span><div class="track"><i style="width:64%"></i></div></div><div class="bar"><span>Rotacion sana</span><div class="track"><i style="width:58%"></i></div></div><div class="bar"><span>Suelo</span><div class="track"><i style="width:82%"></i></div></div></div><ul class="plain-list"><li>Buen rendimiento por superficie y buen aporte de vitamina C y potasio.</li><li>Requiere manejar rotacion porque comparte familia con papa, pimenton y berenjena.</li><li>El SCORE baja por demanda hidrica y riesgos sanitarios asociados a Solanaceae.</li></ul></section>
+        <section class="detail-grid"><article class="panel"><h3>Nutrientes destacados</h3><dl><div><dt>Energia</dt><dd>18 / 100 g</dd></div><div><dt>Proteina</dt><dd>0.9 / 100 g</dd></div><div><dt>Fibra</dt><dd>1.2 / 100 g</dd></div><div><dt>Vitamina C</dt><dd>13.7 / 100 g</dd></div><div><dt>Folato</dt><dd>15 / 100 g</dd></div><div><dt>Potasio</dt><dd>237 / 100 g</dd></div><div><dt>Magnesio</dt><dd>11 / 100 g</dd></div><div><dt>Hierro</dt><dd>0.3 / 100 g</dd></div></dl></article><article class="panel"><h3>Datos y sanidad</h3><div class="evidence"><span class="pill">Rendimiento FAOSTAT/huerto</span><span class="pill">Agua por ciclo estimada</span><span class="pill">USDA FoodData Central</span><span class="pill">Best4Soil</span></div><ul class="plain-list" style="margin-top:18px"><li>Verticillium: host susceptible</li><li>Fusarium oxysporum: riesgo sanitario relevante</li><li>Meloidogyne: evitar repeticion con solanaceas</li><li>Phytophthora infestans: requiere monitoreo</li></ul></article></section>
+      </section>
+    </main>
+  </section>
+
+  <section class="page two-suggestions" id="trueque">
+    <header class="topbar"><div class="brand"><div class="mark">S</div><span>Huerto Regenerativo SCORE</span></div><nav class="nav"><span>Planificador</span><span>SCORE</span><span class="active">Trueque</span></nav></header>
+    <main class="page-shell">
+      <section class="intro"><div><p class="eyebrow">Trueque por SCORE</p><h1>Intercambia especies usando su valor regenerativo</h1></div><p class="muted">El sistema convierte gramos entre especies segun su SCORE. Una especie con SCORE alto representa mas valor por gramo, porque concentra mejor nutricion, rendimiento, eficiencia y resiliencia.</p></section>
+      <section class="barter-board">
+        <div class="panel stack"><div class="field"><span class="label">Entrego</span><div class="input">Acelga (Beta vulgaris var. cicla)</div></div><div class="field"><span class="label">Gramos a intercambiar</span><div class="input">1.000</div></div></div>
+        <div class="swap"><div class="swap-icon">↔</div><div class="button">Calcular</div></div>
+        <div class="panel stack"><div class="field"><span class="label">Recibo</span><div class="input">Tomate (Solanum lycopersicum)</div></div><div class="muted" style="border-top:1px solid var(--line);padding-top:14px">El resultado mantiene equivalencia por puntos SCORE-gramo.</div></div>
+      </section>
+      <div class="suggestions left"><div class="item selected"><strong>Acelga</strong><small>Beta vulgaris var. cicla - Amaranthaceae</small></div><div class="item"><strong>Albahaca</strong><small>Ocimum basilicum - Lamiaceae</small></div><div class="item"><strong>Arveja</strong><small>Pisum sativum - Fabaceae</small></div><div class="item"><strong>Lechuga</strong><small>Lactuca sativa - Asteraceae</small></div></div>
+      <div class="suggestions right"><div class="item selected"><strong>Tomate</strong><small>Solanum lycopersicum - Solanaceae</small></div><div class="item"><strong>Tomatillo</strong><small>Physalis philadelphica - Solanaceae</small></div><div class="item"><strong>Pimenton</strong><small>Capsicum annuum - Solanaceae</small></div><div class="item"><strong>Papa</strong><small>Solanum tuberosum - Solanaceae</small></div></div>
+      <section class="result">
+        <article class="score-card"><div><p class="eyebrow">1.000 g de Acelga equivalen a</p><h2>1.122 g</h2><span class="muted">de Tomate</span></div><strong>1.12x</strong></article>
+        <div class="info-grid wide-metrics"><div class="metric"><span>SCORE Acelga</span><strong>83/100</strong></div><div class="metric"><span>SCORE Tomate</span><strong>74/100</strong></div><div class="metric"><span>Valor entregado</span><strong>830 puntos</strong></div><div class="metric"><span>Tasa</span><strong>1 g = 1.12 g</strong></div></div>
+      </section>
+    </main>
+  </section>
+</body>
+</html>
