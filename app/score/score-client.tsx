@@ -6,17 +6,16 @@ import { useState } from "react";
 import { SpeciesSearch, type SpeciesOption } from "@/app/components/species-search";
 import type { PublicSpecies } from "@/lib/public-species";
 
-export function ScoreClient({ options }: { options: SpeciesOption[] }) {
+export function ScoreClient({ species: allSpecies }: { species: PublicSpecies[] }) {
   const [selected, setSelected] = useState<SpeciesOption | null>(null);
   const [species, setSpecies] = useState<PublicSpecies | null>(null);
   const [loading, setLoading] = useState(false);
+  const options = allSpecies.map(({ id, commonName, scientificName, family }) => ({ id, commonName, scientificName, family }));
 
   async function loadSpecies(target = selected) {
     if (!target) return;
     setLoading(true);
-    const response = await fetch(`/api/species?id=${encodeURIComponent(target.id)}`);
-    const data = (await response.json()) as { species: PublicSpecies };
-    setSpecies(data.species);
+    setSpecies(allSpecies.find((item) => item.id === target.id) ?? null);
     setLoading(false);
   }
 

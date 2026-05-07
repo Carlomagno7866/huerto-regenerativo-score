@@ -5,13 +5,14 @@ import { useMemo, useState } from "react";
 import { SpeciesSearch, type SpeciesOption } from "@/app/components/species-search";
 import type { PublicSpecies } from "@/lib/public-species";
 
-export function TruequeClient({ options }: { options: SpeciesOption[] }) {
+export function TruequeClient({ species }: { species: PublicSpecies[] }) {
   const [fromOption, setFromOption] = useState<SpeciesOption | null>(null);
   const [toOption, setToOption] = useState<SpeciesOption | null>(null);
   const [fromSpecies, setFromSpecies] = useState<PublicSpecies | null>(null);
   const [toSpecies, setToSpecies] = useState<PublicSpecies | null>(null);
   const [grams, setGrams] = useState(1000);
   const [loading, setLoading] = useState(false);
+  const options = species.map(({ id, commonName, scientificName, family }) => ({ id, commonName, scientificName, family }));
 
   const result = useMemo(() => {
     if (!fromSpecies || !toSpecies || grams <= 0) return null;
@@ -28,14 +29,8 @@ export function TruequeClient({ options }: { options: SpeciesOption[] }) {
   async function calculate() {
     if (!fromOption || !toOption) return;
     setLoading(true);
-    const [fromResponse, toResponse] = await Promise.all([
-      fetch(`/api/species?id=${encodeURIComponent(fromOption.id)}`),
-      fetch(`/api/species?id=${encodeURIComponent(toOption.id)}`)
-    ]);
-    const fromData = (await fromResponse.json()) as { species: PublicSpecies };
-    const toData = (await toResponse.json()) as { species: PublicSpecies };
-    setFromSpecies(fromData.species);
-    setToSpecies(toData.species);
+    setFromSpecies(species.find((item) => item.id === fromOption.id) ?? null);
+    setToSpecies(species.find((item) => item.id === toOption.id) ?? null);
     setLoading(false);
   }
 

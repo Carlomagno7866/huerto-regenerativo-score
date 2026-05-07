@@ -1,6 +1,6 @@
 import { ScoreClient } from "./score-client";
-import { getSpeciesOptions } from "@/lib/species-options";
+import { getPublicSpeciesProfiles } from "@/lib/public-species-profiles";
 
 export default function ScorePage() {
-  return <ScoreClient options={getSpeciesOptions()} />;
+  return <ScoreClient species={getPublicSpeciesProfiles()} />;
 }

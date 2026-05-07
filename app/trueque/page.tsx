@@ -1,6 +1,6 @@
-import { getSpeciesOptions } from "@/lib/species-options";
+import { getPublicSpeciesProfiles } from "@/lib/public-species-profiles";
 import { TruequeClient } from "./trueque-client";
 
 export default function TruequePage() {
-  return <TruequeClient options={getSpeciesOptions()} />;
+  return <TruequeClient species={getPublicSpeciesProfiles()} />;
 }
