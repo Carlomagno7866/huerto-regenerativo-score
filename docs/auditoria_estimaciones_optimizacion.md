@@ -7,7 +7,7 @@ Proyecto: Huerto Regenerativo SCORE
 
 Se reviso el flujo completo de seleccion Region -> Comuna -> suelo comunal -> optimizacion de cultivos. La base SQLite ahora contiene 16 regiones y 345 comunas de Chile en `chile_admin_regions` y `chile_commune_soil_static`. La pagina consulta `/api/locations` y envia `communeSlug` a `/api/optimize`; el backend recupera el suelo estatico comunal y modifica el subindice `soil` de cada cultivo.
 
-La capa comunal fue construida con limites geoBoundaries ADM1/ADM3 y valores de SoilGrids. La corrida completa contra la API SoilGrids por comuna excedio el tiempo disponible de ejecucion, por lo que la base quedo poblada desde la grilla SoilGrids local ya cacheada. El script `scripts/build_chile_commune_soil_static.py` queda preparado para reconsultar la API por punto representativo comunal en una corrida larga.
+La capa comunal fue construida con limites geoBoundaries ADM1/ADM3 y valores de SoilGrids. La consulta directa a SoilGrids se dividio en fases reanudables de 25 comunas. Resultado final: 345 comunas procesadas; 309 con valores directos `ok` y 36 con respuesta `ok_no_values`, conservando respaldo desde la grilla SoilGrids local. No quedan comunas pendientes ni valores edaficos principales incompletos.
 
 ## 2. Verificacion de diferencias comunales
 

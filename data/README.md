@@ -52,10 +52,24 @@ Esta capa no consulta SoilGrids durante el uso normal de la web. La consulta a S
 Para reconstruir la capa por Region/Comuna:
 
 ```powershell
-python .\scripts\build_chile_commune_soil_static.py
+python .\scripts\build_chile_commune_soil_static.py --init-nearest
 ```
 
-El script descarga limites ADM1/ADM3 de geoBoundaries, asigna cada comuna a una region y consulta SoilGrids por punto representativo comunal. Si se requiere una corrida rapida sin nuevas llamadas a la API, se puede importar `build_commune_soil_layer(query_api=False)` para interpolar desde la grilla SoilGrids local.
+El script descarga limites ADM1/ADM3 de geoBoundaries, asigna cada comuna a una region y prepara valores desde la grilla SoilGrids local. Luego la consulta directa a SoilGrids API se ejecuta en fases reanudables:
+
+```powershell
+python .\scripts\build_chile_commune_soil_static.py --status
+python .\scripts\build_chile_commune_soil_static.py --run-next --limit 25 --sleep 0.1
+python .\scripts\build_chile_commune_soil_static.py --repair-missing
+```
+
+Tambien se puede dividir por fases fijas:
+
+```powershell
+python .\scripts\build_chile_commune_soil_static.py --phase 1 --total-phases 15 --limit 25
+```
+
+Cada comuna se guarda inmediatamente en SQLite, por lo que una interrupcion permite continuar con `--run-next`. `ok_no_values` significa que SoilGrids respondio sin valores para el punto comunal; en ese caso se conserva el respaldo de la grilla local y se marca la fuente como fallback.
 
 ## Consulta rapida
 

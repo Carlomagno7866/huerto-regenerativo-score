@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import sqlite3
@@ -23,6 +24,7 @@ SOILGRIDS_QUERY = "https://rest.isric.org/soilgrids/v2.0/properties/query"
 PROPERTIES = ["phh2o", "clay", "sand", "silt", "soc", "nitrogen", "bdod", "cec"]
 DEPTHS = ["0-5cm", "5-15cm", "15-30cm"]
 VALUES = ["mean", "Q0.05", "Q0.95"]
+API_DONE_PREFIXES = ("ok", "ok_no_values")
 
 
 def now() -> str:
@@ -208,16 +210,58 @@ def create_tables(con: sqlite3.Connection) -> None:
     )
 
 
+def commune_soil_columns() -> str:
+    return """
+        commune_slug, commune_name, region_slug, region_name,
+        representative_lon, representative_lat, soil_source, query_status, queried_at,
+        ph_h2o_0_5cm, clay_pct_0_5cm, sand_pct_0_5cm, silt_pct_0_5cm,
+        soc_g_kg_0_5cm, nitrogen_g_kg_0_5cm, bulk_density_kg_dm3_0_5cm,
+        cec_cmol_kg_0_5cm, soil_locality_score
+    """
+
+
+def upsert_commune_soil(con: sqlite3.Connection, rows: list[tuple]) -> None:
+    con.executemany(
+        f"""
+        INSERT INTO chile_commune_soil_static({commune_soil_columns()})
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(commune_slug) DO UPDATE SET
+            commune_name = excluded.commune_name,
+            region_slug = excluded.region_slug,
+            region_name = excluded.region_name,
+            representative_lon = excluded.representative_lon,
+            representative_lat = excluded.representative_lat,
+            soil_source = excluded.soil_source,
+            query_status = excluded.query_status,
+            queried_at = excluded.queried_at,
+            ph_h2o_0_5cm = excluded.ph_h2o_0_5cm,
+            clay_pct_0_5cm = excluded.clay_pct_0_5cm,
+            sand_pct_0_5cm = excluded.sand_pct_0_5cm,
+            silt_pct_0_5cm = excluded.silt_pct_0_5cm,
+            soc_g_kg_0_5cm = excluded.soc_g_kg_0_5cm,
+            nitrogen_g_kg_0_5cm = excluded.nitrogen_g_kg_0_5cm,
+            bulk_density_kg_dm3_0_5cm = excluded.bulk_density_kg_dm3_0_5cm,
+            cec_cmol_kg_0_5cm = excluded.cec_cmol_kg_0_5cm,
+            soil_locality_score = excluded.soil_locality_score
+        """,
+        rows,
+    )
+
+
 def map_soil_values(values: dict[str, float | None], fallback: dict) -> dict[str, float | None]:
+    def value_or_fallback(key: str, fallback_key: str) -> float | None:
+        value = values.get(key)
+        return fallback.get(fallback_key) if value is None else value
+
     return {
-        "ph_h2o_0_5cm": values.get("phh2o_0_5cm_mean", fallback.get("ph_h2o_0_5cm")),
-        "clay_pct_0_5cm": values.get("clay_0_5cm_mean", fallback.get("clay_pct_0_5cm")),
-        "sand_pct_0_5cm": values.get("sand_0_5cm_mean", fallback.get("sand_pct_0_5cm")),
-        "silt_pct_0_5cm": values.get("silt_0_5cm_mean", fallback.get("silt_pct_0_5cm")),
-        "soc_g_kg_0_5cm": values.get("soc_0_5cm_mean", fallback.get("soc_g_kg_0_5cm")),
-        "nitrogen_g_kg_0_5cm": values.get("nitrogen_0_5cm_mean", fallback.get("nitrogen_g_kg_0_5cm")),
-        "bulk_density_kg_dm3_0_5cm": values.get("bdod_0_5cm_mean", fallback.get("bulk_density_kg_dm3_0_5cm")),
-        "cec_cmol_kg_0_5cm": values.get("cec_0_5cm_mean", fallback.get("cec_cmol_kg_0_5cm")),
+        "ph_h2o_0_5cm": value_or_fallback("phh2o_0_5cm_mean", "ph_h2o_0_5cm"),
+        "clay_pct_0_5cm": value_or_fallback("clay_0_5cm_mean", "clay_pct_0_5cm"),
+        "sand_pct_0_5cm": value_or_fallback("sand_0_5cm_mean", "sand_pct_0_5cm"),
+        "silt_pct_0_5cm": value_or_fallback("silt_0_5cm_mean", "silt_pct_0_5cm"),
+        "soc_g_kg_0_5cm": value_or_fallback("soc_0_5cm_mean", "soc_g_kg_0_5cm"),
+        "nitrogen_g_kg_0_5cm": value_or_fallback("nitrogen_0_5cm_mean", "nitrogen_g_kg_0_5cm"),
+        "bulk_density_kg_dm3_0_5cm": value_or_fallback("bdod_0_5cm_mean", "bulk_density_kg_dm3_0_5cm"),
+        "cec_cmol_kg_0_5cm": value_or_fallback("cec_0_5cm_mean", "cec_cmol_kg_0_5cm"),
     }
 
 
@@ -319,18 +363,7 @@ def build_commune_soil_layer(query_api: bool = True) -> None:
                 print(f"{index}/{len(communes['features'])} communes queried")
                 time.sleep(0.25)
 
-        con.executemany(
-            """
-            INSERT INTO chile_commune_soil_static(
-                commune_slug, commune_name, region_slug, region_name,
-                representative_lon, representative_lat, soil_source, query_status, queried_at,
-                ph_h2o_0_5cm, clay_pct_0_5cm, sand_pct_0_5cm, silt_pct_0_5cm,
-                soc_g_kg_0_5cm, nitrogen_g_kg_0_5cm, bulk_density_kg_dm3_0_5cm,
-                cec_cmol_kg_0_5cm, soil_locality_score
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            rows,
-        )
+        upsert_commune_soil(con, rows)
         con.execute(
             """
             INSERT INTO api_portal_endpoints(name,provider,url,purpose,access_mode,last_checked_at,status,notes)
@@ -357,5 +390,288 @@ def build_commune_soil_layer(query_api: bool = True) -> None:
     print(f"Commune soil layer added to: {DB_PATH}")
 
 
+def status() -> None:
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    try:
+        create_tables(con)
+        total = con.execute("SELECT COUNT(*) AS n FROM chile_commune_soil_static").fetchone()["n"]
+        api_done = con.execute(
+            """
+            SELECT COUNT(*) AS n
+            FROM chile_commune_soil_static
+            WHERE query_status LIKE 'ok%'
+            """
+        ).fetchone()["n"]
+        nearest = con.execute(
+            "SELECT COUNT(*) AS n FROM chile_commune_soil_static WHERE query_status = 'nearest_grid'"
+        ).fetchone()["n"]
+        failed = con.execute(
+            """
+            SELECT COUNT(*) AS n
+            FROM chile_commune_soil_static
+            WHERE query_status NOT LIKE 'ok%' AND query_status <> 'nearest_grid'
+            """
+        ).fetchone()["n"]
+        print(f"Total comunas: {total}")
+        print(f"Consultadas SoilGrids API: {api_done}")
+        print(f"Pendientes con grilla local: {nearest}")
+        print(f"Fallidas o pendientes de reintento: {failed}")
+        print()
+        for row in con.execute(
+            """
+            SELECT query_status, COUNT(*) AS n
+            FROM chile_commune_soil_static
+            GROUP BY query_status
+            ORDER BY n DESC, query_status
+            """
+        ):
+            print(f"{row['query_status']}: {row['n']}")
+        missing = con.execute(
+            """
+            SELECT COUNT(*) AS n
+            FROM chile_commune_soil_static
+            WHERE ph_h2o_0_5cm IS NULL OR clay_pct_0_5cm IS NULL OR soc_g_kg_0_5cm IS NULL
+            """
+        ).fetchone()["n"]
+        print()
+        print(f"Comunas con valores edaficos principales incompletos: {missing}")
+    finally:
+        con.close()
+
+
+def row_to_fallback(row: sqlite3.Row) -> dict[str, float | None]:
+    return {
+        "ph_h2o_0_5cm": row["ph_h2o_0_5cm"],
+        "clay_pct_0_5cm": row["clay_pct_0_5cm"],
+        "sand_pct_0_5cm": row["sand_pct_0_5cm"],
+        "silt_pct_0_5cm": row["silt_pct_0_5cm"],
+        "soc_g_kg_0_5cm": row["soc_g_kg_0_5cm"],
+        "nitrogen_g_kg_0_5cm": row["nitrogen_g_kg_0_5cm"],
+        "bulk_density_kg_dm3_0_5cm": row["bulk_density_kg_dm3_0_5cm"],
+        "cec_cmol_kg_0_5cm": row["cec_cmol_kg_0_5cm"],
+    }
+
+
+def pending_communes(
+    con: sqlite3.Connection,
+    limit: int,
+    phase: int | None = None,
+    total_phases: int | None = None,
+    retry_failed: bool = False,
+) -> list[sqlite3.Row]:
+    where = "query_status = 'nearest_grid'"
+    if retry_failed:
+        where = "(query_status = 'nearest_grid' OR query_status NOT LIKE 'ok%')"
+    rows = con.execute(
+        f"""
+        SELECT *
+        FROM chile_commune_soil_static
+        WHERE {where}
+        ORDER BY region_name, commune_name
+        """
+    ).fetchall()
+    if phase is not None and total_phases is not None:
+        rows = [row for index, row in enumerate(rows) if index % total_phases == phase - 1]
+    return rows[:limit]
+
+
+def update_communes_from_api(
+    limit: int = 25,
+    phase: int | None = None,
+    total_phases: int | None = None,
+    retry_failed: bool = False,
+    sleep_seconds: float = 0.35,
+) -> None:
+    if (phase is None) != (total_phases is None):
+        raise ValueError("--phase y --total-phases deben usarse juntos")
+    if phase is not None and (phase < 1 or total_phases is None or phase > total_phases):
+        raise ValueError("--phase debe estar entre 1 y --total-phases")
+
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    try:
+        create_tables(con)
+        rows = pending_communes(con, limit=limit, phase=phase, total_phases=total_phases, retry_failed=retry_failed)
+        if not rows:
+            print("No hay comunas pendientes para esta fase.")
+            return
+
+        phase_label = f" fase {phase}/{total_phases}" if phase is not None else ""
+        print(f"Consultando {len(rows)} comunas pendientes{phase_label}...")
+        updated = 0
+        failed = 0
+        for index, row in enumerate(rows, 1):
+            lon = row["representative_lon"]
+            lat = row["representative_lat"]
+            try:
+                query_status, values = query_soilgrids(lon, lat)
+            except requests.RequestException as exc:
+                query_status = f"request_error:{type(exc).__name__}"
+                values = {}
+            mapped = map_soil_values(values, row_to_fallback(row))
+            source = (
+                "SoilGrids v2.0 commune representative point"
+                if query_status.startswith(API_DONE_PREFIXES)
+                else row["soil_source"]
+            )
+            con.execute(
+                """
+                UPDATE chile_commune_soil_static
+                SET soil_source = ?,
+                    query_status = ?,
+                    queried_at = ?,
+                    ph_h2o_0_5cm = ?,
+                    clay_pct_0_5cm = ?,
+                    sand_pct_0_5cm = ?,
+                    silt_pct_0_5cm = ?,
+                    soc_g_kg_0_5cm = ?,
+                    nitrogen_g_kg_0_5cm = ?,
+                    bulk_density_kg_dm3_0_5cm = ?,
+                    cec_cmol_kg_0_5cm = ?,
+                    soil_locality_score = ?
+                WHERE commune_slug = ?
+                """,
+                (
+                    source,
+                    query_status,
+                    now(),
+                    mapped["ph_h2o_0_5cm"],
+                    mapped["clay_pct_0_5cm"],
+                    mapped["sand_pct_0_5cm"],
+                    mapped["silt_pct_0_5cm"],
+                    mapped["soc_g_kg_0_5cm"],
+                    mapped["nitrogen_g_kg_0_5cm"],
+                    mapped["bulk_density_kg_dm3_0_5cm"],
+                    mapped["cec_cmol_kg_0_5cm"],
+                    soil_locality_score(mapped),
+                    row["commune_slug"],
+                ),
+            )
+            con.commit()
+            if query_status.startswith(API_DONE_PREFIXES):
+                updated += 1
+            else:
+                failed += 1
+            print(f"{index}/{len(rows)} {row['region_name']} - {row['commune_name']}: {query_status}")
+            time.sleep(sleep_seconds)
+
+        con.execute(
+            "INSERT INTO ingestion_log(step,status,rows,message,created_at) VALUES (?,?,?,?,?)",
+            (
+                "chile_commune_soil_static_phase",
+                "ok" if failed == 0 else "partial",
+                updated,
+                f"limit={limit}; phase={phase}; total_phases={total_phases}; failed={failed}",
+                now(),
+            ),
+        )
+        con.commit()
+        print(f"Fase terminada: {updated} comunas consultadas, {failed} fallidas.")
+    finally:
+        con.close()
+
+
+def repair_missing_from_grid() -> None:
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    try:
+        create_tables(con)
+        rows = con.execute(
+            """
+            SELECT *
+            FROM chile_commune_soil_static
+            WHERE ph_h2o_0_5cm IS NULL OR clay_pct_0_5cm IS NULL OR soc_g_kg_0_5cm IS NULL
+            ORDER BY region_name, commune_name
+            """
+        ).fetchall()
+        if not rows:
+            print("No hay comunas con valores principales incompletos.")
+            return
+        repaired = 0
+        for row in rows:
+            fallback = nearest_existing_soil(con, row["representative_lat"], row["representative_lon"])
+            mapped = map_soil_values({}, fallback)
+            con.execute(
+                """
+                UPDATE chile_commune_soil_static
+                SET soil_source = ?,
+                    ph_h2o_0_5cm = ?,
+                    clay_pct_0_5cm = ?,
+                    sand_pct_0_5cm = ?,
+                    silt_pct_0_5cm = ?,
+                    soc_g_kg_0_5cm = ?,
+                    nitrogen_g_kg_0_5cm = ?,
+                    bulk_density_kg_dm3_0_5cm = ?,
+                    cec_cmol_kg_0_5cm = ?,
+                    soil_locality_score = ?
+                WHERE commune_slug = ?
+                """,
+                (
+                    "SoilGrids API returned no values; nearest existing SoilGrids Chile grid point fallback",
+                    mapped["ph_h2o_0_5cm"],
+                    mapped["clay_pct_0_5cm"],
+                    mapped["sand_pct_0_5cm"],
+                    mapped["silt_pct_0_5cm"],
+                    mapped["soc_g_kg_0_5cm"],
+                    mapped["nitrogen_g_kg_0_5cm"],
+                    mapped["bulk_density_kg_dm3_0_5cm"],
+                    mapped["cec_cmol_kg_0_5cm"],
+                    soil_locality_score(mapped),
+                    row["commune_slug"],
+                ),
+            )
+            repaired += 1
+        con.execute(
+            "INSERT INTO ingestion_log(step,status,rows,message,created_at) VALUES (?,?,?,?,?)",
+            ("chile_commune_soil_repair_missing", "ok", repaired, "nearest grid fallback for null API values", now()),
+        )
+        con.commit()
+        print(f"Comunas reparadas con respaldo de grilla local: {repaired}")
+    finally:
+        con.close()
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Construye y actualiza suelo comunal estatico para Chile.")
+    parser.add_argument("--init-nearest", action="store_true", help="Reconstruye comunas usando la grilla local ya cacheada, sin API.")
+    parser.add_argument("--init-api", action="store_true", help="Reconstruye comunas consultando SoilGrids API en una sola corrida larga.")
+    parser.add_argument("--run-next", action="store_true", help="Consulta el siguiente lote pendiente en SoilGrids API.")
+    parser.add_argument("--status", action="store_true", help="Muestra avance por estado de consulta.")
+    parser.add_argument("--limit", type=int, default=25, help="Cantidad maxima de comunas por corrida o fase.")
+    parser.add_argument("--phase", type=int, help="Numero de fase a ejecutar, empezando en 1.")
+    parser.add_argument("--total-phases", type=int, help="Total de fases en que se divide la corrida.")
+    parser.add_argument("--retry-failed", action="store_true", help="Incluye estados fallidos en el lote pendiente.")
+    parser.add_argument("--repair-missing", action="store_true", help="Repara valores edaficos nulos usando la grilla local.")
+    parser.add_argument("--sleep", type=float, default=0.35, help="Pausa entre llamadas a SoilGrids, en segundos.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.status:
+        status()
+        return
+    if args.repair_missing:
+        repair_missing_from_grid()
+        return
+    if args.init_nearest:
+        build_commune_soil_layer(query_api=False)
+        return
+    if args.init_api:
+        build_commune_soil_layer(query_api=True)
+        return
+    if args.run_next or args.phase is not None:
+        update_communes_from_api(
+            limit=args.limit,
+            phase=args.phase,
+            total_phases=args.total_phases,
+            retry_failed=args.retry_failed,
+            sleep_seconds=args.sleep,
+        )
+        return
+    status()
+
+
 if __name__ == "__main__":
-    build_commune_soil_layer()
+    main()
