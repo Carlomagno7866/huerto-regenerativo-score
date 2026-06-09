@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCatalog } from "@/lib/db";
+import { summarizeProduction } from "@/lib/production";
 import { optimize } from "@/lib/score";
 
 export const runtime = "nodejs";
@@ -44,11 +45,11 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     assignments,
-    summary: summarize(assignments)
+    summary: summarize(assignments, input.areaM2)
   });
 }
 
-function summarize(assignments: ReturnType<typeof optimize>) {
+function summarize(assignments: ReturnType<typeof optimize>, areaM2: number) {
   const average =
     assignments.reduce((sum, item) => sum + item.score.total, 0) / Math.max(assignments.length, 1);
   const families = new Set(assignments.map((item) => item.crop.family));
@@ -64,7 +65,8 @@ function summarize(assignments: ReturnType<typeof optimize>) {
       confidence: item.score.confidence,
       reason: item.score.explanation[0],
       evidence: item.score.evidenceNotes[0]
-    }))
+    })),
+    production: summarizeProduction(assignments, areaM2)
   };
 }
 

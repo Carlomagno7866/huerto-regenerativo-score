@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { getCatalog } from "../lib/db.ts";
+import { summarizeProduction } from "../lib/production.ts";
 import { optimize, scoreSingleCrop } from "../lib/score.ts";
 import type { Assignment, CropCandidate, NutrientPriority, OptimizationInput } from "../lib/types.ts";
 
@@ -176,6 +177,22 @@ test("el SCORE del cultivo no depende del objetivo de optimizacion", () => {
   assert.equal(lowWater.total, balanced.total, "el SCORE total no debe cambiar por objetivo");
   assert.equal(nutrients.nutrition, balanced.nutrition, "la nutricion base del SCORE no debe ponderar prioridades");
   assert.equal(lowWater.resources, balanced.resources, "recursos base del SCORE no debe ponderar objetivos");
+});
+
+test("la produccion nutricional resume todos los anos, bancales y m2 del plan", () => {
+  const crops = getCatalog("", 120);
+  const input: OptimizationInput = { ...baseInput, years: 3, subplots: 5, areaM2: 8 };
+  const assignments = optimize(crops, input);
+  const production = summarizeProduction(assignments, input.areaM2);
+  const expectedKg = assignments.reduce((sum, item) => sum + item.crop.yieldKgM2 * input.areaM2, 0);
+
+  assert.equal(assignments.length, input.years * input.subplots);
+  assert.equal(production.years, input.years);
+  assert.equal(production.bedCount, input.subplots);
+  assert.equal(production.totalAreaM2, input.years * input.subplots * input.areaM2);
+  assert.equal(production.totalKg, expectedKg);
+  assert.ok(production.topNutrients.length > 0, "debe mostrar nutrientes acumulados del calendario");
+  assert.ok(production.cropShares.length > 0, "debe mostrar cultivos que explican la cosecha");
 });
 
 function greedyExpected(

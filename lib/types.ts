@@ -158,3 +158,29 @@ export type Assignment = {
   sowingWindow: string;
   harvestWindow: string;
 };
+
+export type ProductionNutrient = {
+  key: NutrientPriority;
+  label: string;
+  amount: number;
+  unit: string;
+  dailyTarget: number;
+  targetUnit: string;
+  dailyPortions: number;
+  share: number;
+};
+
+export type CropProductionShare = {
+  crop: string;
+  kg: number;
+  share: number;
+};
+
+export type ProductionSummary = {
+  totalKg: number;
+  totalAreaM2: number;
+  bedCount: number;
+  years: number;
+  topNutrients: ProductionNutrient[];
+  cropShares: CropProductionShare[];
+};

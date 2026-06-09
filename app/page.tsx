@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Droplets, Microscope, ShieldCheck, Sprout, Target } from "lucide-react";
+import { BarChart3, Droplets, Microscope, Scale, ShieldCheck, Sprout, Target, Wheat } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Assignment, NutrientPriority, ScoreObjective } from "@/lib/types";
+import type { Assignment, NutrientPriority, ProductionSummary, ScoreObjective } from "@/lib/types";
 
 type ApiResult = {
   assignments: Assignment[];
@@ -20,6 +20,7 @@ type ApiResult = {
       reason: string;
       evidence: string;
     }>;
+    production: ProductionSummary;
   };
 };
 
@@ -182,13 +183,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="timeline">
-              {result.summary.topConfidenceGaps.length ? (
-                <div className="confidence-strip">
-                  {result.summary.topConfidenceGaps.map((gap) => (
-                    <span key={gap}>{gap}</span>
-                  ))}
-                </div>
-              ) : null}
+              <ProductionOverview production={result.summary.production} />
               {grouped.map(([year, items]) => (
                 <section className="year" key={year}>
                   <h3>Año {year}</h3>
@@ -321,6 +316,68 @@ function EvidencePill(props: { icon: ReactNode; label: string }) {
   );
 }
 
+function ProductionOverview(props: { production: ProductionSummary }) {
+  const production = props.production;
+  return (
+    <section className="production-overview" aria-label="Produccion nutricional estimada">
+      <div className="production-head">
+        <div>
+          <p>Produccion nutricional estimada</p>
+          <h2>{formatNumber(production.totalKg, 0)} kg cosechables</h2>
+          <span>
+            Total del plan: {production.years} ano(s), {production.bedCount} bancal(es),{" "}
+            {formatNumber(production.totalAreaM2, 0)} m2-ciclo.
+          </span>
+        </div>
+        <div className="production-badge" title="Estimacion basada en rendimiento kg/m2 y nutrientes por 100 g de cada cultivo recomendado">
+          <Scale aria-hidden />
+          <strong>{formatNumber(production.totalKg / Math.max(1, production.totalAreaM2), 1)}</strong>
+          <span>kg/m2-ciclo</span>
+        </div>
+      </div>
+
+      <div className="production-grid">
+        <div className="nutrient-summary">
+          <div className="summary-title">
+            <Wheat aria-hidden />
+            <span>Nutrientes que mas cubre el calendario</span>
+          </div>
+          {production.topNutrients.map((nutrient) => (
+            <div className="nutrient-row" key={nutrient.key}>
+              <div>
+                <strong>{nutrient.label}</strong>
+                <span>
+                  {formatNumber(nutrient.amount, nutrient.unit === "kcal" ? 0 : 1)} {nutrient.unit} acumulados
+                </span>
+              </div>
+              <div className="nutrient-track" aria-hidden>
+                <i style={{ width: `${Math.max(8, Math.round(nutrient.share * 100))}%` }} />
+              </div>
+              <b>{formatNumber(nutrient.dailyPortions, 0)} dias</b>
+            </div>
+          ))}
+        </div>
+
+        <div className="crop-mix">
+          <div className="summary-title">
+            <BarChart3 aria-hidden />
+            <span>Cultivos que explican la cosecha</span>
+          </div>
+          {production.cropShares.map((crop) => (
+            <div className="crop-share" key={crop.crop}>
+              <span>{crop.crop}</span>
+              <div aria-hidden>
+                <i style={{ width: `${Math.max(8, Math.round(crop.share * 100))}%` }} />
+              </div>
+              <strong>{formatNumber(crop.kg, 0)} kg</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function NumberControl(props: { label: string; value: number; min: number; max: number; onChange: (value: number) => void }) {
   return (
     <label className="number-control">
@@ -337,4 +394,11 @@ function Metric(props: { label: string; value: string }) {
       <strong>{props.value}</strong>
     </div>
   );
+}
+
+function formatNumber(value: number, digits: number) {
+  return new Intl.NumberFormat("es-CL", {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: digits
+  }).format(value);
 }
