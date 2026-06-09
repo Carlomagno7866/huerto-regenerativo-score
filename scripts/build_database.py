@@ -375,7 +375,34 @@ def create_indexes_and_views(con: sqlite3.Connection) -> None:
         FROM best4soil_crop_agent_risk b
         LEFT JOIN gbif_crop_taxon_matches g
           ON g.query_name = b.crop_latin_name
-        WHERE b.crop_latin_name IS NOT NULL;
+        WHERE b.crop_latin_name IS NOT NULL
+        UNION ALL
+        SELECT
+            'Phaseolus vulgaris' AS crop_latin_name,
+            'Poroto seco o granado' AS crop_common_name,
+            'Fabaceae' AS family,
+            'Phaseolus' AS genus,
+            'Phaseolus vulgaris' AS species,
+            NULL AS gbif_usage_key,
+            NULL AS gbif_confidence
+        UNION ALL
+        SELECT
+            'Lens culinaris' AS crop_latin_name,
+            'Lenteja' AS crop_common_name,
+            'Fabaceae' AS family,
+            'Lens' AS genus,
+            'Lens culinaris' AS species,
+            NULL AS gbif_usage_key,
+            NULL AS gbif_confidence
+        UNION ALL
+        SELECT
+            'Cicer arietinum' AS crop_latin_name,
+            'Garbanzo' AS crop_common_name,
+            'Fabaceae' AS family,
+            'Cicer' AS genus,
+            'Cicer arietinum' AS species,
+            NULL AS gbif_usage_key,
+            NULL AS gbif_confidence;
 
         CREATE VIEW fdc_core_food_nutrients AS
         SELECT

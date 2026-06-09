@@ -50,7 +50,9 @@ type NutrientRow = {
   fdc_id: string;
   description: string;
   data_type: string | null;
+  nutrient_id: string;
   nutrient_name: string;
+  unit_name: string;
   amount: number;
 };
 
@@ -68,7 +70,6 @@ type AgentRow = {
 };
 
 export function getCatalog(search = "", limit = 80): CropCandidate[] {
-  const term = `%${search.trim().toLowerCase()}%`;
   const rows = getDb()
     .prepare(
       `
@@ -81,18 +82,18 @@ export function getCatalog(search = "", limit = 80): CropCandidate[] {
       FROM crop_catalog_seed
       WHERE crop_latin_name IS NOT NULL
         AND lower(crop_latin_name) NOT LIKE '%cannabis%'
-        AND (? = '%%'
-          OR lower(crop_latin_name) LIKE ?
-          OR lower(COALESCE(crop_common_name, '')) LIKE ?
-          OR lower(COALESCE(family, '')) LIKE ?)
       GROUP BY TRIM(REPLACE(REPLACE(crop_latin_name, 'V-', ''), 'F-', '')), COALESCE(family, 'Familia no clasificada')
       ORDER BY commonName
-      LIMIT ?
     `
     )
-    .all(term, term, term, term, limit) as CatalogRow[];
+    .all() as CatalogRow[];
 
-  return rows.map(hydrateCrop);
+  return mergeCuratedCatalogRows(rows)
+    .filter((row) => isCuratedGardenCrop(row.scientificName))
+    .filter((row) => matchesCatalogSearch(row, search))
+    .sort((a, b) => (a.commonName ?? a.scientificName).localeCompare(b.commonName ?? b.scientificName, "es"))
+    .slice(0, limit)
+    .map(hydrateCrop);
 }
 
 export function getFullCatalog() {
@@ -101,6 +102,103 @@ export function getFullCatalog() {
   }
   return fullCatalogCache;
 }
+
+function mergeCuratedCatalogRows(rows: CatalogRow[]) {
+  const byId = new Map<string, CatalogRow>();
+  for (const row of [...rows, ...CURATED_EXTRA_CROPS]) {
+    const key = slug(row.scientificName);
+    if (!byId.has(key) || CURATED_EXTRA_CROPS.some((crop) => slug(crop.scientificName) === key)) {
+      byId.set(key, row);
+    }
+  }
+  return Array.from(byId.values());
+}
+
+function isCuratedGardenCrop(scientificName: string) {
+  return CURATED_GARDEN_CROPS.has(normalizeCatalogKey(scientificName));
+}
+
+function matchesCatalogSearch(row: CatalogRow, search: string) {
+  const term = normalizeCatalogText(search);
+  if (!term) return true;
+  return normalizeCatalogText(`${row.commonName ?? ""} ${row.scientificName} ${row.family ?? ""}`).includes(term);
+}
+
+function normalizeCatalogKey(value: string) {
+  return normalizeCatalogText(value).replace(/^v |^f /, "");
+}
+
+function normalizeCatalogText(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/^[vf]-/, "")
+    .replace(/[^a-z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const CURATED_GARDEN_CROPS = new Set([
+  "allium ampeloprasum",
+  "allium sativum",
+  "allium spp",
+  "anethum graveolens",
+  "apium graveolens",
+  "asparagus offininalis",
+  "beta vulgaris",
+  "brassica oleracea",
+  "brassica rapa",
+  "capsicum annum",
+  "cichorium intybus",
+  "cicer arietinum",
+  "citrullus lanatus",
+  "coriandrum sativum",
+  "cucumis melo",
+  "cucumis sativus",
+  "cucurbita spp",
+  "daucus carota",
+  "eruca vesicaria subsp sativa",
+  "fragaria x ananassa",
+  "lactuca sativa",
+  "lens culinaris",
+  "lycopersicon esculentum",
+  "ocimum basilicum",
+  "petroselinum crispum",
+  "phaseolus spp",
+  "phaseolus vulgaris",
+  "pisum spp",
+  "raphanus sativus",
+  "solanum melongena",
+  "solanum tuberosum",
+  "spinacia oleracea",
+  "vicia faba",
+  "zea mais"
+]);
+
+const CURATED_EXTRA_CROPS: CatalogRow[] = [
+  {
+    scientificName: "Phaseolus vulgaris",
+    commonName: "Poroto seco o granado",
+    family: "Fabaceae",
+    genus: "Phaseolus",
+    species: "Phaseolus vulgaris"
+  },
+  {
+    scientificName: "Lens culinaris",
+    commonName: "Lenteja",
+    family: "Fabaceae",
+    genus: "Lens",
+    species: "Lens culinaris"
+  },
+  {
+    scientificName: "Cicer arietinum",
+    commonName: "Garbanzo",
+    family: "Fabaceae",
+    genus: "Cicer",
+    species: "Cicer arietinum"
+  }
+];
 
 export function getNearestSoil(latitude: number, longitude: number) {
   return getDb()
@@ -267,7 +365,7 @@ function hydrateCrop(row: CatalogRow): CropCandidate {
     yieldKgM2: yieldProfile.yieldKgM2,
     cycleDays: waterCycleProfile.cycleDays,
     waterMmCycle: waterCycleProfile.waterMmCycle,
-    soilFit: 0.72,
+    soilFit: 0.92,
     riskAgents,
     evidence,
     confidence
@@ -275,12 +373,52 @@ function hydrateCrop(row: CatalogRow): CropCandidate {
 }
 
 function findNutrition(commonName: string, scientificName: string) {
+  const curated = curatedNutritionFor(scientificName, commonName);
+  if (curated) {
+    if (curated.foodCrop === false) {
+      const evidence: EvidenceDescriptor = {
+        level: "missing",
+        label: curated.label,
+        source: curated.source
+      };
+      return { description: null, nutrients: {}, evidence };
+    }
+
+    const rows = getDb()
+      .prepare(
+        `
+        SELECT fdc_id, description, data_type, nutrient_id, nutrient_name, unit_name, CAST(amount AS REAL) AS amount
+        FROM fdc_core_food_nutrients
+        WHERE fdc_id = ?
+          AND nutrient_name IN (
+            'Protein', 'Fiber, total dietary', 'Vitamin C, total ascorbic acid',
+            'Vitamin A, RAE', 'Folate, total', 'Calcium, Ca', 'Iron, Fe',
+            'Zinc, Zn', 'Potassium, K', 'Magnesium, Mg', 'Energy'
+          )
+        ORDER BY nutrient_name
+      `
+      )
+      .all(curated.fdcId) as NutrientRow[];
+
+    if (rows.length >= 4) {
+      const nutrients = nutrientsFromRows(rows);
+      const matchedFood = rows[0].description;
+      const evidence: EvidenceDescriptor = {
+        level: curated.level,
+        label: curated.label,
+        source: curated.source,
+        matchedItem: `${matchedFood} (FDC ${curated.fdcId})`
+      };
+      return { description: matchedFood, nutrients, evidence };
+    }
+  }
+
   const aliases = buildAliases(commonName, scientificName);
   const rows: NutrientRow[] = [];
   let matchedFood: string | null = null;
   const statement = getDb().prepare(
     `
-    SELECT fdc_id, description, data_type, nutrient_name, CAST(amount AS REAL) AS amount
+    SELECT fdc_id, description, data_type, nutrient_id, nutrient_name, unit_name, CAST(amount AS REAL) AS amount
     FROM fdc_core_food_nutrients
     WHERE lower(description) LIKE ?
       AND nutrient_name IN (
@@ -309,13 +447,7 @@ function findNutrition(commonName: string, scientificName: string) {
     }
   }
 
-  const nutrients: Record<string, number> = {};
-  for (const row of rows) {
-    const key = nutrientKey(row.nutrient_name);
-    if (key && nutrients[key] === undefined && Number.isFinite(row.amount)) {
-      nutrients[key] = row.amount;
-    }
-  }
+  const nutrients = nutrientsFromRows(rows);
 
   const evidence: EvidenceDescriptor = matchedFood
     ? {
@@ -331,6 +463,18 @@ function findNutrition(commonName: string, scientificName: string) {
       };
 
   return { description: matchedFood, nutrients, evidence };
+}
+
+function nutrientsFromRows(rows: NutrientRow[]) {
+  const nutrients: Record<string, number> = {};
+  for (const row of rows) {
+    const key = nutrientKey(row.nutrient_name);
+    if (key === "energy" && row.unit_name !== "KCAL") continue;
+    if (key && nutrients[key] === undefined && Number.isFinite(row.amount)) {
+      nutrients[key] = row.amount;
+    }
+  }
+  return nutrients;
 }
 
 function findYieldProfile(scientificName: string, commonName: string) {
@@ -447,7 +591,7 @@ function findWaterCycleProfile(scientificName: string, commonName: string, famil
 }
 
 function findRiskAgents(scientificName: string): RotationAgent[] {
-  const rows = getDb()
+  let rows = getDb()
     .prepare(
       `
       SELECT agent_type, agent_name, host_status, disease_reduction
@@ -458,6 +602,21 @@ function findRiskAgents(scientificName: string): RotationAgent[] {
     `
     )
     .all(scientificName) as AgentRow[];
+
+  if (!rows.length) {
+    const genus = scientificName.split(/\s+/)[0];
+    rows = getDb()
+      .prepare(
+        `
+        SELECT agent_type, agent_name, host_status, disease_reduction
+        FROM best4soil_crop_agent_risk
+        WHERE lower(TRIM(REPLACE(REPLACE(crop_latin_name, 'V-', ''), 'F-', ''))) LIKE lower(?)
+          AND agent_name IS NOT NULL
+        ORDER BY agent_name
+      `
+      )
+      .all(`${genus}%`) as AgentRow[];
+  }
 
   const map = new Map<string, RotationAgent>();
   for (const row of rows) {
@@ -502,8 +661,8 @@ function buildConfidence(
         },
     soil: {
       level: "generic",
-      label: "Ajuste edafico generico por pH y textura",
-      source: "SoilGrids Chile local"
+      label: "Bancal optimizado: suelo ajustable, no lectura local directa",
+      source: "Supuesto de manejo del usuario"
     },
     price: {
       level: "missing",
@@ -533,7 +692,10 @@ function faostatItemFor(scientificName: string, commonName: string) {
     ["cichorium", "Lettuce and chicory"],
     ["vicia faba", "Broad beans and horse beans, green"],
     ["pisum", "Peas, green"],
+    ["phaseolus vulgaris", "Beans, dry"],
     ["phaseolus", "Other beans, green"],
+    ["lens culinaris", "Lentils, dry"],
+    ["cicer arietinum", "Chick peas, dry"],
     ["spinacia", "Spinach"],
     ["fragaria", "Strawberries"],
     ["zea", "Green corn (maize)"],
@@ -579,11 +741,142 @@ function faostatProxyItemFor(scientificName: string, commonName: string) {
 }
 
 function buildAliases(commonName: string, scientificName: string) {
+  const stopAliases = new Set([
+    "incl",
+    "leafy",
+    "black",
+    "white",
+    "green",
+    "sweet",
+    "italian",
+    "japanese",
+    "perennial",
+    "red",
+    "sp",
+    "spp",
+    "subsp",
+    "sativa",
+    "sativum"
+  ]);
   const raw = [commonName, scientificName.split(" ")[0], scientificName.split(" ")[1] ?? ""]
     .map((value) => value.toLowerCase().replace(/[^a-z ]/g, " ").trim())
-    .filter(Boolean);
-  const parts = raw.flatMap((value) => value.split(/\s+|\/|,/)).filter((value) => value.length > 3);
-  return Array.from(new Set([...raw, ...parts])).slice(0, 6);
+    .filter((value) => value.length > 3 && !stopAliases.has(value));
+  const parts = raw
+    .flatMap((value) => value.split(/\s+|\/|,/))
+    .filter((value) => value.length > 3 && !stopAliases.has(value));
+  return Array.from(new Set([...raw, ...parts])).slice(0, 8);
+}
+
+type CuratedNutritionProfile =
+  | {
+      fdcId: string;
+      level: "observed" | "proxy";
+      label: string;
+      source: string;
+      foodCrop?: true;
+      match: string[];
+    }
+  | {
+      foodCrop: false;
+      label: string;
+      source: string;
+      match: string[];
+    };
+
+const CURATED_NUTRITION_PROFILES: CuratedNutritionProfile[] = [
+  exactFood("allium ampeloprasum", "169246", "Leek crudo; match taxonomico curado"),
+  exactFood("allium sativum", "169230", "Ajo crudo; match taxonomico curado"),
+  exactFood("allium spp", "170000", "Cebolla cruda; proxy de especie Allium hortícola"),
+  exactFood("anethum graveolens", "172233", "Eneldo fresco; corrige nombre comun ambiguo del catalogo"),
+  exactFood("apium graveolens", "169988", "Apio crudo; match taxonomico curado"),
+  exactFood("asparagus offininalis", "168389", "Esparrago crudo; match por genero con correccion ortografica"),
+  exactFood("avena sativa", "173904", "Avena seca no fortificada; proxy de grano entero disponible en FDC"),
+  exactFood("avena strigosa", "173904", "Avena negra; proxy por Avena sativa disponible en FDC"),
+  exactFood("beta vulgaris", "169145", "Betarraga cruda; match de especie hortícola"),
+  exactFood("brassica napus", "170929", "Semilla de mostaza molida; proxy para semilla oleaginosa Brassica"),
+  exactFood("brassica oleracea", "169975", "Repollo crudo; representante para Brassica oleracea mixta"),
+  exactFood("brassica rapa", "170465", "Nabo crudo; match taxonomico curado"),
+  exactFood("brassica spp", "170061", "Hojas de nabo crudas; proxy para Brassica de hoja/abono verde"),
+  exactFood("capsicum annum", "170108", "Pimenton rojo crudo; corrige alias generico 'sweet'"),
+  exactFood("cichorium intybus", "169992", "Hojas de achicoria crudas; match taxonomico curado"),
+  exactFood("citrullus lanatus", "167765", "Sandia cruda; corrige ortografia Watermelone"),
+  exactFood("coriandrum sativum", "169997", "Cilantro fresco crudo; match nacional usado como coriander/cilantro"),
+  exactFood("cucumis melo", "169092", "Melon cantalupo crudo; proxy para Cucumis melo"),
+  exactFood("cucumis sativus", "169225", "Pepino crudo; match taxonomico curado"),
+  exactFood("cucurbita spp", "168448", "Zapallo/calabaza crudo; proxy de genero Cucurbita"),
+  exactFood("daucus carota", "170393", "Zanahoria cruda; match taxonomico curado"),
+  exactFood("eruca vesicaria", "169387", "Rucula/arugula cruda; agrega especie sin match previo"),
+  exactFood("fagopyrum esculentum", "170286", "Trigo sarraceno cocido; mejor alimento disponible en FDC local"),
+  exactFood("fragaria x ananassa", "167762", "Frutilla cruda; corrige match a topping de frutilla"),
+  exactFood("cicer arietinum", "173756", "Garbanzo maduro crudo; leguminosa alimentaria agregada al catalogo curado"),
+  exactFood("glycine max", "169282", "Soya verde cruda; match taxonomico curado"),
+  exactFood("guizotia abyssinica", "170558", "Semilla oleaginosa; proxy por semilla de cartamo ante ausencia de ramtil/niger en FDC local", "proxy"),
+  exactFood("helianthus spp", "170562", "Semilla de maravilla cruda; proxy de genero Helianthus"),
+  exactFood("hordeum vulgare", "170284", "Cebada perlada cruda; match de cereal disponible en FDC"),
+  exactFood("lactuca sativa", "169247", "Lechuga cruda; match taxonomico curado"),
+  exactFood("lathyrus sativus", "170419", "Arveja seca partida; proxy para almorta/chickling pea sin perfil FDC directo", "proxy"),
+  exactFood("lens culinaris", "172420", "Lenteja cruda; leguminosa alimentaria agregada al catalogo curado"),
+  exactFood("linum usitatissiumum", "169414", "Linaza/flaxseed; agrega especie sin match previo"),
+  exactFood("lupinus spp", "172423", "Lupino maduro crudo; proxy por genero Lupinus"),
+  exactFood("lycopersicon esculentum", "170457", "Tomate crudo; match taxonomico curado"),
+  exactFood("medigaco sativa", "168384", "Brotes de alfalfa crudos; proxy comestible de alfalfa"),
+  exactFood("ocimum basilicum", "172232", "Albahaca fresca; match taxonomico curado"),
+  exactFood("oryza sativa", "169703", "Arroz integral crudo; evita match a arroz silvestre"),
+  exactFood("pastinaca sativa", "170417", "Chirivia cruda; match taxonomico curado"),
+  exactFood("petroselinum crispum", "170416", "Perejil fresco; match taxonomico curado"),
+  exactFood("phaseolus spp", "169961", "Poroto verde crudo; proxy hortícola de Phaseolus"),
+  exactFood("phaseolus vulgaris", "175199", "Poroto maduro crudo; proxy por poroto pinto USDA para poroto seco/granado"),
+  exactFood("pisum spp", "170419", "Arveja verde/seca; proxy de Pisum disponible en FDC local"),
+  exactFood("raphanus sativus", "169276", "Rabano crudo; match taxonomico curado"),
+  exactFood("rheum rhabarbarum", "167758", "Ruibarbo crudo; match taxonomico curado"),
+  exactFood("scorzonera hispanica", "169277", "Salsifi negro; corrige falso match con berries"),
+  exactFood("secale cereale", "168884", "Grano de centeno; corrige falso match con chicken fryers"),
+  exactFood("sinapis alba", "170929", "Semilla de mostaza molida; agrega mostaza blanca"),
+  exactFood("solanum melongena", "169228", "Berenjena cruda; match taxonomico curado"),
+  exactFood("solanum tuberosum", "170026", "Papa cruda; match taxonomico curado"),
+  exactFood("sorghum spp", "169716", "Sorgo grano entero crudo; proxy por genero Sorghum"),
+  exactFood("spinacia oleracea", "168462", "Espinaca cruda; match taxonomico curado"),
+  exactFood("triticum aestivum", "168889", "Trigo duro rojo de primavera; proxy de grano de trigo disponible en FDC"),
+  exactFood("triticosecale", "169718", "Triticale; match de cereal disponible en FDC"),
+  exactFood("valerianella sp", "169219", "Canonigo/cornsalad crudo; corrige falso match por 'sp'"),
+  exactFood("vicia faba", "170377", "Haba verde cruda; match taxonomico curado"),
+  exactFood("vicia sp", "168574", "Vicia; proxy por haba verde para especie de Vicia sin perfil FDC directo", "proxy"),
+  exactFood("zea mais", "169998", "Maiz dulce amarillo crudo; corrige falso match por Zea"),
+  nonFood("lolium multiflorum", "Cultivo forrajero/cobertura: sin perfil alimentario humano confiable en FDC/INFOODS"),
+  nonFood("lolium perenne", "Cultivo forrajero/cobertura: sin perfil alimentario humano confiable en FDC/INFOODS"),
+  nonFood("nicotiana tabacum", "No se modela como alimento por uso no alimentario y riesgo sanitario"),
+  nonFood("phacelia sp", "Cultivo de servicio para polinizadores/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("tagetes sp", "Cultivo de servicio/ornamental: sin perfil alimentario humano confiable"),
+  nonFood("trifolium alexandrinum", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("trifolium incarnatum", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("trifolium pratense", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("trifolium repens", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("trifolium resupinatum", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable"),
+  nonFood("trifolium spp", "Trebol forrajero/cobertura: sin perfil alimentario humano confiable")
+];
+
+function curatedNutritionFor(scientificName: string, commonName: string) {
+  const normalized = `${scientificName} ${commonName}`.toLowerCase().replace(/×/g, "x").replace(/[^a-z0-9 ]/g, " ");
+  return CURATED_NUTRITION_PROFILES.find((profile) => profile.match.some((item) => normalized.includes(item)));
+}
+
+function exactFood(match: string, fdcId: string, label: string, level: "observed" | "proxy" = "observed"): CuratedNutritionProfile {
+  return {
+    fdcId,
+    level,
+    label,
+    source: "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+    match: [match.toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim()]
+  };
+}
+
+function nonFood(match: string, label: string): CuratedNutritionProfile {
+  return {
+    foodCrop: false,
+    label,
+    source: "Revision curada FDC/FAO INFOODS/Tabla chilena; se conserva valor nutricional humano como ausente",
+    match: [match.toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim()]
+  };
 }
 
 function estimatePhysiology(family: string | null, name: string) {
@@ -625,6 +918,7 @@ const WATER_CYCLE_PROFILES: Array<{
   profile("Lechuga/achicoria", "FAO Crop Water Needs", "proxy", [250, 400], [45, 80], includesAny("lactuca", "cichorium", "lettuce", "chicory")),
   profile("Zapallo/calabaza", "FAO Crop Water Needs", "proxy", [400, 700], [100, 150], includesAny("cucurbita", "pumpkin", "squash")),
   profile("Pepino/melon/sandia", "FAO Crop Water Needs", "proxy", [400, 650], [80, 125], includesAny("cucumis", "citrullus", "cucumber", "melon", "watermelon")),
+  profile("Leguminosas secas", "FAO Crop Water Needs", "proxy", [300, 500], [90, 130], includesAny("lens", "cicer", "lentil", "chickpea", "garbanzo")),
   profile("Leguminosas verdes", "FAO Crop Water Needs", "proxy", [300, 500], [70, 110], includesAny("phaseolus", "pisum", "vicia faba", "bean", "pea")),
   profile("Cereales", "FAO Crop Water Needs", "proxy", [350, 650], [110, 150], includesAny("avena", "hordeum", "triticum", "secale", "zea", "oryza", "oat", "wheat", "maize", "barley", "rice")),
   profile("Espinaca", "FAO Crop Water Needs", "proxy", [250, 400], [45, 70], includesAny("spinacia", "spinach")),
@@ -695,6 +989,8 @@ function inferFamily(family: string | null, scientificName: string) {
     citrullus: "Cucurbitaceae",
     fragaria: "Rosaceae",
     lathyrus: "Fabaceae",
+    lens: "Fabaceae",
+    cicer: "Fabaceae",
     lycopersicon: "Solanaceae",
     medicago: "Fabaceae",
     medigaco: "Fabaceae",
@@ -744,10 +1040,12 @@ function localChileanName(commonName: string | null, scientificName: string) {
     "fagopyrum esculentum": "Trigo sarraceno",
     "fragaria x ananassa": "Frutilla",
     "glycine max": "Soya",
+    "cicer arietinum": "Garbanzo",
     "helianthus spp.": "Maravilla",
     "hordeum vulgare": "Cebada",
     "lactuca sativa": "Lechuga",
     "lathyrus sativus": "Arveja almorta",
+    "lens culinaris": "Lenteja",
     "linum usitatissiumum": "Linaza",
     "lolium multiflorum": "Ballica italiana",
     "lolium perenne": "Ballica perenne",
@@ -760,6 +1058,7 @@ function localChileanName(commonName: string | null, scientificName: string) {
     "pastinaca sativa": "Chirivía",
     "petroselinum crispum": "Perejil",
     "phaseolus spp.": "Poroto",
+    "phaseolus vulgaris": "Poroto seco o granado",
     "phacelia sp.": "Facelia",
     "pisum spp.": "Arveja",
     "raphanus sativus": "Rábano",

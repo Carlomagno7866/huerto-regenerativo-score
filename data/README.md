@@ -9,8 +9,8 @@ Constructor reproducible: `scripts/build_database.py`
 - USDA FoodData Central: Foundation Foods, SR Legacy, FNDDS, porciones, nutrientes y factores de retencion.
 - Best4Soil: matriz cultivo-hospedante para nematodos y hongos, con estado hospedante y efectos de abonos verdes.
 - FAOSTAT: produccion agricola/ganadera normalizada filtrada para Chile.
-- SoilGrids: metadatos de propiedades edaficas consultables por coordenadas.
-- SoilGrids Chile estatico: grilla nacional de 0.5 grados y capa por comuna guardadas en SQLite.
+- SoilGrids: metadatos de propiedades edaficas conservados como fuente historica/reconstruible.
+- SoilGrids Chile estatico: grilla nacional de 0.5 grados y capa por comuna guardadas en SQLite, no expuestas por el planificador actual.
 - GBIF: normalizacion taxonomica de cultivos detectados en Best4Soil.
 
 ## Tablas principales
@@ -47,7 +47,7 @@ Para reconstruir o completar la capa estatica de suelos de Chile:
 python .\scripts\build_chile_soil_static.py
 ```
 
-Esta capa no consulta SoilGrids durante el uso normal de la web. La consulta a SoilGrids ocurre solo al construir o actualizar la base. La web puede buscar el punto mas cercano en `chile_soilgrids_static_topsoil`.
+Esta capa no consulta SoilGrids durante el uso normal de la web. La consulta a SoilGrids ocurre solo al construir o actualizar la base. El planificador actual trabaja como bancal optimizado y no pide Region, Comuna ni suelo natural.
 
 Para reconstruir la capa por Region/Comuna:
 
@@ -72,6 +72,20 @@ python .\scripts\build_chile_commune_soil_static.py --phase 1 --total-phases 15 
 Cada comuna se guarda inmediatamente en SQLite, por lo que una interrupcion permite continuar con `--run-next`. `ok_no_values` significa que SoilGrids respondio sin valores para el punto comunal; en ese caso se conserva el respaldo de la grilla local y se marca la fuente como fallback.
 
 ## Consulta rapida
+
+## Catalogo e investigacion nutricional curada
+
+El proyecto complementa la tabla `fdc_core_food_nutrients` con una capa de matching curado en `lib/db.ts`. Esa capa prioriza `fdc_id` exactos de USDA FoodData Central para las especies del catalogo, aplica criterios FAO/INFOODS de food matching y contrasta la nomenclatura nacional con la Tabla de Composicion Quimica de Alimentos Chilenos de la Universidad de Chile.
+
+La app expone un catalogo curado de cultivos de huerta, no todo el listado crudo de Best4Soil. Se excluyen forrajeras/coberturas/ornamentales/cereales poco pertinentes para huertos domesticos y se agregan leguminosas alimentarias faltantes: poroto seco o granado (`Phaseolus vulgaris`), lenteja (`Lens culinaris`) y garbanzo (`Cicer arietinum`).
+
+El archivo `data/derived/crop_evidence_profiles.json` se regenera con:
+
+```powershell
+npm.cmd run build:evidence
+```
+
+La investigacion y sus referencias estan documentadas en `docs/investigacion_nutricional_cultivos.md`.
 
 ```sql
 SELECT description, nutrient_name, amount, unit_name

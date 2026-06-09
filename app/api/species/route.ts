@@ -6,14 +6,12 @@ import type { CropCandidate, OptimizationInput, ScoreBreakdown } from "@/lib/typ
 export const runtime = "nodejs";
 
 const PUBLIC_INPUT: OptimizationInput = {
-  gardenType: "natural-soil",
   objective: "balanced",
-  mode: "home-garden",
   years: 1,
   subplots: 1,
   areaM2: 6,
   previousFamilies: [],
-  priorityNutrients: ["protein", "fiber", "vitaminC", "iron"],
+  priorityNutrients: [],
   excludedCropIds: [],
   excludedCropNames: []
 };

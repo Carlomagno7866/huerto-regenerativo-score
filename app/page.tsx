@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Droplets, Layers3, MapPin, Microscope, ShieldCheck, Sprout, Target, WalletCards } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Droplets, Microscope, ShieldCheck, Sprout, Target } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Assignment, NutrientPriority, ScoreObjective, UserMode } from "@/lib/types";
+import type { Assignment, NutrientPriority, ScoreObjective } from "@/lib/types";
 
 type ApiResult = {
-  soil: Record<string, number | string | null> | null;
   assignments: Assignment[];
   summary: {
     averageScore: number;
@@ -24,31 +23,16 @@ type ApiResult = {
   };
 };
 
-type LocationCatalog = {
-  regions: Array<{ slug: string; name: string; communeCount: number }>;
-  communes: Array<{
-    slug: string;
-    name: string;
-    regionSlug: string;
-    regionName: string;
-    phH2o0_5cm: number | null;
-    clayPct0_5cm: number | null;
-    socGKg0_5cm: number | null;
-    soilLocalityScore: number;
-  }>;
-};
-
 const OBJECTIVES: Array<{ value: ScoreObjective; label: string }> = [
   { value: "balanced", label: "Balance" },
   { value: "max-nutrients", label: "Nutrientes" },
-  { value: "low-water", label: "Bajo riego" },
-  { value: "healthy-rotation", label: "Rotacion" },
-  { value: "family-savings", label: "Ahorro" }
+  { value: "low-water", label: "Bajo riego" }
 ];
 
 const NUTRIENTS: Array<{ value: NutrientPriority; label: string }> = [
   { value: "protein", label: "Proteina" },
   { value: "iron", label: "Hierro" },
+  { value: "magnesium", label: "Magnesio" },
   { value: "vitaminC", label: "Vit. C" },
   { value: "folate", label: "Folato" },
   { value: "fiber", label: "Fibra" },
@@ -59,41 +43,12 @@ export default function Home() {
   const [years, setYears] = useState(4);
   const [subplots, setSubplots] = useState(4);
   const [areaM2, setAreaM2] = useState(6);
-  const [locations, setLocations] = useState<LocationCatalog>({ regions: [], communes: [] });
-  const [regionSlug, setRegionSlug] = useState("region-metropolitana-de-santiago");
-  const [communeSlug, setCommuneSlug] = useState("region-metropolitana-de-santiago-santiago");
-  const [gardenType, setGardenType] = useState<"optimized-bed" | "natural-soil">("natural-soil");
   const [objective, setObjective] = useState<ScoreObjective>("balanced");
-  const [mode, setMode] = useState<UserMode>("home-garden");
-  const [priorityNutrients, setPriorityNutrients] = useState<NutrientPriority[]>(["protein", "iron", "vitaminC"]);
+  const [priorityNutrients, setPriorityNutrients] = useState<NutrientPriority[]>([]);
   const [excludedCropText, setExcludedCropText] = useState("");
   const [previousFamilyText, setPreviousFamilyText] = useState("");
   const [result, setResult] = useState<ApiResult | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/locations")
-      .then((response) => response.json())
-      .then((data: LocationCatalog) => {
-        setLocations(data);
-        const hasRegion = data.regions.some((region) => region.slug === regionSlug);
-        const nextRegion = hasRegion ? regionSlug : data.regions[0]?.slug;
-        if (nextRegion && nextRegion !== regionSlug) setRegionSlug(nextRegion);
-        const firstCommune = data.communes.find((commune) => commune.regionSlug === nextRegion)?.slug;
-        if (firstCommune && !data.communes.some((commune) => commune.slug === communeSlug)) {
-          setCommuneSlug(firstCommune);
-        }
-      });
-  }, []);
-
-  const communesForRegion = useMemo(
-    () => locations.communes.filter((commune) => commune.regionSlug === regionSlug),
-    [locations.communes, regionSlug]
-  );
-  const selectedCommune = useMemo(
-    () => locations.communes.find((commune) => commune.slug === communeSlug) ?? null,
-    [locations.communes, communeSlug]
-  );
 
   const grouped = useMemo(() => {
     const map = new Map<number, Assignment[]>();
@@ -112,12 +67,8 @@ export default function Home() {
         years,
         subplots,
         areaM2,
-        regionSlug,
-        communeSlug,
-        gardenType,
         objective,
-        mode,
-        priorityNutrients,
+        priorityNutrients: objective === "max-nutrients" ? priorityNutrients : [],
         previousFamilies: parseList(previousFamilyText),
         excludedCropNames: parseList(excludedCropText),
         excludedCropIds: []
@@ -139,66 +90,6 @@ export default function Home() {
             </div>
           </div>
 
-          <label className="field">
-            <span>
-              <MapPin aria-hidden /> Region
-            </span>
-            <select
-              value={regionSlug}
-              onChange={(event) => {
-                const nextRegion = event.target.value;
-                setRegionSlug(nextRegion);
-                const nextCommune = locations.communes.find((commune) => commune.regionSlug === nextRegion);
-                if (nextCommune) setCommuneSlug(nextCommune.slug);
-              }}
-            >
-              {locations.regions.map((region) => (
-                <option key={region.slug} value={region.slug}>
-                  {region.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="field">
-            <span>Comuna</span>
-            <select value={communeSlug} onChange={(event) => setCommuneSlug(event.target.value)}>
-              {communesForRegion.map((commune) => (
-                <option key={commune.slug} value={commune.slug}>
-                  {commune.name}
-                </option>
-              ))}
-            </select>
-            {selectedCommune ? (
-              <small>
-                pH {formatSoilValue(selectedCommune.phH2o0_5cm)} - arcilla {formatSoilValue(selectedCommune.clayPct0_5cm)}% - suelo{" "}
-                {Math.round(selectedCommune.soilLocalityScore * 100)}
-              </small>
-            ) : null}
-          </label>
-
-          <div className="field">
-            <span>
-              <Layers3 aria-hidden /> Tipo de huerta
-            </span>
-            <div className="segmented" role="group" aria-label="Tipo de huerta">
-              <button
-                className={gardenType === "natural-soil" ? "active" : ""}
-                onClick={() => setGardenType("natural-soil")}
-                type="button"
-              >
-                Suelo natural
-              </button>
-              <button
-                className={gardenType === "optimized-bed" ? "active" : ""}
-                onClick={() => setGardenType("optimized-bed")}
-                type="button"
-              >
-                Bancal optimizado
-              </button>
-            </div>
-          </div>
-
           <div className="field">
             <span>
               <Target aria-hidden /> Objetivo
@@ -217,41 +108,29 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="field">
-            <span>
-              <WalletCards aria-hidden /> Modo
-            </span>
-            <div className="segmented" role="group" aria-label="Modo de uso">
-              <button className={mode === "home-garden" ? "active" : ""} onClick={() => setMode("home-garden")} type="button">
-                Huerto familiar
-              </button>
-              <button className={mode === "small-farmer" ? "active" : ""} onClick={() => setMode("small-farmer")} type="button">
-                Agricultor
-              </button>
-            </div>
-          </div>
-
           <div className="grid-controls">
             <NumberControl label="Anos" value={years} min={1} max={8} onChange={setYears} />
             <NumberControl label="Subparcelas" value={subplots} min={1} max={12} onChange={setSubplots} />
             <NumberControl label="m2/subparcela" value={areaM2} min={1} max={80} onChange={setAreaM2} />
           </div>
 
-          <div className="field">
-            <span>Nutrientes prioritarios</span>
-            <div className="chips" role="group" aria-label="Nutrientes prioritarios">
-              {NUTRIENTS.map((item) => (
-                <button
-                  className={priorityNutrients.includes(item.value) ? "active" : ""}
-                  key={item.value}
-                  onClick={() => toggleNutrient(item.value, priorityNutrients, setPriorityNutrients)}
-                  type="button"
-                >
-                  {item.label}
-                </button>
-              ))}
+          {objective === "max-nutrients" ? (
+            <div className="field">
+              <span>Nutrientes prioritarios</span>
+              <div className="chips" role="group" aria-label="Nutrientes prioritarios">
+                {NUTRIENTS.map((item) => (
+                  <button
+                    className={priorityNutrients.includes(item.value) ? "active" : ""}
+                    key={item.value}
+                    onClick={() => toggleNutrient(item.value, priorityNutrients, setPriorityNutrients)}
+                    type="button"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           <label className="field">
             <span>Cultivos bloqueados</span>
@@ -281,8 +160,8 @@ export default function Home() {
         <div className="results">
           <div className="hero-band">
             <div>
-              <p>Base local SQLite + USDA + FAOSTAT + Best4Soil + SoilGrids Chile</p>
-              <h2>SCORE v2 por nutrientes utiles, agua, suelo y sanidad</h2>
+              <p>Base local SQLite + USDA + FAOSTAT + Best4Soil</p>
+              <h2>SCORE v2 por nutrientes utiles, agua y rotacion sanitaria</h2>
             </div>
             {result ? (
               <div className="meters">
@@ -332,7 +211,7 @@ export default function Home() {
                           <ScoreBar label="Nut." value={item.score.nutrition} />
                           <ScoreBar label="Agua" value={item.score.resources} />
                           <ScoreBar label="San." value={item.score.rotation} />
-                          <ScoreBar label="Suelo" value={item.score.soil} />
+                          <ScoreBar label="Div." value={item.score.diversity} />
                         </div>
 
                         <dl>
@@ -403,10 +282,6 @@ function parseList(value: string) {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
-}
-
-function formatSoilValue(value: number | null) {
-  return typeof value === "number" && Number.isFinite(value) ? value.toFixed(1) : "s/d";
 }
 
 function toggleNutrient(

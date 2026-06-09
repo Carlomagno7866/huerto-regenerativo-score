@@ -44,7 +44,7 @@ export function ScoreClient({ initialSpeciesId, species: allSpecies }: { initial
         </div>
         <p>
           El SCORE resume en una escala de 0 a 100 que tan conveniente es una especie para un huerto regenerativo,
-          combinando nutrientes, uso de agua, rendimiento, rotacion sanitaria, suelo y confianza de datos.
+          combinando nutrientes, uso de agua, rendimiento, rotacion sanitaria y confianza de datos.
         </p>
       </section>
 
@@ -87,7 +87,7 @@ export function ScoreClient({ initialSpeciesId, species: allSpecies }: { initial
               <ScoreBar label="Nutrientes" value={species.score.nutrition} />
               <ScoreBar label="Agua y espacio" value={species.score.resources} />
               <ScoreBar label="Rotacion sana" value={species.score.rotation} />
-              <ScoreBar label="Suelo" value={species.score.soil} />
+              <ScoreBar label="Diversidad" value={species.score.diversity} />
             </div>
             <ul className="plain-list">
               {species.summary.map((item) => (

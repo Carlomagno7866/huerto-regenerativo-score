@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T22:16:36.225Z",
+  "generatedAt": "2026-06-09T00:01:08.838Z",
   "method": "Derived evidence profile seed from local SQLite tables; scoring still hydrates live records in lib/db.ts.",
   "profiles": [
     {
@@ -9,8 +9,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Esparrago crudo; match por genero con correccion ortografica",
         "fdcId": "168389",
         "description": "Asparagus, raw",
         "dataType": "sr_legacy_food",
@@ -155,184 +157,16 @@
       }
     },
     {
-      "scientificName": "Hordeum vulgare",
-      "commonName": "Barley",
-      "family": "Poaceae",
-      "genus": "Hordeum",
-      "species": "Hordeum vulgare",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "170284",
-        "description": "Barley, pearled, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 89
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 78,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum graminicola",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Ocimum basilicum",
       "commonName": "Basil",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Albahaca fresca; match taxonomico curado",
         "fdcId": "172232",
         "description": "Basil, fresh",
         "dataType": "sr_legacy_food",
@@ -393,12 +227,14 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "173745",
-        "description": "Beans, navy, mature seeds, raw",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Poroto verde crudo; proxy horticola de Phaseolus",
+        "fdcId": "169961",
+        "description": "Beans, snap, green, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 119
+        "nutrientCount": 99
       },
       "yieldProfile": {
         "level": "observed",
@@ -566,8 +402,10 @@
       "genus": "Beta",
       "species": "Beta vulgaris",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Betarraga cruda; match de especie horticola",
         "fdcId": "169145",
         "description": "Beets, raw",
         "dataType": "sr_legacy_food",
@@ -730,330 +568,16 @@
       }
     },
     {
-      "scientificName": "beta vulgaris",
-      "commonName": "Beets (sugar, fodder)",
-      "family": "Amaranthaceae",
-      "genus": "Beta",
-      "species": "Beta vulgaris",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169145",
-        "description": "Beets, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 92
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG 2-2IIIB",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Trifolium alexandrinum",
-      "commonName": "Berseem clover",
-      "family": "Fabaceae",
-      "genus": "Trifolium",
-      "species": "Trifolium alexandrinum",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 7,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Scorzonera hispanica",
-      "commonName": "Black salsify",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "173734",
-        "description": "Beans, black, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 90
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 12,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. lactucum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora spp.",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia minor",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Verticillium dahliae",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Fagopyrum esculentum",
-      "commonName": "Buckwheat",
-      "family": "Polygonaceae",
-      "genus": "Fagopyrum",
-      "species": "Fagopyrum esculentum",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "170686",
-        "description": "Buckwheat groats, roasted, cooked",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 93
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 16,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "poor host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus neglectus",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus neglectus",
-            "hostStatus": "poor host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "good host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG-4 (incl. AG-4-HG-II)",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotium rolfsii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Spongospora subterranea f. sp. subterranea",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Spongospora subterranea f. sp. subterranea",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Brassica oleracea",
       "commonName": "Cabbage (incl. Broccoli and cauliflower",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Repollo crudo; representante para Brassica oleracea mixta",
         "fdcId": "169975",
         "description": "Cabbage, raw",
         "dataType": "sr_legacy_food",
@@ -1225,8 +749,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Zanahoria cruda; match taxonomico curado",
         "fdcId": "170393",
         "description": "Carrots, raw",
         "dataType": "sr_legacy_food",
@@ -1398,12 +924,14 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169988",
-        "description": "Celery, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Eneldo fresco; corrige nombre comun ambiguo del catalogo",
+        "fdcId": "172233",
+        "description": "Dill weed, fresh",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 108
+        "nutrientCount": 64
       },
       "yieldProfile": {
         "level": "missing",
@@ -1466,8 +994,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Apio crudo; match taxonomico curado",
         "fdcId": "169988",
         "description": "Celery, raw",
         "dataType": "sr_legacy_food",
@@ -1588,42 +1118,16 @@
       }
     },
     {
-      "scientificName": "lathyrus sativus",
-      "commonName": "Chickling pea or chickling vetch",
-      "family": "Fabaceae",
-      "genus": "Lathyrus",
-      "species": "Lathyrus sativus",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Cichorium intybus",
       "commonName": "Chicory",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Hojas de achicoria crudas; match taxonomico curado",
         "fdcId": "169992",
         "description": "Chicory greens, raw",
         "dataType": "sr_legacy_food",
@@ -1786,164 +1290,20 @@
       }
     },
     {
-      "scientificName": "Trifolium spp.",
-      "commonName": "Clover",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 16,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Aphanomyces euteiches",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera betae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella pinodes",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Valerianella sp.",
-      "commonName": "Corn salad",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172428",
-        "description": "Peas, green, split, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 135
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Sclerotinia minor",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Coriandrum sativum",
       "commonName": "Corriander",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Cilantro fresco crudo; match coriander/cilantro",
+        "fdcId": "169997",
+        "description": "Coriander (cilantro) leaves, raw",
+        "dataType": "sr_legacy_food",
+        "nutrientCount": 76
       },
       "yieldProfile": {
         "level": "missing",
@@ -1970,82 +1330,20 @@
       }
     },
     {
-      "scientificName": "Trifolium incarnatum",
-      "commonName": "Crimson clover",
-      "family": "Fabaceae",
-      "genus": "Trifolium",
-      "species": "Trifolium incarnatum",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 7,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Cucumis sativus",
       "commonName": "Cucumber",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168409",
-        "description": "Cucumber, with peel, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Pepino crudo; match taxonomico curado",
+        "fdcId": "169225",
+        "description": "Cucumber, peeled, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 118
+        "nutrientCount": 117
       },
       "yieldProfile": {
         "level": "observed",
@@ -2213,8 +1511,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Berenjena cruda; match taxonomico curado",
         "fdcId": "169228",
         "description": "Eggplant, raw",
         "dataType": "sr_legacy_food",
@@ -2383,12 +1683,14 @@
       "genus": "Vicia",
       "species": "Vicia faba",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "173745",
-        "description": "Beans, navy, mature seeds, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Haba verde cruda; match taxonomico curado",
+        "fdcId": "170377",
+        "description": "Broadbeans, immature seeds, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 119
+        "nutrientCount": 64
       },
       "yieldProfile": {
         "level": "observed",
@@ -2550,184 +1852,16 @@
       }
     },
     {
-      "scientificName": "Brassica spp.",
-      "commonName": "Fodder rape / Leafy turnip",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "174683",
-        "description": "Grapes, red or green (European type, such as Thompson seedless), raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 108
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 43,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Albugo candida",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. Conglutinans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. Conglutinans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. conglutinans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. conglutinans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "active decline of population",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "non host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella brassicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella brassicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella brassicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella brassicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Allium sativum",
       "commonName": "Garlic",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Ajo crudo; match taxonomico curado",
         "fdcId": "169230",
         "description": "Garlic, raw",
         "dataType": "sr_legacy_food",
@@ -2866,254 +2000,16 @@
       }
     },
     {
-      "scientificName": "lolium multiflorum",
-      "commonName": "Italian Ryegrass",
-      "family": "Poaceae",
-      "genus": "Lolium",
-      "species": "Lolium multiflorum",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168434",
-        "description": "Mushrooms, brown, italian, or crimini, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 100
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "poor host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Lolium multiflorum",
-      "commonName": "Italian ryegrass",
-      "family": "Poaceae",
-      "genus": "Lolium",
-      "species": "Lolium multiflorum",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168434",
-        "description": "Mushrooms, brown, italian, or crimini, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 100
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 19,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhynchosporium secalis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhynchosporium secalis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Spongospora subterranea f. sp. subterranea",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula incarnata",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula incarnata",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula ishikariensis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Avena strigosa",
-      "commonName": "Japanese/Black oat",
-      "family": "Poaceae",
-      "genus": "Avena",
-      "species": "Avena strigosa",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169941",
-        "description": "Persimmons, japanese, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 93
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 7,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium graminearum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Allium ampeloprasum",
       "commonName": "Leek",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Leek crudo; match taxonomico curado",
         "fdcId": "169246",
         "description": "Leeks, (bulb and lower leaf-portion), raw",
         "dataType": "sr_legacy_food",
@@ -3216,12 +2112,14 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169249",
-        "description": "Lettuce, green leaf, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Lechuga cruda; match taxonomico curado",
+        "fdcId": "169247",
+        "description": "Lettuce, cos or romaine, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 107
+        "nutrientCount": 106
       },
       "yieldProfile": {
         "level": "observed",
@@ -3383,488 +2281,20 @@
       }
     },
     {
-      "scientificName": "Linum usitatissiumum",
-      "commonName": "Linseed",
-      "family": "Linaceae",
-      "genus": "Linum",
-      "species": "Linum usitatissimum",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 28,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Globodera rostochiensis / G. pallida",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phytium megalacanthum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytium megalacanthum",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora nicotianae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotium rolfsii",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Thielaviopsis basicola",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Verticillium albo-atrum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Lupinus spp.",
-      "commonName": "Lupins",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172423",
-        "description": "Lupins, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 75
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 18,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta pisi",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Corynespora cassiicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella pinodes",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phomopsis phaseoli",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG-11",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG-4 (incl. AG-4-HG-II)",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG-5",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Verticillium dahliae",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Verticillium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Medigaco sativa",
-      "commonName": "Luzerne (= alfalfa)",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168384",
-        "description": "Alfalfa seeds, sprouted, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 84
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 69,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Aphanomyces euteiches",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Ascochyta pisi",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum trifolii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum var. medicaginis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera trifolii f. sp. trifolium",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Zea mais",
       "commonName": "Maize (corn)",
       "family": "Poaceae",
       "genus": "Zea",
       "species": "Zea mays",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "174726",
-        "description": "Beef, New Zealand, imported, inside, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Maiz dulce amarillo crudo; corrige falso match por Zea",
+        "fdcId": "169998",
+        "description": "Corn, sweet, yellow, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 108
+        "nutrientCount": 126
       },
       "yieldProfile": {
         "level": "observed",
@@ -4026,186 +2456,18 @@
       }
     },
     {
-      "scientificName": "Tagetes sp.",
-      "commonName": "Marigold",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172428",
-        "description": "Peas, green, split, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 135
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 27,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. Pisi",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "non host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "poor host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium ultimum",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Cucumis melo",
       "commonName": "Melon",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "167765",
-        "description": "Watermelon, raw",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Melon cantalupo crudo; proxy para Cucumis melo",
+        "fdcId": "169092",
+        "description": "Melons, cantaloupe, raw",
         "dataType": "sr_legacy_food",
         "nutrientCount": 108
       },
@@ -4366,184 +2628,16 @@
       }
     },
     {
-      "scientificName": "Avena sativa",
-      "commonName": "Oat",
-      "family": "Poaceae",
-      "genus": "Avena",
-      "species": "Avena sativa",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168872",
-        "description": "Oat bran, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 96
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 58,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum graminicola",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus destructor",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium graminearum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Allium spp.",
       "commonName": "Onion",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Cebolla cruda; proxy de especie Allium horticola",
         "fdcId": "170000",
         "description": "Onions, raw",
         "dataType": "sr_legacy_food",
@@ -4691,8 +2785,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Perejil fresco; match taxonomico curado",
         "fdcId": "170416",
         "description": "Parsley, fresh",
         "dataType": "sr_legacy_food",
@@ -4741,62 +2837,20 @@
       }
     },
     {
-      "scientificName": "Pastinaca sativa",
-      "commonName": "Parsnip",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "170417",
-        "description": "Parsnips, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 56
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 3,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "Host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Pisum spp.",
       "commonName": "Peas",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172428",
-        "description": "Peas, green, split, mature seeds, raw",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Arveja verde; proxy de Pisum disponible en FDC",
+        "fdcId": "170419",
+        "description": "Peas, green, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 135
+        "nutrientCount": 100
       },
       "yieldProfile": {
         "level": "observed",
@@ -4958,334 +3012,20 @@
       }
     },
     {
-      "scientificName": "Lolium perenne",
-      "commonName": "Perennial ryegrass",
-      "family": "Poaceae",
-      "genus": "Lolium",
-      "species": "Lolium perenne",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 20,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "good host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG-1-IA",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhynchosporium secalis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhynchosporium secalis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula incarnata",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula incarnata",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Typhula ishikariensis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Trifolium resupinatum",
-      "commonName": "Persian/reversed clover",
-      "family": "Fabaceae",
-      "genus": "Trifolium",
-      "species": "Trifolium resupinatum",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 7,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Phacelia sp.",
-      "commonName": "Phacelia",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172428",
-        "description": "Peas, green, split, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 135
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 14,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "non host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "non host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "poor host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG 2-2IIIB",
-            "hostStatus": "good host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia minor",
-            "hostStatus": "good host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Xiphinema index",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Solanum tuberosum",
       "commonName": "Potato",
       "family": "Solanaceae",
       "genus": "Solanum",
       "species": "Solanum tuberosum",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168482",
-        "description": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Papa cruda; match taxonomico curado",
+        "fdcId": "170026",
+        "description": "Potatoes, flesh and skin, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 116
+        "nutrientCount": 102
       },
       "yieldProfile": {
         "level": "observed",
@@ -5453,8 +3193,10 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Zapallo/calabaza crudo; proxy de genero Cucurbita",
         "fdcId": "168448",
         "description": "Pumpkin, raw",
         "dataType": "sr_legacy_food",
@@ -5626,8 +3368,10 @@
       "genus": "Raphanus",
       "species": "Raphanus sativus",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Rabano crudo; match taxonomico curado",
         "fdcId": "169276",
         "description": "Radishes, raw",
         "dataType": "sr_legacy_food",
@@ -5793,640 +3537,20 @@
       }
     },
     {
-      "scientificName": "Guizotia abyssinica",
-      "commonName": "Ramtil",
-      "family": "Asteraceae",
-      "genus": "Guizotia",
-      "species": "Guizotia abyssinica",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 8,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotium rolfsii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Xiphinema index",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Brassica napus",
-      "commonName": "Rapeseed",
-      "family": "Brassicaceae",
-      "genus": "Brassica",
-      "species": "Brassica napus",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "171028",
-        "description": "Oil, grapeseed",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 82
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 76,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Albugo candida",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Erwinia carotovora",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum f. sp. conglutinans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera cruciferae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "poor host",
-            "diseaseReduction": "very effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "poor host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella brassicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma lingam",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Trifolium pratense",
-      "commonName": "Red clover",
-      "family": "Fabaceae",
-      "genus": "Trifolium",
-      "species": "Trifolium pratense",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 46,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Aphanomyces euteiches",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Ascochyta pisi",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Ascochyta spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum trifolii",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus destructor",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Helicotylenchus spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera trifolii f. sp. trifolium",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Rheum rhabarbarum",
-      "commonName": "Rhubarb",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "167758",
-        "description": "Rhubarb, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 72
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 4,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Erwinia carotovora",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora spp.",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "Host",
-            "diseaseReduction": "effective"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Oryza sativa",
-      "commonName": "Rice",
-      "family": "Poaceae",
-      "genus": "Oryza",
-      "species": "Oryza sativa",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169703",
-        "description": "Rice, brown, long-grain, raw (Includes foods for USDA's Food Distribution Program)",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 134
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 32,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Bipolaris spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Praylenchus zeae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Eruca vesicaria subsp. Sativa",
       "commonName": "Rocket",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Rucula/arugula cruda; agrega especie sin match previo",
+        "fdcId": "169387",
+        "description": "Arugula, raw",
+        "dataType": "sr_legacy_food",
+        "nutrientCount": 73
       },
       "yieldProfile": {
         "level": "missing",
@@ -6555,524 +3679,16 @@
       }
     },
     {
-      "scientificName": "Secale cereale",
-      "commonName": "Rye",
-      "family": "Poaceae",
-      "genus": "Secale",
-      "species": "Secale cereale",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172390",
-        "description": "Chicken, broilers or fryers, wing, meat and skin, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 129
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 43,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum graminicola",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera avenae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Sorghum spp.",
-      "commonName": "Sorghum, Sudangrass",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "2710842",
-        "description": "Sorghum, whole grain, white, dry, raw",
-        "dataType": "foundation_food",
-        "nutrientCount": 23
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 34,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Cochliobolus bicolor",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum graminicola",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "active decline of population",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "poor host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "poor host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "very effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Monosporascus cannonballus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma sorghina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus neglectus",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus neglectus",
-            "hostStatus": "good host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Glycine max",
-      "commonName": "Soybean",
-      "family": "Fabaceae",
-      "genus": "Glycine",
-      "species": "Glycine max",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "174270",
-        "description": "Soybeans, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 78
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 97,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta sojaecola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Corynespora cassiicola",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Corynespora cassiicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Corynespora cassiicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium graminearum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani f. sp. phaseoli",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium virguliforme",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Spinacia oleracea",
       "commonName": "Spinach",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Espinaca cruda; match taxonomico curado",
         "fdcId": "168462",
         "description": "Spinach, raw",
         "dataType": "sr_legacy_food",
@@ -7244,12 +3860,14 @@
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "167927",
-        "description": "Toaster Pastries, fruit, frosted (include apples, blueberry, cherry, strawberry)",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Frutilla cruda; corrige match a topping de frutilla",
+        "fdcId": "167762",
+        "description": "Strawberries, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 135
+        "nutrientCount": 108
       },
       "yieldProfile": {
         "level": "observed",
@@ -7411,188 +4029,20 @@
       }
     },
     {
-      "scientificName": "Helianthus spp.",
-      "commonName": "Sunflower",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "2515381",
-        "description": "Seeds, sunflower seed, kernel, raw",
-        "dataType": "foundation_food",
-        "nutrientCount": 19
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 46,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Erwinia carotovora",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium solani",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Helicotylenchus spp.",
-            "hostStatus": "poor host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Paratrichodorus christiei",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma exigua",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma macdonaldi",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phomopsis spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora cactorum",
-            "hostStatus": null,
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora cryptogea",
-            "hostStatus": null,
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Capsicum annum",
       "commonName": "Sweet pepper",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169998",
-        "description": "Corn, sweet, yellow, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Pimenton rojo crudo; corrige alias generico sweet",
+        "fdcId": "170108",
+        "description": "Peppers, sweet, red, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 126
+        "nutrientCount": 116
       },
       "yieldProfile": {
         "level": "observed",
@@ -7754,180 +4204,16 @@
       }
     },
     {
-      "scientificName": "Nicotiana tabacum",
-      "commonName": "Tobacco",
-      "family": "Solanaceae",
-      "genus": "Nicotiana",
-      "species": "Nicotiana tabacum",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 37,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum destructivum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Curvularia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Erwinia carotovora",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Macrophomina phaseolina",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne arenaria",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora nicotianae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Phytophthora spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus penetrans",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Praylenchus zeae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Lycopersicon esculentum",
       "commonName": "Tomato",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Tomate crudo; match taxonomico curado",
         "fdcId": "170457",
         "description": "Tomatoes, red, ripe, raw, year round average",
         "dataType": "sr_legacy_food",
@@ -8093,188 +4379,20 @@
       }
     },
     {
-      "scientificName": "× Triticosecale",
-      "commonName": "Triticale",
-      "family": "Poaceae",
-      "genus": "Triticosecale",
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169718",
-        "description": "Triticale",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 67
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 27,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Gaeumannomyces graminis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Microdochium nivale",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pseudocercosporella herpotrichoides",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia cerealis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia cerealis",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Brassica rapa",
       "commonName": "Turnip",
       "family": "Brassicaceae",
       "genus": "Brassica",
       "species": "Brassica rapa",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "170061",
-        "description": "Turnip greens, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Nabo crudo; match taxonomico curado",
+        "fdcId": "170465",
+        "description": "Turnips, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 93
+        "nutrientCount": 91
       },
       "yieldProfile": {
         "level": "missing",
@@ -8433,82 +4551,20 @@
       }
     },
     {
-      "scientificName": "Vicia sp.",
-      "commonName": "Vetch",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172428",
-        "description": "Peas, green, split, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 135
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 7,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Aphanomyces euteiches",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Ascochyta pisi",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium oxysporum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Mycosphaerella pinodes",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
       "scientificName": "Citrullus lanatus",
       "commonName": "Watermelone",
       "family": "Familia no clasificada",
       "genus": null,
       "species": null,
       "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Sandia cruda; corrige ortografia Watermelone",
+        "fdcId": "167765",
+        "description": "Watermelon, raw",
+        "dataType": "sr_legacy_food",
+        "nutrientCount": 108
       },
       "yieldProfile": {
         "level": "missing",
@@ -8667,635 +4723,93 @@
       }
     },
     {
-      "scientificName": "Triticum aestivum",
-      "commonName": "Wheat",
-      "family": "Poaceae",
-      "genus": "Triticum",
-      "species": "Triticum aestivum",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "2712166",
-        "description": "Einkorn, grain, wheat berry, dry, raw",
-        "dataType": "sub_sample_food",
-        "nutrientCount": 1
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 85,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Ascochyta spp.",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cochliobolus sativus",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Colletotrichum coccodes",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Drechslera spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium culmorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Trifolium repens",
-      "commonName": "White clover",
+      "scientificName": "Phaseolus vulgaris",
+      "commonName": "Poroto seco o granado",
       "family": "Fabaceae",
-      "genus": "Trifolium",
-      "species": "Trifolium repens",
+      "genus": "Phaseolus",
+      "species": "Phaseolus vulgaris",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "169251",
-        "description": "Mushrooms, white, raw",
+        "quality": "proxy",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Poroto maduro crudo; proxy por poroto pinto USDA para poroto seco/granado",
+        "fdcId": "175199",
+        "description": "Beans, pinto, mature seeds, raw (Includes foods for USDA's Food Distribution Program)",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 125
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 18,
-        "agents": [
-          {
-            "type": "fungus",
-            "name": "Aphanomyces euteiches",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Cylindrocarpon destructans",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium avenaceum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Fusarium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Phoma medicaginis var. pinodella",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Pythium spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia spp.",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia trifoliorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Spongospora subterranea f. sp. subterranea",
-            "hostStatus": "non host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Thielaviopsis basicola",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "Sinapis alba",
-      "commonName": "White mustard",
-      "family": "Brassicaceae",
-      "genus": "Sinapis",
-      "species": "Sinapis alba",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "323299",
-        "description": "CHEESE, RICOTTA, WHOLE MILK, GALBANI",
-        "dataType": "sub_sample_food",
-        "nutrientCount": 42
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 18,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Globodera rostochiensis / G. pallida",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Heterodera schachtii",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "good host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "poor host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne incognita",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne javanica",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": "n.i"
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Plasmodiophora brassicae",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Pratylenchus neglectus",
-            "hostStatus": "good host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Rhizoctonia solani AG 2-2IIIB",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Streptomyces scabies",
-            "hostStatus": "hostplant suitability unknown",
-            "diseaseReduction": "effective"
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "vicia faba",
-      "commonName": "beans",
-      "family": "Fabaceae",
-      "genus": "Vicia",
-      "species": "Vicia faba",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "173745",
-        "description": "Beans, navy, mature seeds, raw",
-        "dataType": "sr_legacy_food",
-        "nutrientCount": 119
+        "nutrientCount": 99
       },
       "yieldProfile": {
         "level": "observed",
         "source": "FAOSTAT Chile local",
         "years": "2020-2024",
-        "item": "Broad beans and horse beans, green",
-        "yieldKgM2": 0.808448,
+        "item": "Beans, dry",
+        "yieldKgM2": 0.159176,
         "observations": 5
       },
       "rotationProfile": {
         "source": "Best4Soil local",
-        "agentCount": 2,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
+        "agentCount": 0,
+        "agents": []
       }
     },
     {
-      "scientificName": "brassica spp.",
-      "commonName": "mustards",
-      "family": "Familia no clasificada",
-      "genus": null,
-      "species": null,
+      "scientificName": "Lens culinaris",
+      "commonName": "Lenteja",
+      "family": "Fabaceae",
+      "genus": "Lens",
+      "species": "Lens culinaris",
       "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 2,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": "not effective"
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "lolium perenne",
-      "commonName": "perennial ryegrass",
-      "family": "Poaceae",
-      "genus": "Lolium",
-      "species": "Lolium perenne",
-      "nutritionMatch": {
-        "quality": "missing",
-        "source": "USDA FoodData Central local"
-      },
-      "yieldProfile": {
-        "level": "missing",
-        "source": "FAOSTAT Chile local",
-        "item": null
-      },
-      "rotationProfile": {
-        "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "poor host",
-            "diseaseReduction": null
-          }
-        ]
-      }
-    },
-    {
-      "scientificName": "solanum tuberosum",
-      "commonName": "potato",
-      "family": "Solanaceae",
-      "genus": "Solanum",
-      "species": "Solanum tuberosum",
-      "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "168482",
-        "description": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Lenteja cruda; leguminosa alimentaria agregada al catalogo curado",
+        "fdcId": "172420",
+        "description": "Lentils, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 116
+        "nutrientCount": 104
       },
       "yieldProfile": {
         "level": "observed",
         "source": "FAOSTAT Chile local",
         "years": "2020-2024",
-        "item": "Potatoes",
-        "yieldKgM2": 2.964056,
+        "item": "Lentils, dry",
+        "yieldKgM2": 0.046771999999999994,
         "observations": 5
       },
       "rotationProfile": {
         "source": "Best4Soil local",
-        "agentCount": 5,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Ditylenchus dipsaci",
-            "hostStatus": "good host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne chitwoodi",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "moderate host",
-            "diseaseReduction": null
-          },
-          {
-            "type": "fungus",
-            "name": "Sclerotinia sclerotiorum",
-            "hostStatus": "host",
-            "diseaseReduction": null
-          }
-        ]
+        "agentCount": 0,
+        "agents": []
       }
     },
     {
-      "scientificName": "secale cereale",
-      "commonName": "rye",
-      "family": "Poaceae",
-      "genus": "Secale",
-      "species": "Secale cereale",
+      "scientificName": "Cicer arietinum",
+      "commonName": "Garbanzo",
+      "family": "Fabaceae",
+      "genus": "Cicer",
+      "species": "Cicer arietinum",
       "nutritionMatch": {
-        "quality": "candidate",
-        "source": "USDA FoodData Central local",
-        "fdcId": "172390",
-        "description": "Chicken, broilers or fryers, wing, meat and skin, raw",
+        "quality": "observed",
+        "source": "USDA FoodData Central local; criterio de match FAO/INFOODS; contraste nacional Tabla de Composicion Quimica de Alimentos Chilenos",
+        "matchingMethod": "curated-fdc-description",
+        "matchingNotes": "Garbanzo maduro crudo; leguminosa alimentaria agregada al catalogo curado",
+        "fdcId": "173756",
+        "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw",
         "dataType": "sr_legacy_food",
-        "nutrientCount": 129
+        "nutrientCount": 90
       },
       "yieldProfile": {
-        "level": "missing",
+        "level": "observed",
         "source": "FAOSTAT Chile local",
-        "item": null
+        "years": "2020-2024",
+        "item": "Chick peas, dry",
+        "yieldKgM2": 0.047434,
+        "observations": 5
       },
       "rotationProfile": {
         "source": "Best4Soil local",
-        "agentCount": 1,
-        "agents": [
-          {
-            "type": "nematode",
-            "name": "Meloidogyne hapla",
-            "hostStatus": "non host",
-            "diseaseReduction": "effective"
-          }
-        ]
+        "agentCount": 0,
+        "agents": []
       }
     }
   ]

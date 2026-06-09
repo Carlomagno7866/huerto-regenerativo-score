@@ -93,14 +93,7 @@ export type RotationAgent = {
   risk: number;
 };
 
-export type ScoreObjective =
-  | "balanced"
-  | "max-nutrients"
-  | "low-water"
-  | "healthy-rotation"
-  | "family-savings";
-
-export type UserMode = "home-garden" | "small-farmer";
+export type ScoreObjective = "balanced" | "max-nutrients" | "low-water";
 
 export type NutrientPriority =
   | "protein"
@@ -116,13 +109,7 @@ export type NutrientPriority =
   | "energy";
 
 export type OptimizationInput = {
-  latitude?: number;
-  longitude?: number;
-  regionSlug?: string;
-  communeSlug?: string;
-  gardenType: "optimized-bed" | "natural-soil";
   objective: ScoreObjective;
-  mode: UserMode;
   years: number;
   subplots: number;
   areaM2: number;
