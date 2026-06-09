@@ -42,6 +42,16 @@ El SCORE nutricional ahora usa primero matches curados por `fdc_id` exacto y sol
 
 La rotacion usa un catalogo mas realista para huerta y tiene suficientes Fabaceae alimentarias para recomendar leguminosas aunque el usuario bloquee cultivos no pertinentes como vicia, treboles o canonigo.
 
+## Ampliacion 2026-06-09
+
+Se aumento el catalogo publico de 34 a 73 cultivos evaluables. La ampliacion abre cultivos alimentarios que ya estaban en la base oficial local o que fueron agregados como filas curadas con taxonomia, nombre local y `fdc_id` oficial. Se exigio que cada cultivo expuesto tuviera valores numericos para proteina, fibra, vitamina A, vitamina C, folato, calcio, hierro, zinc, potasio y magnesio. Los candidatos con perfiles incompletos en la copia local de FoodData Central quedaron fuera del catalogo publico, aunque su match curado puede conservarse para investigacion posterior.
+
+Cultivos agregados o habilitados en esta revision incluyen acelga, aji verde, alcachofa, arveja china, brocoli, caupi, endivia, guandu, hierbabuena, hojas de mostaza, jicama, mani, menta piperita, okra, poroto mung, sesamo, taro, yuca, zapallo italiano, avena, cebada, trigo, arroz, centeno, sorgo, soya, lupino, linaza, maravilla, raps, mostaza blanca, trigo sarraceno, ruibarbo, chirivia, salsifi negro y otros cultivos alimentarios trazables.
+
+Para nutricion se uso USDA FoodData Central local por `fdc_id` exacto. Para rendimiento se prioriza FAOSTAT Chile 2020-2024 cuando existe item directo; si no existe, se declara proxy FAOSTAT o estimacion por familia. Para agua/ciclo se mantienen rangos FAO Crop Water Needs por grupos agronomicos y se agregaron perfiles para hierbas culinarias, hojas de ciclo corto, raices/tuberculos tropicales, leguminosas ampliadas, alcachofa y okra.
+
+Verificacion local: `npm.cmd test` confirma 73 cultivos, 19 familias botanicas y perfil nutricional completo para todos los cultivos expuestos.
+
 ## Referencias
 
 - USDA FoodData Central. U.S. Department of Agriculture, Agricultural Research Service, Beltsville Human Nutrition Research Center. https://fdc.nal.usda.gov/

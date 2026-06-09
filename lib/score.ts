@@ -6,8 +6,7 @@ import type {
   OptimizationInput,
   RotationAgent,
   ScoreBreakdown,
-  ScoreConfidence,
-  ScoreObjective
+  ScoreConfidence
 } from "./types";
 
 const DAILY_TARGETS: Record<string, { label: string; amount: number; weight: number }> = {
@@ -22,6 +21,13 @@ const DAILY_TARGETS: Record<string, { label: string; amount: number; weight: num
   potassium: { label: "potasio", amount: 3400, weight: 0.7 },
   magnesium: { label: "magnesio", amount: 420, weight: 0.7 }
 };
+
+const SCORE_WEIGHTS = {
+  nutrition: 0.6,
+  resources: 0.4
+};
+
+const CONFIDENCE_PENALTY_SHARE = 0.03;
 
 type Benchmarks = {
   nutrientsPerM2Day: [number, number];
@@ -47,12 +53,9 @@ export function scoreCrop(
   const rotation = scoreRotationV2(crop, previousCrops, previousFamilies, yearFamilies);
   const soil = crop.soilFit;
   const cost = 0;
-  const weights = weightsForObjective(input.objective);
-  const evidenceScore = clamp01(
-    nutrition * weights.nutrition + resources * weights.resources + rotation.value * weights.rotation
-  );
+  const evidenceScore = clamp01(nutrition * SCORE_WEIGHTS.nutrition + resources * SCORE_WEIGHTS.resources);
   const confidence = confidenceScore(crop.confidence);
-  const total = clamp01(evidenceScore * (0.75 + 0.25 * confidence));
+  const total = clamp01(evidenceScore * (1 - CONFIDENCE_PENALTY_SHARE + CONFIDENCE_PENALTY_SHARE * confidence));
   const leadingNutrients = topNutrients(diagnostics.contributions);
   const sharedAgent = rotation.sharedAgents[0];
 
@@ -62,17 +65,17 @@ export function scoreCrop(
       ? `Aporta mejor en ${leadingNutrients.join(", ")}; el subindice nutricional queda en ${Math.round(nutrition * 100)}.`
       : `No hay suficientes nutrientes USDA trazables; el componente nutricional se conserva bajo.`,
     sharedAgent
-      ? `Advertencia sanitaria: comparte ${sharedAgent.name} con cultivos previos, por eso baja la rotacion.`
+      ? `Restriccion sanitaria: comparte ${sharedAgent.name} con cultivos previos; el planificador debe evitarlo si hay alternativas.`
       : rotation.familyPenalty
-        ? `La familia ${crop.family} aparece cerca en la rotacion; conviene espaciarla.`
-        : `La secuencia no repite familia ni agentes sanitarios relevantes en la subparcela.`
+        ? `La familia ${crop.family} aparece cerca en la rotacion; el planificador la trata como restriccion.`
+        : `La rotacion queda fuera del SCORE y se aplica como restriccion obligatoria de planificacion.`
   ];
 
   const evidenceNotes = [
     `Rendimiento: ${crop.evidence.yieldKgM2.label}${crop.evidence.yieldKgM2.matchedItem ? ` (${crop.evidence.yieldKgM2.matchedItem})` : ""}.`,
     `Agua/ciclo: ${crop.evidence.waterMmCycle.label}.`,
     `Nutricion: ${crop.evidence.nutrition.matchedFood ?? crop.evidence.nutrition.label}.`,
-    `Objetivo aplicado: ${objectiveLabel(input.objective)} con rotacion sanitaria obligatoria.`
+    `SCORE independiente del objetivo: nutricion ${Math.round(SCORE_WEIGHTS.nutrition * 100)}%, recursos ${Math.round(SCORE_WEIGHTS.resources * 100)}%, confianza como penalizacion maxima ${Math.round(CONFIDENCE_PENALTY_SHARE * 100)}%.`
   ];
 
   return {
@@ -198,7 +201,6 @@ function compareRankedCrops(
     return (
       a.crop.waterMmCycle - b.crop.waterMmCycle ||
       b.score.total - a.score.total ||
-      b.score.rotation - a.score.rotation ||
       a.crop.commonName.localeCompare(b.crop.commonName, "es")
     );
   }
@@ -216,7 +218,6 @@ function compareRankedCrops(
   return (
     b.score.total - a.score.total ||
     b.score.nutrition - a.score.nutrition ||
-    b.score.rotation - a.score.rotation ||
     a.crop.waterMmCycle - b.crop.waterMmCycle ||
     a.crop.commonName.localeCompare(b.crop.commonName, "es")
   );
@@ -240,7 +241,6 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
   const nutrientYieldByTarget: Record<string, number> = {};
 
   for (const [key, target] of Object.entries(DAILY_TARGETS)) {
-    const priorityWeight = activePriorities.includes(key as NutrientPriority) ? 1.75 : 1;
     const amountPer100g = crop.nutrition[key] ?? 0;
     const delivered = (amountPer100g * gramsHarvest) / 100;
     const nutrientDays = delivered / target.amount;
@@ -250,9 +250,9 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     if (input.objective === "max-nutrients" && activePriorities.includes(key as NutrientPriority)) {
       priorityNutrientValue += nutrientDays;
     }
-    weighted += adequacy * target.weight * priorityWeight;
-    totalWeight += target.weight * priorityWeight;
-    usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight * priorityWeight;
+    weighted += adequacy * target.weight;
+    totalWeight += target.weight;
+    usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight;
   }
 
   if (activePriorities.includes("energy")) {
@@ -263,9 +263,6 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     contributions.energy = energyAdequacy;
     nutrientYieldByTarget.energy = energyDays;
     priorityNutrientValue += energyDays;
-    weighted += energyAdequacy * 0.55;
-    totalWeight += 0.55;
-    usefulNutrientPoints += Math.min(energyDays, crop.cycleDays) * 0.55;
   }
 
   if (input.objective === "max-nutrients" && !activePriorities.length) {
@@ -320,24 +317,6 @@ function normalizeText(value: string) {
     .replace(/[^a-z0-9 ]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function weightsForObjective(objective: ScoreObjective) {
-  const weights: Record<ScoreObjective, { nutrition: number; resources: number; rotation: number }> = {
-    balanced: { nutrition: 0.36, resources: 0.28, rotation: 0.36 },
-    "max-nutrients": { nutrition: 0.62, resources: 0.16, rotation: 0.22 },
-    "low-water": { nutrition: 0.24, resources: 0.54, rotation: 0.22 }
-  };
-  return weights[objective];
-}
-
-function objectiveLabel(objective: ScoreObjective) {
-  const labels: Record<ScoreObjective, string> = {
-    balanced: "balance general",
-    "max-nutrients": "maximo nutriente",
-    "low-water": "bajo riego"
-  };
-  return labels[objective];
 }
 
 function scoreRotationV2(crop: CropCandidate, previousCrops: CropCandidate[], previousFamilies: string[], yearFamilies: string[]) {

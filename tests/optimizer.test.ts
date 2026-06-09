@@ -91,7 +91,16 @@ test("balance selecciona la combinacion con mejor SCORE total bajo restricciones
   const crops = getCatalog("", 120);
   const input: OptimizationInput = { ...baseInput, objective: "balanced" };
   const assignments = optimize(crops, input);
-  const expected = greedyExpected(crops, input, (crop) => -scoreSingleCrop(crop, crops, input).total);
+  const expected = greedyExpected(crops, input, (a, b) => {
+    const scoreA = scoreSingleCrop(a, crops, input);
+    const scoreB = scoreSingleCrop(b, crops, input);
+    return (
+      scoreB.total - scoreA.total ||
+      scoreB.nutrition - scoreA.nutrition ||
+      a.waterMmCycle - b.waterMmCycle ||
+      a.commonName.localeCompare(b.commonName, "es")
+    );
+  });
 
   assert.deepEqual(
     cropIds(assignments),
@@ -109,7 +118,17 @@ test("nutrientes maximiza la produccion de los nutrientes escogidos", () => {
     priorityNutrients: ["iron", "vitaminC"]
   };
   const assignments = optimize(crops, input);
-  const expected = greedyExpected(crops, input, (crop) => -priorityNutrientValue(crop, input));
+  const expected = greedyExpected(crops, input, (a, b) => {
+    const scoreA = scoreSingleCrop(a, crops, input);
+    const scoreB = scoreSingleCrop(b, crops, input);
+    return (
+      priorityNutrientValue(b, input) - priorityNutrientValue(a, input) ||
+      scoreB.nutrition - scoreA.nutrition ||
+      scoreB.total - scoreA.total ||
+      a.waterMmCycle - b.waterMmCycle ||
+      a.commonName.localeCompare(b.commonName, "es")
+    );
+  });
 
   assert.deepEqual(cropIds(assignments), cropIds(expected));
   for (const assignment of assignments) {
@@ -124,7 +143,15 @@ test("bajo riego selecciona la combinacion factible que menos agua utiliza", () 
   const crops = getCatalog("", 120);
   const input: OptimizationInput = { ...baseInput, objective: "low-water", subplots: 6 };
   const assignments = optimize(crops, input);
-  const expected = greedyExpected(crops, input, (crop) => crop.waterMmCycle);
+  const expected = greedyExpected(crops, input, (a, b) => {
+    const scoreA = scoreSingleCrop(a, crops, input);
+    const scoreB = scoreSingleCrop(b, crops, input);
+    return (
+      a.waterMmCycle - b.waterMmCycle ||
+      scoreB.total - scoreA.total ||
+      a.commonName.localeCompare(b.commonName, "es")
+    );
+  });
 
   assert.deepEqual(waterProfile(assignments), waterProfile(expected));
   assert.equal(
@@ -134,10 +161,27 @@ test("bajo riego selecciona la combinacion factible que menos agua utiliza", () 
   );
 });
 
+test("el SCORE del cultivo no depende del objetivo de optimizacion", () => {
+  const crops = getCatalog("", 120);
+  const crop = crops.find((item) => item.commonName === "Tomate") ?? crops[0];
+  const balanced = scoreSingleCrop(crop, crops, { ...baseInput, objective: "balanced" });
+  const nutrients = scoreSingleCrop(crop, crops, {
+    ...baseInput,
+    objective: "max-nutrients",
+    priorityNutrients: ["iron", "vitaminC", "energy"]
+  });
+  const lowWater = scoreSingleCrop(crop, crops, { ...baseInput, objective: "low-water" });
+
+  assert.equal(nutrients.total, balanced.total, "el SCORE total no debe cambiar por objetivo");
+  assert.equal(lowWater.total, balanced.total, "el SCORE total no debe cambiar por objetivo");
+  assert.equal(nutrients.nutrition, balanced.nutrition, "la nutricion base del SCORE no debe ponderar prioridades");
+  assert.equal(lowWater.resources, balanced.resources, "recursos base del SCORE no debe ponderar objetivos");
+});
+
 function greedyExpected(
   crops: CropCandidate[],
   input: OptimizationInput,
-  primaryMetric: (crop: CropCandidate) => number
+  compare: (a: CropCandidate, b: CropCandidate) => number
 ) {
   const assignments: Assignment[] = [];
   const usedIds = new Set<string>();
@@ -152,7 +196,7 @@ function greedyExpected(
         .filter((crop) => !previousYearIds.has(crop.id))
         .filter((crop) => !yearIds.includes(crop.id))
         .filter((crop) => !yearFamilies.includes(crop.family))
-        .sort((a, b) => primaryMetric(a) - primaryMetric(b) || a.commonName.localeCompare(b.commonName, "es"));
+        .sort(compare);
       const crop = ranked[0];
       assert.ok(crop, "debe existir un cultivo factible para cada cupo");
       assignments.push({

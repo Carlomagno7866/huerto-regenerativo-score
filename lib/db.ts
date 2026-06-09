@@ -143,40 +143,191 @@ const CURATED_GARDEN_CROPS = new Set([
   "allium ampeloprasum",
   "allium sativum",
   "allium spp",
+  "abelmoschus esculentus",
   "anethum graveolens",
   "apium graveolens",
   "asparagus offininalis",
+  "arachis hypogaea",
+  "avena sativa",
+  "avena strigosa",
   "beta vulgaris",
+  "beta vulgaris var cicla",
+  "brassica juncea",
+  "brassica napus",
   "brassica oleracea",
+  "brassica oleracea var italica",
   "brassica rapa",
   "capsicum annum",
+  "capsicum annuum var annuum",
   "cichorium intybus",
+  "cichorium endivia",
   "cicer arietinum",
+  "colocasia esculenta",
   "citrullus lanatus",
+  "cynara cardunculus var scolymus",
   "coriandrum sativum",
   "cucumis melo",
   "cucumis sativus",
+  "cucurbita pepo",
   "cucurbita spp",
   "daucus carota",
+  "dioscorea spp",
   "eruca vesicaria subsp sativa",
+  "fagopyrum esculentum",
   "fragaria x ananassa",
+  "glycine max",
+  "helianthus spp",
+  "hordeum vulgare",
   "lactuca sativa",
+  "lathyrus sativus",
   "lens culinaris",
+  "linum usitatissiumum",
+  "lupinus spp",
   "lycopersicon esculentum",
+  "manihot esculenta",
+  "medigaco sativa",
+  "mentha piperita",
+  "mentha spicata",
   "ocimum basilicum",
+  "oryza sativa",
+  "pachyrhizus erosus",
+  "pastinaca sativa",
   "petroselinum crispum",
   "phaseolus spp",
   "phaseolus vulgaris",
   "pisum spp",
+  "pisum sativum var saccharatum",
   "raphanus sativus",
+  "rheum rhabarbarum",
+  "scorzonera hispanica",
+  "secale cereale",
+  "sesamum indicum",
+  "sinapis alba",
   "solanum melongena",
   "solanum tuberosum",
+  "sorghum spp",
   "spinacia oleracea",
+  "triticum aestivum",
+  "vigna radiata",
+  "vigna unguiculata",
   "vicia faba",
+  "cajanus cajan",
   "zea mais"
 ]);
 
 const CURATED_EXTRA_CROPS: CatalogRow[] = [
+  {
+    scientificName: "Abelmoschus esculentus",
+    commonName: "Okra",
+    family: "Malvaceae",
+    genus: "Abelmoschus",
+    species: "Abelmoschus esculentus"
+  },
+  {
+    scientificName: "Arachis hypogaea",
+    commonName: "Mani",
+    family: "Fabaceae",
+    genus: "Arachis",
+    species: "Arachis hypogaea"
+  },
+  {
+    scientificName: "Beta vulgaris var. cicla",
+    commonName: "Acelga",
+    family: "Amaranthaceae",
+    genus: "Beta",
+    species: "Beta vulgaris"
+  },
+  {
+    scientificName: "Brassica juncea",
+    commonName: "Hojas de mostaza",
+    family: "Brassicaceae",
+    genus: "Brassica",
+    species: "Brassica juncea"
+  },
+  {
+    scientificName: "Brassica oleracea var. italica",
+    commonName: "Brocoli",
+    family: "Brassicaceae",
+    genus: "Brassica",
+    species: "Brassica oleracea"
+  },
+  {
+    scientificName: "Capsicum annuum var. annuum",
+    commonName: "Aji verde",
+    family: "Solanaceae",
+    genus: "Capsicum",
+    species: "Capsicum annuum"
+  },
+  {
+    scientificName: "Cajanus cajan",
+    commonName: "Guandu",
+    family: "Fabaceae",
+    genus: "Cajanus",
+    species: "Cajanus cajan"
+  },
+  {
+    scientificName: "Cichorium endivia",
+    commonName: "Endivia",
+    family: "Asteraceae",
+    genus: "Cichorium",
+    species: "Cichorium endivia"
+  },
+  {
+    scientificName: "Colocasia esculenta",
+    commonName: "Taro",
+    family: "Araceae",
+    genus: "Colocasia",
+    species: "Colocasia esculenta"
+  },
+  {
+    scientificName: "Cucurbita pepo",
+    commonName: "Zapallo italiano",
+    family: "Cucurbitaceae",
+    genus: "Cucurbita",
+    species: "Cucurbita pepo"
+  },
+  {
+    scientificName: "Cynara cardunculus var. scolymus",
+    commonName: "Alcachofa",
+    family: "Asteraceae",
+    genus: "Cynara",
+    species: "Cynara cardunculus"
+  },
+  {
+    scientificName: "Dioscorea spp.",
+    commonName: "Name",
+    family: "Dioscoreaceae",
+    genus: "Dioscorea",
+    species: null
+  },
+  {
+    scientificName: "Manihot esculenta",
+    commonName: "Yuca",
+    family: "Euphorbiaceae",
+    genus: "Manihot",
+    species: "Manihot esculenta"
+  },
+  {
+    scientificName: "Mentha piperita",
+    commonName: "Menta piperita",
+    family: "Lamiaceae",
+    genus: "Mentha",
+    species: "Mentha piperita"
+  },
+  {
+    scientificName: "Mentha spicata",
+    commonName: "Hierbabuena",
+    family: "Lamiaceae",
+    genus: "Mentha",
+    species: "Mentha spicata"
+  },
+  {
+    scientificName: "Pachyrhizus erosus",
+    commonName: "Jicama",
+    family: "Fabaceae",
+    genus: "Pachyrhizus",
+    species: "Pachyrhizus erosus"
+  },
   {
     scientificName: "Phaseolus vulgaris",
     commonName: "Poroto seco o granado",
@@ -197,6 +348,34 @@ const CURATED_EXTRA_CROPS: CatalogRow[] = [
     family: "Fabaceae",
     genus: "Cicer",
     species: "Cicer arietinum"
+  },
+  {
+    scientificName: "Pisum sativum var. saccharatum",
+    commonName: "Arveja china",
+    family: "Fabaceae",
+    genus: "Pisum",
+    species: "Pisum sativum"
+  },
+  {
+    scientificName: "Sesamum indicum",
+    commonName: "Sesamo",
+    family: "Pedaliaceae",
+    genus: "Sesamum",
+    species: "Sesamum indicum"
+  },
+  {
+    scientificName: "Vigna radiata",
+    commonName: "Poroto mung",
+    family: "Fabaceae",
+    genus: "Vigna",
+    species: "Vigna radiata"
+  },
+  {
+    scientificName: "Vigna unguiculata",
+    commonName: "Caupí",
+    family: "Fabaceae",
+    genus: "Vigna",
+    species: "Vigna unguiculata"
   }
 ];
 
@@ -675,6 +854,8 @@ function buildConfidence(
 function faostatItemFor(scientificName: string, commonName: string) {
   const text = `${scientificName} ${commonName}`.toLowerCase();
   const exact: Array<[string, string]> = [
+    ["brassica oleracea var italica", "Cauliflowers and broccoli"],
+    ["cynara cardunculus", "Artichokes"],
     ["lycopersicon", "Tomatoes"],
     ["solanum lycopersicum", "Tomatoes"],
     ["solanum tuberosum", "Potatoes"],
@@ -691,6 +872,7 @@ function faostatItemFor(scientificName: string, commonName: string) {
     ["lactuca", "Lettuce and chicory"],
     ["cichorium", "Lettuce and chicory"],
     ["vicia faba", "Broad beans and horse beans, green"],
+    ["pisum sativum var saccharatum", "Peas, green"],
     ["pisum", "Peas, green"],
     ["phaseolus vulgaris", "Beans, dry"],
     ["phaseolus", "Other beans, green"],
@@ -728,6 +910,52 @@ function faostatProxyItemFor(scientificName: string, commonName: string) {
       item: "Green garlic",
       factor: 1,
       label: "Proxy FAOSTAT para Allium fresco"
+    };
+  }
+  if (
+    text.includes("abelmoschus") ||
+    text.includes("beta vulgaris var") ||
+    text.includes("mentha") ||
+    text.includes("okra") ||
+    text.includes("acelga") ||
+    text.includes("menta") ||
+    text.includes("hierbabuena")
+  ) {
+    return {
+      item: "Other vegetables, fresh n.e.c.",
+      factor: 0.8,
+      label: "Proxy FAOSTAT para hortaliza fresca sin item directo"
+    };
+  }
+  if (
+    text.includes("colocasia") ||
+    text.includes("dioscorea") ||
+    text.includes("manihot") ||
+    text.includes("pachyrhizus") ||
+    text.includes("taro") ||
+    text.includes("yuca") ||
+    text.includes("jicama")
+  ) {
+    return {
+      item: "Other roots and tubers n.e.c.",
+      factor: 1,
+      label: "Proxy FAOSTAT para raiz/tuberculo sin item directo"
+    };
+  }
+  if (
+    text.includes("cajanus") ||
+    text.includes("vigna") ||
+    text.includes("arachis") ||
+    text.includes("sesamum") ||
+    text.includes("guandu") ||
+    text.includes("caupi") ||
+    text.includes("mani") ||
+    text.includes("sesamo")
+  ) {
+    return {
+      item: "Other pulses n.e.c.",
+      factor: 1,
+      label: "Proxy FAOSTAT para leguminosa o semilla alimentaria sin item Chile directo"
     };
   }
   if (text.includes("apiaceae") || text.includes("apium") || text.includes("petroselinum") || text.includes("coriandrum")) {
@@ -784,27 +1012,39 @@ type CuratedNutritionProfile =
     };
 
 const CURATED_NUTRITION_PROFILES: CuratedNutritionProfile[] = [
+  exactFood("abelmoschus esculentus", "169260", "Okra cruda; match taxonomico curado"),
   exactFood("allium ampeloprasum", "169246", "Leek crudo; match taxonomico curado"),
   exactFood("allium sativum", "169230", "Ajo crudo; match taxonomico curado"),
   exactFood("allium spp", "170000", "Cebolla cruda; proxy de especie Allium hortícola"),
   exactFood("anethum graveolens", "172233", "Eneldo fresco; corrige nombre comun ambiguo del catalogo"),
   exactFood("apium graveolens", "169988", "Apio crudo; match taxonomico curado"),
+  exactFood("arachis hypogaea", "172430", "Mani crudo; match taxonomico curado"),
   exactFood("asparagus offininalis", "168389", "Esparrago crudo; match por genero con correccion ortografica"),
   exactFood("avena sativa", "173904", "Avena seca no fortificada; proxy de grano entero disponible en FDC"),
   exactFood("avena strigosa", "173904", "Avena negra; proxy por Avena sativa disponible en FDC"),
+  exactFood("beta vulgaris var cicla", "169991", "Acelga cruda; variedad hortÃ­cola con perfil FDC directo"),
   exactFood("beta vulgaris", "169145", "Betarraga cruda; match de especie hortícola"),
+  exactFood("brassica juncea", "169256", "Hojas de mostaza crudas; match taxonomico curado"),
   exactFood("brassica napus", "170929", "Semilla de mostaza molida; proxy para semilla oleaginosa Brassica"),
+  exactFood("brassica oleracea var italica", "321900", "Brocoli crudo; variedad hortÃ­cola con perfil FDC directo"),
   exactFood("brassica oleracea", "169975", "Repollo crudo; representante para Brassica oleracea mixta"),
   exactFood("brassica rapa", "170465", "Nabo crudo; match taxonomico curado"),
   exactFood("brassica spp", "170061", "Hojas de nabo crudas; proxy para Brassica de hoja/abono verde"),
+  exactFood("cajanus cajan", "172436", "Guandu maduro crudo; match por pigeon pea/red gram en FDC"),
+  exactFood("capsicum annuum var annuum", "170497", "Aji verde crudo; variedad de Capsicum con perfil FDC directo"),
   exactFood("capsicum annum", "170108", "Pimenton rojo crudo; corrige alias generico 'sweet'"),
+  exactFood("cichorium endivia", "168412", "Endivia cruda; match taxonomico curado"),
   exactFood("cichorium intybus", "169992", "Hojas de achicoria crudas; match taxonomico curado"),
   exactFood("citrullus lanatus", "167765", "Sandia cruda; corrige ortografia Watermelone"),
+  exactFood("colocasia esculenta", "169308", "Taro crudo; match taxonomico curado"),
   exactFood("coriandrum sativum", "169997", "Cilantro fresco crudo; match nacional usado como coriander/cilantro"),
   exactFood("cucumis melo", "169092", "Melon cantalupo crudo; proxy para Cucumis melo"),
   exactFood("cucumis sativus", "169225", "Pepino crudo; match taxonomico curado"),
+  exactFood("cucurbita pepo", "169291", "Zapallo italiano/zucchini crudo; match taxonomico curado"),
   exactFood("cucurbita spp", "168448", "Zapallo/calabaza crudo; proxy de genero Cucurbita"),
+  exactFood("cynara cardunculus var scolymus", "169205", "Alcachofa cruda; match taxonomico curado"),
   exactFood("daucus carota", "170393", "Zanahoria cruda; match taxonomico curado"),
+  exactFood("dioscorea spp", "170071", "Name/yam crudo; proxy de genero Dioscorea disponible en FDC"),
   exactFood("eruca vesicaria", "169387", "Rucula/arugula cruda; agrega especie sin match previo"),
   exactFood("fagopyrum esculentum", "170286", "Trigo sarraceno cocido; mejor alimento disponible en FDC local"),
   exactFood("fragaria x ananassa", "167762", "Frutilla cruda; corrige match a topping de frutilla"),
@@ -819,18 +1059,24 @@ const CURATED_NUTRITION_PROFILES: CuratedNutritionProfile[] = [
   exactFood("linum usitatissiumum", "169414", "Linaza/flaxseed; agrega especie sin match previo"),
   exactFood("lupinus spp", "172423", "Lupino maduro crudo; proxy por genero Lupinus"),
   exactFood("lycopersicon esculentum", "170457", "Tomate crudo; match taxonomico curado"),
+  exactFood("manihot esculenta", "169985", "Yuca cruda; match taxonomico curado"),
   exactFood("medigaco sativa", "168384", "Brotes de alfalfa crudos; proxy comestible de alfalfa"),
+  exactFood("mentha piperita", "173474", "Menta piperita fresca; match taxonomico curado"),
+  exactFood("mentha spicata", "173475", "Hierbabuena/spearmint fresca; match taxonomico curado"),
   exactFood("ocimum basilicum", "172232", "Albahaca fresca; match taxonomico curado"),
   exactFood("oryza sativa", "169703", "Arroz integral crudo; evita match a arroz silvestre"),
+  exactFood("pachyrhizus erosus", "170073", "Jicama cruda; match taxonomico curado"),
   exactFood("pastinaca sativa", "170417", "Chirivia cruda; match taxonomico curado"),
   exactFood("petroselinum crispum", "170416", "Perejil fresco; match taxonomico curado"),
   exactFood("phaseolus spp", "169961", "Poroto verde crudo; proxy hortícola de Phaseolus"),
   exactFood("phaseolus vulgaris", "175199", "Poroto maduro crudo; proxy por poroto pinto USDA para poroto seco/granado"),
+  exactFood("pisum sativum var saccharatum", "170010", "Arveja china/tirabeque cruda; match taxonomico curado"),
   exactFood("pisum spp", "170419", "Arveja verde/seca; proxy de Pisum disponible en FDC local"),
   exactFood("raphanus sativus", "169276", "Rabano crudo; match taxonomico curado"),
   exactFood("rheum rhabarbarum", "167758", "Ruibarbo crudo; match taxonomico curado"),
   exactFood("scorzonera hispanica", "169277", "Salsifi negro; corrige falso match con berries"),
   exactFood("secale cereale", "168884", "Grano de centeno; corrige falso match con chicken fryers"),
+  exactFood("sesamum indicum", "170150", "Semilla de sesamo entera seca; match taxonomico curado"),
   exactFood("sinapis alba", "170929", "Semilla de mostaza molida; agrega mostaza blanca"),
   exactFood("solanum melongena", "169228", "Berenjena cruda; match taxonomico curado"),
   exactFood("solanum tuberosum", "170026", "Papa cruda; match taxonomico curado"),
@@ -839,6 +1085,8 @@ const CURATED_NUTRITION_PROFILES: CuratedNutritionProfile[] = [
   exactFood("triticum aestivum", "168889", "Trigo duro rojo de primavera; proxy de grano de trigo disponible en FDC"),
   exactFood("triticosecale", "169718", "Triticale; match de cereal disponible en FDC"),
   exactFood("valerianella sp", "169219", "Canonigo/cornsalad crudo; corrige falso match por 'sp'"),
+  exactFood("vigna radiata", "174256", "Poroto mung maduro crudo; match taxonomico curado"),
+  exactFood("vigna unguiculata", "168405", "Caupi verde con vaina; match taxonomico curado"),
   exactFood("vicia faba", "170377", "Haba verde cruda; match taxonomico curado"),
   exactFood("vicia sp", "168574", "Vicia; proxy por haba verde para especie de Vicia sin perfil FDC directo", "proxy"),
   exactFood("zea mais", "169998", "Maiz dulce amarillo crudo; corrige falso match por Zea"),
@@ -857,7 +1105,8 @@ const CURATED_NUTRITION_PROFILES: CuratedNutritionProfile[] = [
 
 function curatedNutritionFor(scientificName: string, commonName: string) {
   const normalized = `${scientificName} ${commonName}`.toLowerCase().replace(/×/g, "x").replace(/[^a-z0-9 ]/g, " ");
-  return CURATED_NUTRITION_PROFILES.find((profile) => profile.match.some((item) => normalized.includes(item)));
+  const compact = normalized.replace(/\s+/g, " ").trim();
+  return CURATED_NUTRITION_PROFILES.find((profile) => profile.match.some((item) => compact.includes(item)));
 }
 
 function exactFood(match: string, fdcId: string, label: string, level: "observed" | "proxy" = "observed"): CuratedNutritionProfile {
@@ -916,11 +1165,16 @@ const WATER_CYCLE_PROFILES: Array<{
   profile("Zanahoria/nabo", "FAO Crop Water Needs", "proxy", [350, 550], [90, 120], includesAny("daucus", "raphanus", "carrot", "turnip")),
   profile("Brassica hoja/flor", "FAO Crop Water Needs", "proxy", [350, 500], [70, 120], includesAny("brassica", "cabbage", "broccoli", "cauliflower")),
   profile("Lechuga/achicoria", "FAO Crop Water Needs", "proxy", [250, 400], [45, 80], includesAny("lactuca", "cichorium", "lettuce", "chicory")),
+  profile("Hierbas culinarias", "FAO Crop Water Needs", "proxy", [250, 400], [45, 90], includesAny("mentha", "ocimum", "petroselinum", "coriandrum", "albahaca", "perejil", "cilantro", "menta", "hierbabuena")),
+  profile("Acelga y hojas de ciclo corto", "FAO Crop Water Needs", "proxy", [250, 450], [45, 85], includesAny("beta vulgaris var", "chard", "acelga", "mustard greens", "brassica juncea")),
   profile("Zapallo/calabaza", "FAO Crop Water Needs", "proxy", [400, 700], [100, 150], includesAny("cucurbita", "pumpkin", "squash")),
   profile("Pepino/melon/sandia", "FAO Crop Water Needs", "proxy", [400, 650], [80, 125], includesAny("cucumis", "citrullus", "cucumber", "melon", "watermelon")),
-  profile("Leguminosas secas", "FAO Crop Water Needs", "proxy", [300, 500], [90, 130], includesAny("lens", "cicer", "lentil", "chickpea", "garbanzo")),
-  profile("Leguminosas verdes", "FAO Crop Water Needs", "proxy", [300, 500], [70, 110], includesAny("phaseolus", "pisum", "vicia faba", "bean", "pea")),
+  profile("Raices y tuberculos tropicales", "FAO Crop Water Needs", "proxy", [500, 750], [120, 210], includesAny("manihot", "colocasia", "dioscorea", "pachyrhizus", "cassava", "taro", "yam", "jicama", "yuca")),
+  profile("Leguminosas secas", "FAO Crop Water Needs", "proxy", [300, 500], [90, 130], includesAny("lens", "cicer", "arachis", "cajanus", "vigna radiata", "sesamum", "lentil", "chickpea", "garbanzo", "mani", "guandu", "mung", "sesamo")),
+  profile("Leguminosas verdes", "FAO Crop Water Needs", "proxy", [300, 500], [70, 110], includesAny("phaseolus", "pisum", "vicia faba", "vigna unguiculata", "bean", "pea", "caupi")),
   profile("Cereales", "FAO Crop Water Needs", "proxy", [350, 650], [110, 150], includesAny("avena", "hordeum", "triticum", "secale", "zea", "oryza", "oat", "wheat", "maize", "barley", "rice")),
+  profile("Alcachofa", "FAO Crop Water Needs", "proxy", [500, 700], [120, 180], includesAny("cynara", "artichoke", "alcachofa")),
+  profile("Okra", "FAO Crop Water Needs", "proxy", [350, 550], [70, 110], includesAny("abelmoschus", "okra")),
   profile("Espinaca", "FAO Crop Water Needs", "proxy", [250, 400], [45, 70], includesAny("spinacia", "spinach")),
   profile("Frutilla", "FAO Crop Water Needs", "proxy", [350, 550], [90, 140], includesAny("fragaria", "strawberry"))
 ];
@@ -969,6 +1223,8 @@ function inferFamily(family: string | null, scientificName: string) {
   if (family && family !== "Familia no clasificada") return family;
   const genus = scientificName.toLowerCase().split(/\s+/)[0];
   const map: Record<string, string> = {
+    abelmoschus: "Malvaceae",
+    arachis: "Fabaceae",
     anethum: "Apiaceae",
     apium: "Apiaceae",
     lupinus: "Fabaceae",
@@ -976,8 +1232,15 @@ function inferFamily(family: string | null, scientificName: string) {
     beta: "Amaranthaceae",
     capsicum: "Solanaceae",
     cichorium: "Asteraceae",
+    colocasia: "Araceae",
     coriandrum: "Apiaceae",
+    cynara: "Asteraceae",
+    dioscorea: "Dioscoreaceae",
     ocimum: "Lamiaceae",
+    manihot: "Euphorbiaceae",
+    mentha: "Lamiaceae",
+    pachyrhizus: "Fabaceae",
+    pastinaca: "Apiaceae",
     petroselinum: "Apiaceae",
     daucus: "Apiaceae",
     eruca: "Brassicaceae",
@@ -1000,11 +1263,15 @@ function inferFamily(family: string | null, scientificName: string) {
     rheum: "Polygonaceae",
     scorzonera: "Asteraceae",
     solanum: "Solanaceae",
+    sorghum: "Poaceae",
     spinacia: "Amaranthaceae",
     tagetes: "Asteraceae",
     valerianella: "Caprifoliaceae",
+    vigna: "Fabaceae",
     vicia: "Fabaceae",
-    brassica: "Brassicaceae"
+    brassica: "Brassicaceae",
+    cajanus: "Fabaceae",
+    sesamum: "Pedaliaceae"
   };
   return map[genus] ?? family ?? "Familia no clasificada";
 }
@@ -1015,27 +1282,39 @@ function localChileanName(commonName: string | null, scientificName: string) {
   const text = `${common} ${scientific}`;
 
   const scientificMap: Record<string, string> = {
+    "abelmoschus esculentus": "Okra",
     "allium ampeloprasum": "Puerro",
     "allium sativum": "Ajo",
     "allium spp.": "Cebolla",
     "anethum graveolens": "Eneldo",
     "apium graveolens": "Apio",
+    "arachis hypogaea": "Mani",
     "asparagus offininalis": "Espárrago",
     "avena sativa": "Avena",
     "avena strigosa": "Avena negra",
+    "beta vulgaris var. cicla": "Acelga",
     "beta vulgaris": "Betarraga",
+    "brassica juncea": "Hojas de mostaza",
     "brassica napus": "Raps",
+    "brassica oleracea var. italica": "Brócoli",
     "brassica oleracea": "Repollo, brócoli o coliflor",
     "brassica rapa": "Nabo",
     "brassica spp.": "Mostaza",
+    "cajanus cajan": "Guandú",
+    "capsicum annuum var. annuum": "Ají verde",
     "capsicum annum": "Pimentón",
+    "cichorium endivia": "Endivia",
     "cichorium intybus": "Achicoria",
     "citrullus lanatus": "Sandía",
+    "colocasia esculenta": "Taro",
     "coriandrum sativum": "Cilantro",
     "cucumis melo": "Melón",
     "cucumis sativus": "Pepino",
+    "cucurbita pepo": "Zapallo italiano",
     "cucurbita spp.": "Zapallo",
+    "cynara cardunculus var. scolymus": "Alcachofa",
     "daucus carota": "Zanahoria",
+    "dioscorea spp.": "Ñame",
     "eruca vesicaria subsp. sativa": "Rúcula",
     "fagopyrum esculentum": "Trigo sarraceno",
     "fragaria x ananassa": "Frutilla",
@@ -1051,19 +1330,25 @@ function localChileanName(commonName: string | null, scientificName: string) {
     "lolium perenne": "Ballica perenne",
     "lupinus spp.": "Lupino",
     "lycopersicon esculentum": "Tomate",
+    "manihot esculenta": "Yuca",
     "medigaco sativa": "Alfalfa",
+    "mentha piperita": "Menta piperita",
+    "mentha spicata": "Hierbabuena",
     "nicotiana tabacum": "Tabaco",
     "ocimum basilicum": "Albahaca",
     "oryza sativa": "Arroz",
+    "pachyrhizus erosus": "Jícama",
     "pastinaca sativa": "Chirivía",
     "petroselinum crispum": "Perejil",
     "phaseolus spp.": "Poroto",
     "phaseolus vulgaris": "Poroto seco o granado",
     "phacelia sp.": "Facelia",
+    "pisum sativum var. saccharatum": "Arveja china",
     "pisum spp.": "Arveja",
     "raphanus sativus": "Rábano",
     "rheum rhabarbarum": "Ruibarbo",
     "secale cereale": "Centeno",
+    "sesamum indicum": "Sésamo",
     "sinapis alba": "Mostaza blanca",
     "solanum melongena": "Berenjena",
     "solanum tuberosum": "Papa",
@@ -1078,6 +1363,8 @@ function localChileanName(commonName: string | null, scientificName: string) {
     "trifolium spp.": "Trébol",
     "triticum aestivum": "Trigo",
     "valerianella sp.": "Canónigo",
+    "vigna radiata": "Poroto mung",
+    "vigna unguiculata": "Caupí",
     "vicia faba": "Haba",
     "vicia sp.": "Vicia",
     "zea mais": "Maíz"
