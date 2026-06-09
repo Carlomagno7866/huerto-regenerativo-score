@@ -95,7 +95,7 @@ export function SpeciesSearch({ label, buttonLabel = "Buscar", showButton = true
             >
               <strong>{option.commonName}</strong>
               <span>
-                {option.scientificName} · {option.family}
+                {option.scientificName} - {option.family}
               </span>
             </button>
           ))}

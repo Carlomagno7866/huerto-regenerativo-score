@@ -109,9 +109,9 @@ export default function Home() {
           </div>
 
           <div className="grid-controls">
-            <NumberControl label="Anos" value={years} min={1} max={8} onChange={setYears} />
-            <NumberControl label="Subparcelas" value={subplots} min={1} max={12} onChange={setSubplots} />
-            <NumberControl label="m2/subparcela" value={areaM2} min={1} max={80} onChange={setAreaM2} />
+            <NumberControl label="Años" value={years} min={1} max={8} onChange={setYears} />
+            <NumberControl label="Bancales" value={subplots} min={1} max={12} onChange={setSubplots} />
+            <NumberControl label="m2/Bancales" value={areaM2} min={1} max={80} onChange={setAreaM2} />
           </div>
 
           {objective === "max-nutrients" ? (
@@ -159,9 +159,12 @@ export default function Home() {
 
         <div className="results">
           <div className="hero-band">
-            <div>
-              <p>Base local SQLite + USDA + FAOSTAT + Best4Soil</p>
-              <h2>SCORE v2 por nutrientes utiles, agua y rotacion sanitaria</h2>
+            <div className="rotation-copy">
+              <p>
+                Rotar cultivos entre años y bancales ayuda a cortar ciclos de plagas, equilibrar la extracción de
+                nutrientes del suelo y mantener una huerta más resiliente. El planificador prioriza combinaciones que no
+                repiten familias sensibles y distribuyen mejor el uso de agua, espacio y fertilidad.
+              </p>
             </div>
             {result ? (
               <div className="meters">
@@ -188,7 +191,7 @@ export default function Home() {
               ) : null}
               {grouped.map(([year, items]) => (
                 <section className="year" key={year}>
-                  <h3>Ano {year}</h3>
+                  <h3>Año {year}</h3>
                   <div className="crop-grid">
                     {items.map((item) => (
                       <Link
@@ -199,7 +202,7 @@ export default function Home() {
                         title={`Ver SCORE de ${item.crop.commonName}`}
                       >
                         <div className="crop-top">
-                          <span>Subparcela {item.subplot}</span>
+                          <span>Bancal {item.subplot}</span>
                           <strong>{Math.round(item.score.total * 100)}</strong>
                         </div>
                         <h4>{item.crop.commonName}</h4>

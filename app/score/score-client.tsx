@@ -98,13 +98,19 @@ export function ScoreClient({ initialSpeciesId, species: allSpecies }: { initial
 
           <section className="detail-columns">
             <article className="tool-panel">
-              <h3>Nutrientes destacados</h3>
+              <div className="section-heading">
+                <h3>Nutrientes destacados</h3>
+                <span>Valores por cada 100 g</span>
+              </div>
               {species.nutrition.length ? (
-                <dl className="public-list">
+                <dl className="nutrient-grid">
                   {species.nutrition.slice(0, 8).map((item) => (
-                    <div key={item.key}>
+                    <div className="nutrient-card" key={item.key}>
                       <dt>{item.label}</dt>
-                      <dd>{formatNumber(item.value)} / 100 g</dd>
+                      <dd>
+                        <strong>{formatNumber(item.value)}</strong>
+                        <span>{nutrientUnit(item.key)}</span>
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -172,4 +178,22 @@ function ScoreBar(props: { label: string; value: number }) {
 
 function formatNumber(value: number) {
   return new Intl.NumberFormat("es-CL", { maximumFractionDigits: 1 }).format(value);
+}
+
+function nutrientUnit(key: string) {
+  const units: Record<string, string> = {
+    energy: "kcal",
+    protein: "g",
+    fiber: "g",
+    vitaminC: "mg",
+    vitaminA: "mcg RAE",
+    folate: "mcg",
+    calcium: "mg",
+    iron: "mg",
+    potassium: "mg",
+    magnesium: "mg",
+    zinc: "mg"
+  };
+
+  return units[key] ?? "unidad";
 }

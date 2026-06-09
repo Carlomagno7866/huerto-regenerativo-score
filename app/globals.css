@@ -342,6 +342,19 @@ small {
   padding: min(6vw, 56px);
 }
 
+.rotation-copy {
+  max-width: 820px;
+}
+
+.rotation-copy p {
+  margin: 0;
+  color: #d4f3e9;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.5;
+  text-transform: none;
+}
+
 .meters {
   display: grid;
   grid-template-columns: repeat(3, minmax(76px, 1fr));
@@ -640,12 +653,14 @@ dd {
 
 .tool-panel {
   position: relative;
+  z-index: 1;
   border-radius: 8px;
   padding: 18px;
 }
 
 .species-search {
   position: relative;
+  z-index: 30;
 }
 
 .search-row {
@@ -660,7 +675,7 @@ dd {
 
 .suggestions {
   position: absolute;
-  z-index: 10;
+  z-index: 100;
   top: calc(100% + 8px);
   right: 0;
   left: 0;
@@ -698,6 +713,8 @@ dd {
 }
 
 .compact-empty {
+  position: relative;
+  z-index: 0;
   min-height: 190px;
 }
 
@@ -769,6 +786,26 @@ dd {
   margin-bottom: 0;
 }
 
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-heading h3 {
+  margin: 0;
+}
+
+.section-heading span {
+  color: var(--leaf);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .public-bars {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -792,12 +829,57 @@ dd {
   margin-top: 14px;
 }
 
+.nutrient-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.nutrient-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(135, 255, 210, 0.14);
+  border-radius: 8px;
+  background: rgba(1, 8, 7, 0.28);
+  padding: 12px;
+}
+
+.nutrient-card dt {
+  color: #bde5d8;
+  font-weight: 900;
+}
+
+.nutrient-card dd {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+  margin: 0;
+}
+
+.nutrient-card strong {
+  color: var(--ink);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nutrient-card span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .muted {
   margin: 14px 0 0;
   color: var(--muted);
 }
 
 .barter-board {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 132px minmax(0, 1fr);
   gap: 14px;
