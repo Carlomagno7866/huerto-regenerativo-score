@@ -37,6 +37,8 @@ export type ScoreBreakdown = {
     waterLiters: number;
     cycleDays: number;
     usefulNutrientPoints: number;
+    priorityNutrientValue: number;
+    nutrientYieldByTarget: Record<string, number>;
     nutrientsPerM2Day: number;
     nutrientsPerLiter: number;
   };

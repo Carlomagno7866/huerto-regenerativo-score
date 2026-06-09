@@ -96,6 +96,8 @@ export function scoreCrop(
       waterLiters: diagnostics.waterLiters,
       cycleDays: crop.cycleDays,
       usefulNutrientPoints: diagnostics.usefulNutrientPoints,
+      priorityNutrientValue: diagnostics.priorityNutrientValue,
+      nutrientYieldByTarget: diagnostics.nutrientYieldByTarget,
       nutrientsPerM2Day: diagnostics.nutrientsPerM2Day,
       nutrientsPerLiter: diagnostics.nutrientsPerLiter
     }
@@ -113,11 +115,8 @@ export function optimize(crops: CropCandidate[], input: OptimizationInput): Assi
   for (let year = 1; year <= input.years; year += 1) {
     const yearFamilies: string[] = [];
     const yearCropIds: string[] = [];
-    const legumeSubplot = ((year - 1) % Math.max(1, input.subplots)) + 1;
     for (let subplot = 1; subplot <= input.subplots; subplot += 1) {
       const history = historyByPlot[subplot - 1];
-      const remainingSlots = input.subplots - subplot + 1;
-      const requireLegume = shouldReserveLegume(candidates, yearFamilies, yearCropIds, remainingSlots, subplot, legumeSubplot);
       const selected = selectCropForSlot(
         candidates,
         input,
@@ -127,8 +126,7 @@ export function optimize(crops: CropCandidate[], input: OptimizationInput): Assi
         yearCropIds,
         usedCropIds,
         previousYearCropIds,
-        benchmarks,
-        requireLegume
+        benchmarks
       );
       if (!selected) break;
       assignments.push({
@@ -158,8 +156,7 @@ function selectCropForSlot(
   yearCropIds: string[],
   usedCropIds: Set<string>,
   previousYearCropIds: Set<string>,
-  benchmarks: Benchmarks,
-  requireLegume: boolean
+  benchmarks: Benchmarks
 ) {
   const basePredicates = [
     (crop: CropCandidate) => !isDuplicateInYear(crop, candidates, yearCropIds),
@@ -169,15 +166,10 @@ function selectCropForSlot(
     (crop: CropCandidate) => passesFamilyRotation(crop, history, previousFamilies),
     (crop: CropCandidate) => !yearFamilies.includes(crop.family)
   ];
-  const legumePredicate = (crop: CropCandidate) => !requireLegume || isLegume(crop);
   const attempts = [
-    [legumePredicate, ...basePredicates],
-    [legumePredicate, ...basePredicates.slice(0, 5)],
-    [legumePredicate, ...basePredicates.slice(0, 4)],
-    [legumePredicate, basePredicates[0], basePredicates[1], basePredicates[2]],
-    [legumePredicate, basePredicates[0]],
     basePredicates,
     basePredicates.slice(0, 5),
+    basePredicates.slice(0, 4),
     basePredicates.slice(0, 3),
     [basePredicates[0]],
     []
@@ -190,11 +182,44 @@ function selectCropForSlot(
         crop,
         score: scoreCrop(crop, input, history, previousFamilies, yearFamilies, benchmarks)
       }))
-      .sort((a, b) => b.score.total - a.score.total);
+      .sort((a, b) => compareRankedCrops(a, b, input));
     if (ranked[0]) return ranked[0];
   }
 
   return null;
+}
+
+function compareRankedCrops(
+  a: { crop: CropCandidate; score: ScoreBreakdown },
+  b: { crop: CropCandidate; score: ScoreBreakdown },
+  input: OptimizationInput
+) {
+  if (input.objective === "low-water") {
+    return (
+      a.crop.waterMmCycle - b.crop.waterMmCycle ||
+      b.score.total - a.score.total ||
+      b.score.rotation - a.score.rotation ||
+      a.crop.commonName.localeCompare(b.crop.commonName, "es")
+    );
+  }
+
+  if (input.objective === "max-nutrients") {
+    return (
+      b.score.diagnostics.priorityNutrientValue - a.score.diagnostics.priorityNutrientValue ||
+      b.score.nutrition - a.score.nutrition ||
+      b.score.total - a.score.total ||
+      a.crop.waterMmCycle - b.crop.waterMmCycle ||
+      a.crop.commonName.localeCompare(b.crop.commonName, "es")
+    );
+  }
+
+  return (
+    b.score.total - a.score.total ||
+    b.score.nutrition - a.score.nutrition ||
+    b.score.rotation - a.score.rotation ||
+    a.crop.waterMmCycle - b.crop.waterMmCycle ||
+    a.crop.commonName.localeCompare(b.crop.commonName, "es")
+  );
 }
 
 export function scoreSingleCrop(crop: CropCandidate, crops: CropCandidate[], input: OptimizationInput): ScoreBreakdown {
@@ -210,7 +235,9 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
   let weighted = 0;
   let totalWeight = 0;
   let usefulNutrientPoints = 0;
+  let priorityNutrientValue = 0;
   const contributions: Record<string, number> = {};
+  const nutrientYieldByTarget: Record<string, number> = {};
 
   for (const [key, target] of Object.entries(DAILY_TARGETS)) {
     const priorityWeight = activePriorities.includes(key as NutrientPriority) ? 1.75 : 1;
@@ -219,6 +246,10 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     const nutrientDays = delivered / target.amount;
     const adequacy = clamp01(nutrientDays / Math.max(30, crop.cycleDays));
     contributions[key] = adequacy;
+    nutrientYieldByTarget[key] = nutrientDays;
+    if (input.objective === "max-nutrients" && activePriorities.includes(key as NutrientPriority)) {
+      priorityNutrientValue += nutrientDays;
+    }
     weighted += adequacy * target.weight * priorityWeight;
     totalWeight += target.weight * priorityWeight;
     usefulNutrientPoints += Math.min(nutrientDays, crop.cycleDays) * target.weight * priorityWeight;
@@ -230,9 +261,15 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     const energyDays = deliveredEnergy / 2200;
     const energyAdequacy = clamp01(energyDays / Math.max(30, crop.cycleDays));
     contributions.energy = energyAdequacy;
+    nutrientYieldByTarget.energy = energyDays;
+    priorityNutrientValue += energyDays;
     weighted += energyAdequacy * 0.55;
     totalWeight += 0.55;
     usefulNutrientPoints += Math.min(energyDays, crop.cycleDays) * 0.55;
+  }
+
+  if (input.objective === "max-nutrients" && !activePriorities.length) {
+    priorityNutrientValue = Object.values(nutrientYieldByTarget).reduce((sum, value) => sum + value, 0);
   }
 
   const nutritionScore = totalWeight ? weighted / totalWeight : 0;
@@ -241,6 +278,8 @@ function nutrientDiagnostics(crop: CropCandidate, input: OptimizationInput) {
     waterLiters,
     nutritionScore,
     usefulNutrientPoints,
+    priorityNutrientValue,
+    nutrientYieldByTarget,
     nutrientsPerM2Day: usefulNutrientPoints / Math.max(1, input.areaM2 * crop.cycleDays),
     nutrientsPerLiter: usefulNutrientPoints / waterLiters,
     contributions
@@ -262,20 +301,6 @@ function isExcludedByName(crop: CropCandidate, rawName: string) {
   return commonName.includes(name) || family === name || (name.includes(" ") && scientificName.includes(name));
 }
 
-function shouldReserveLegume(
-  candidates: CropCandidate[],
-  yearFamilies: string[],
-  yearCropIds: string[],
-  remainingSlots: number,
-  subplot: number,
-  legumeSubplot: number
-) {
-  if (yearFamilies.some((family) => normalizeText(family).includes("fabaceae"))) return false;
-  const unusedLegumes = candidates.some((crop) => isLegume(crop) && !yearCropIds.includes(crop.id));
-  if (!unusedLegumes) return false;
-  return subplot === legumeSubplot || remainingSlots === 1;
-}
-
 function isDuplicateInYear(crop: CropCandidate, candidates: CropCandidate[], yearCropIds: string[]) {
   return yearCropIds.includes(crop.id) && yearCropIds.length < Math.min(candidates.length, yearCropIds.length + 1);
 }
@@ -285,10 +310,6 @@ function passesFamilyRotation(crop: CropCandidate, history: CropCandidate[], pre
   const lastIndex = [...historyFamilies].reverse().findIndex((family) => family === crop.family);
   if (lastIndex === -1) return true;
   return lastIndex + 1 >= familyInterval(crop.family);
-}
-
-function isLegume(crop: CropCandidate) {
-  return normalizeText(crop.family).includes("fabaceae");
 }
 
 function normalizeText(value: string) {

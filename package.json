@@ -8,6 +8,7 @@
     "build": "next build",
     "build:evidence": "node scripts/build_evidence_profiles.mjs",
     "start": "next start",
+    "test": "node --experimental-strip-types --test tests/optimizer.test.ts",
     "lint": "next lint"
   },
   "keywords": [],
